@@ -1,5 +1,4 @@
 import path from 'path'
-import * as core from '@actions/core'
 import {generateToolkit} from './helpers'
 import {Toolkit} from 'actions-toolkit'
 import {getMainFromPackage, getFilesFromPackage} from '../src/lib/get-from-package'
@@ -46,6 +45,6 @@ describe('get-from-package (Docker Action)', () => {
     expect(result.files).toHaveLength(3)
     expect(result.files?.some((obj: any) => obj === 'Dockerfile')).toBeTruthy()
     expect(result.files?.some((obj: any) => obj === 'entrypoint.sh')).toBeTruthy()
-    expect(result.files?.some((obj: any) => obj === core.toPlatformPath('configs/config.yaml'))).toBeTruthy()
+    expect(result.files?.some((obj: any) => obj === 'configs/config.yaml')).toBeTruthy()
   })
 })

@@ -4,6 +4,7 @@
 [![GitHub - release](https://img.shields.io/github/v/release/raven-actions/publish-and-tag?style=flat-square)](https://github.com/raven-actions/publish-and-tag/releases/latest)
 [![GitHub - ci](https://img.shields.io/github/actions/workflow/status/raven-actions/publish-and-tag/ci.yml?logo=github&label=CI&style=flat-square&branch=main&event=push)](https://github.com/raven-actions/publish-and-tag/actions/workflows/ci.yml?query=branch%3Amain+event%3Apush)
 [![GitHub - license](https://img.shields.io/github/license/raven-actions/publish-and-tag?style=flat-square)](https://github.com/raven-actions/publish-and-tag/blob/main/LICENSE)
+[![Codecov](https://img.shields.io/codecov/c/github/raven-actions/publish-and-tag/main?logo=codecov&style=flat-square&token=VxxCGXH3R5)](https://codecov.io/github/raven-actions/publish-and-tag)
 
 ---
 
@@ -127,9 +128,9 @@ jobs:
 
 You can also use this action with other events - you'll need to specify a `tag_name` (see [📥 Inputs](#-inputs) section below).
 
-Optionally you can set the `files` property in your `package.json` with the list of the additional files that should be included in your release. Yes, it supports `globs`!
+Optionally you can set the `files` property in your `package.json` with the list of the additional files that should be included in your release. Yes, it supports `globs`! Supports via [minimatch](https://github.com/isaacs/minimatch#features).
 
-In the `files`, you do not have to include action manifest files (`action.yml` / `action.yaml`) or file pointed into `main`. Both are included by default. Nothing wrong will happen if any of those files are included in the files, for example, with globs. publish-and-tag action will filter it.
+In the `files`, you do not have to include action manifest files (`action.yml` / `action.yaml`) or file pointed into `main`. Both are included by default. Nothing wrong will happen if any of those files are included in the files, for example, with globs. `publish-and-tag` action will filter it.
 
 ```json
 {

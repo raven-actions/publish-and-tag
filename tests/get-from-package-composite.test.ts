@@ -1,5 +1,4 @@
 import path from 'path'
-import * as core from '@actions/core'
 import {generateToolkit} from './helpers'
 import {Toolkit} from 'actions-toolkit'
 import {getMainFromPackage, getFilesFromPackage} from '../src/lib/get-from-package'
@@ -46,7 +45,7 @@ describe('get-from-package (Composite Action)', () => {
     expect(result.files).toHaveLength(4)
     expect(result.files?.some((obj: any) => obj === 'main.js')).toBeTruthy()
     expect(result.files?.some((obj: any) => obj === 'entrypoint.sh')).toBeTruthy()
-    expect(result.files?.some((obj: any) => obj === core.toPlatformPath('configs/config.yaml'))).toBeTruthy()
-    expect(result.files?.some((obj: any) => obj === core.toPlatformPath('configs/config.yml'))).toBeTruthy()
+    expect(result.files?.some((obj: any) => obj === 'configs/config.yaml')).toBeTruthy()
+    expect(result.files?.some((obj: any) => obj === 'configs/config.yml')).toBeTruthy()
   })
 })
