@@ -1,5 +1,4 @@
 import {Toolkit} from 'actions-toolkit'
-// import glob from 'glob'
 import * as glob from '@actions/glob'
 import * as core from '@actions/core'
 import {isFile} from './file-helper'
@@ -20,7 +19,7 @@ export async function getFilesFromPackage(tools: Toolkit): Promise<{files: strin
   let result: string[] = []
   if (main) {
     if (main !== 'composite' && main !== 'docker') {
-      result.push(core.toPlatformPath(main))
+      result.push(main)
     }
   }
 
@@ -30,10 +29,10 @@ export async function getFilesFromPackage(tools: Toolkit): Promise<{files: strin
     //   return [...arr, ...filePaths]
     // }, [])
 
-    const filesAbsolute = files.map(element => core.toPlatformPath(path.resolve(tools.workspace, element)))
+    const filesAbsolute = files.map(element => path.resolve(tools.workspace, element))
     const globber = await glob.create(filesAbsolute.join('\n'))
     const allFiles = await globber.glob()
-    const filesRelative = allFiles.map(element => core.toPlatformPath(path.relative(tools.workspace, element)))
+    const filesRelative = allFiles.map(element => core.toPosixPath(path.relative(tools.workspace, element)))
 
     const newFiles = [
       ...new Set(filesRelative.filter(str => str !== main && str !== 'action.yml' && str !== 'action.yaml').filter(str => true === isFile(tools.workspace, str))),

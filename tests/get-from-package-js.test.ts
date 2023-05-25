@@ -1,5 +1,4 @@
 import path from 'path'
-import * as core from '@actions/core'
 import {generateToolkit} from './helpers'
 import {Toolkit} from 'actions-toolkit'
 import {getMainFromPackage, getFilesFromPackage} from '../src/lib/get-from-package'
@@ -16,24 +15,24 @@ describe('get-from-package (JavaScript Action)', () => {
   })
 
   it('main', async () => {
-    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({main: core.toPlatformPath('dist/index.js')})
+    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({main: 'dist/index.js'})
     const result = await getMainFromPackage(tools)
-    expect(result).toBe(core.toPlatformPath('dist/index.js'))
+    expect(result).toBe('dist/index.js')
   })
 
   it('files - only main', async () => {
-    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({main: core.toPlatformPath('dist/index.js')})
+    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({main: 'dist/index.js'})
     const result = await getFilesFromPackage(tools)
     expect(result.files).toHaveLength(1)
-    expect(result.files?.some((obj: any) => obj === core.toPlatformPath('dist/index.js'))).toBeTruthy()
+    expect(result.files?.some((obj: any) => obj === 'dist/index.js')).toBeTruthy()
   })
 
   it('files - only additional files', async () => {
-    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({files: [core.toPlatformPath('dist/index.js'), core.toPlatformPath('README.md')]})
+    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({files: ['dist/index.js', 'README.md']})
     const result = await getFilesFromPackage(tools)
     expect(result.files).toHaveLength(2)
-    expect(result.files?.some((obj: any) => obj === core.toPlatformPath('dist/index.js'))).toBeTruthy()
-    expect(result.files?.some((obj: any) => obj === core.toPlatformPath('README.md'))).toBeTruthy()
+    expect(result.files?.some((obj: any) => obj === 'dist/index.js')).toBeTruthy()
+    expect(result.files?.some((obj: any) => obj === 'README.md')).toBeTruthy()
   })
 
   it('files - no main, no additional files', async () => {
@@ -44,17 +43,17 @@ describe('get-from-package (JavaScript Action)', () => {
   it('files - main and additional files with globs', async () => {
     const result = await getFilesFromPackage(tools)
     expect(result.files).toHaveLength(5)
-    expect(result.files?.some((obj: any) => obj === core.toPlatformPath('dist/index.js'))).toBeTruthy()
-    expect(result.files?.some((obj: any) => obj === core.toPlatformPath('dist/additional.js'))).toBeTruthy()
+    expect(result.files?.some((obj: any) => obj === 'dist/index.js')).toBeTruthy()
+    expect(result.files?.some((obj: any) => obj === 'dist/additional.js')).toBeTruthy()
   })
 
   it('files - main and additional files with * glob', async () => {
     process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'glob')
     const result = await getFilesFromPackage(tools)
     expect(result.files).toHaveLength(5)
-    expect(result.files?.some((obj: any) => obj === core.toPlatformPath('dist/index.js'))).toBeTruthy()
-    expect(result.files?.some((obj: any) => obj === core.toPlatformPath('dist/additional.js'))).toBeTruthy()
-    expect(result.files?.some((obj: any) => obj === core.toPlatformPath('dist/cleanup.js'))).toBeTruthy()
-    expect(result.files?.some((obj: any) => obj === core.toPlatformPath('dist/setup.js'))).toBeTruthy()
+    expect(result.files?.some((obj: any) => obj === 'dist/index.js')).toBeTruthy()
+    expect(result.files?.some((obj: any) => obj === 'dist/additional.js')).toBeTruthy()
+    expect(result.files?.some((obj: any) => obj === 'dist/cleanup.js')).toBeTruthy()
+    expect(result.files?.some((obj: any) => obj === 'dist/setup.js')).toBeTruthy()
   })
 })
