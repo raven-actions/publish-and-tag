@@ -1,16 +1,14 @@
-# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
-# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
----
 name: Publish and Tag
 description: 🚀🔖 A GitHub Action for properly publishing and tagging GitHub Actions.
 author: Dariusz Porowski
 branding:
   icon: upload-cloud
   color: gray-dark
-
 inputs:
   tag_name:
-    description: The tag to update. If the workflow event is `release`, it will use the `tag_name` from the event payload.
+    description: >-
+      The tag to update. If the workflow event is `release`, it will use the
+      `tag_name` from the event payload.
     required: false
   rewrite_tags:
     description: Should rewrite major and minor tags?
@@ -43,7 +41,6 @@ inputs:
     description: The GitHub token used to authenticate with the GitHub API.
     required: false
     default: ${{ github.token }}
-
 outputs:
   commit_sha:
     description: The SHA of the commit that was tagged.
@@ -65,7 +62,6 @@ outputs:
     description: Whether the release is the latest release.
   release_url:
     description: The URL of the release.
-
 runs:
   using: node16
   main: dist/index.js
