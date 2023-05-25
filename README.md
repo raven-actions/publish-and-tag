@@ -16,7 +16,7 @@ A [GitHub Action](https://github.com/features/actions) for properly publishing a
 - Force pushes `action.yml` or `action.yaml` and additional files to the release's tag
 - Force pushes to the major and minor version tag (ex: `v1.0.0` -> `v1.0` and `v1`) (optional)
 
-![demo](https://raw.githubusercontent.com/raven-actions/publish-and-tag-dev/main/assets/images/demo.png)
+![demo](https://raw.githubusercontent.com/raven-actions/publish-and-tag/main/assets/images/demo.png)
 
 ## 📑 Table of Contents <!-- omit in toc -->
 
