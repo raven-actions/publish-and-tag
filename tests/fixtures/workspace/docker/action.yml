@@ -1,0 +1,8 @@
+name: Docker Action
+description: Docker Action
+runs:
+  using: docker
+  image: Dockerfile
+  pre-entrypoint: setup.sh
+  entrypoint: entrypoint.sh
+  post-entrypoint: cleanup.sh

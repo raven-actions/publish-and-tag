@@ -1,0 +1,8 @@
+{
+  "main": "composite",
+  "files": [
+    "main.js",
+    "entrypoint.sh",
+    "configs/*"
+  ]
+}

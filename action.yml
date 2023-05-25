@@ -1,0 +1,71 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
+# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+---
+name: Publish and Tag
+description: 🚀🔖 A GitHub Action for properly publishing and tagging GitHub Actions.
+author: Dariusz Porowski
+branding:
+  icon: upload-cloud
+  color: gray-dark
+
+inputs:
+  tag_name:
+    description: The tag to update. If the workflow event is `release`, it will use the `tag_name` from the event payload.
+    required: false
+  rewrite_tags:
+    description: Should rewrite major and minor tags?
+    required: false
+    default: 'true'
+  latest:
+    description: Make release the latest release.
+    required: false
+    default: 'false'
+  cleanup_manifest:
+    description: Should cleanup action manifest?
+    required: false
+    default: 'true'
+  git_commit_message:
+    description: Custom git commit message.
+    required: false
+  git_author_name:
+    description: Custom git author name.
+    required: false
+  git_author_email:
+    description: Custom git author email.
+    required: false
+  git_committer_name:
+    description: Custom git committer name.
+    required: false
+  git_committer_email:
+    description: Custom git committer email.
+    required: false
+  github_token:
+    description: The GitHub token used to authenticate with the GitHub API.
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  commit_sha:
+    description: The SHA of the commit that was tagged.
+  semver:
+    description: Version of the new release.
+  semver_major:
+    description: The major version number of the tag.
+  semver_minor:
+    description: The minor version number of the tag.
+  semver_patch:
+    description: The patch version number of the tag.
+  release_id:
+    description: The ID of the release.
+  release_draft:
+    description: Whether the release is a draft.
+  release_prerelease:
+    description: Whether the release is a prerelease.
+  release_latest:
+    description: Whether the release is the latest release.
+  release_url:
+    description: The URL of the release.
+
+runs:
+  using: node16
+  main: dist/index.js

@@ -1,0 +1,5 @@
+name: JavaScript Action
+description: JavaScript Action
+runs:
+  using: node16
+  main: dist/index.js
