@@ -1,0 +1,8 @@
+{
+  "main": "docker",
+  "files": [
+    "Dockerfile",
+    "entrypoint.sh",
+    "configs/*"
+  ]
+}

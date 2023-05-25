@@ -1,0 +1,7 @@
+name: Composite Action
+description: Composite Action
+runs:
+  using: composite
+  steps:
+    - run: echo Hello World!
+      shell: bash
