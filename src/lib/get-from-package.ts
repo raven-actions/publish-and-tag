@@ -5,8 +5,7 @@ import {isFile} from './file-helper'
 import path from 'path'
 
 export async function getMainFromPackage(tools: Toolkit): Promise<string | undefined> {
-  const {main} = tools.getPackageJSON<{main?: string}>()
-  return main
+  return tools.getPackageJSON<{main?: string}>()?.main
 }
 
 export async function getFilesFromPackage(tools: Toolkit): Promise<{files: string[]}> {

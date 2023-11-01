@@ -76,4 +76,7 @@
   "dotenv.enableAutocloaking": false,
   "prettier.configPath": ".prettierrc.yml",
   "eslint.format.enable": true,
+  "conventionalCommits.scopes": [
+    "commit-js"
+  ],
 }

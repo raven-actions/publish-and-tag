@@ -41,7 +41,7 @@ body:
     attributes:
       label: 🌌 Environment (`publish-and-tag` action)
       description: What `publish-and-tag` action version are you running?
-      placeholder: 1.0.0
+      placeholder: 2.0.0
     validations:
       required: true
   - type: dropdown
@@ -104,7 +104,7 @@ body:
     id: terms
     attributes:
       label: 🔰 Code of Conduct
-      description: By submitting this issue, you agree to follow our [`Code of Conduct`](https://github.com/raven-actions/publish-and-tag/blob/main/.github/CODE_OF_CONDUCT.md)
+      description: By submitting this issue, you agree to follow our [`Code of Conduct`](../blob/main/.github/CODE_OF_CONDUCT.md)
       options:
         - label: I agree to follow this project's Code of Conduct.
           required: true
