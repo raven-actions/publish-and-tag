@@ -66,6 +66,11 @@ describe('create-commit (JavaScript Action)', () => {
   })
 
   it('creates the tree - main and files', async () => {
+    jest.spyOn(getFilesFromPackage, 'getFilesFromPackage').mockReturnValueOnce(
+      Promise.resolve({
+        files: ['README.md', 'dist/additional.js', 'dist/cleanup.js', 'dist/index.js', 'dist/setup.js']
+      })
+    )
     await createCommit(tools, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail)
 
     // Test that our tree was created correctly
