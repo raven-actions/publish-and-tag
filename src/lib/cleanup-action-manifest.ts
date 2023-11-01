@@ -9,6 +9,7 @@ export default async function cleanupActionManifest(tools: Toolkit): Promise<voi
   const mainFromPackage = await getMainFromPackage(tools)
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const config = jsYaml.load(actionManifestContent) as unknown as Record<string, unknown>
     if (typeof config !== 'object') {
       throw new Error(`Action Manifest file [${actionManifestFile}] does not contain valid YAML object`)
@@ -16,7 +17,7 @@ export default async function cleanupActionManifest(tools: Toolkit): Promise<voi
 
     if (mainFromPackage !== 'composite' && mainFromPackage !== 'docker' && mainFromPackage !== '') {
       config.runs = {
-        using: 'node16',
+        using: 'node20',
         main: mainFromPackage
       }
     }

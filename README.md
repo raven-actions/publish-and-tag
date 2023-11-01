@@ -43,7 +43,7 @@ A [GitHub Action](https://github.com/features/actions) for properly publishing a
 
 > This repository even uses it! `@vercel/ncc` supports TypeScript out of the box 😍 So, no need to include your `dist/` in the git.
 
-The two important things you'll need to set in your action are the `main` field and the `build` script. Here's an example of a minimal `package.json` that will use `@vercel/ncc` to compile your action to `dist/index.js`, and update your `action.yml` or `action.yaml` file to use the `node16` runtime, and point `publish-and-tag` action at the compiled file.
+The two important things you'll need to set in your action are the `main` field and the `build` script. Here's an example of a minimal `package.json` that will use `@vercel/ncc` to compile your action to `dist/index.js`, and update your `action.yml` or `action.yaml` file to use the `node20` runtime, and point `publish-and-tag` action at the compiled file.
 
 Example `package.json` for your project:
 
@@ -121,7 +121,7 @@ jobs:
         run: npm run build
 
       - name: Publish and Tag Action
-        uses: raven-actions/publish-and-tag@v1
+        uses: raven-actions/publish-and-tag@v2
 ```
 
 ### Additional configuration
