@@ -100,7 +100,7 @@ jobs:
 
       - name: 📤 Upload test results
         if: ${{ steps.changes.outputs.app == 'true' && matrix.os == 'ubuntu-latest' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: 'reports/jest-*.xml'
@@ -108,7 +108,7 @@ jobs:
 
       - name: 📤 Upload coverage results
         if: ${{ steps.changes.outputs.app == 'true' && matrix.os == 'ubuntu-latest' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-results
           path: coverage
