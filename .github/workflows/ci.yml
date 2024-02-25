@@ -65,7 +65,7 @@ jobs:
           fetch-depth: 0
 
       - name: 🔄️ Detect changes
-        uses: dorny/paths-filter@v2
+        uses: dorny/paths-filter@v3
         id: changes
         with:
           filters: |
