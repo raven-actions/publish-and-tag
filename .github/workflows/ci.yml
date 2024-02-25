@@ -65,7 +65,7 @@ jobs:
           fetch-depth: 0
 
       - name: 🔄️ Detect changes
-        uses: dorny/paths-filter@v2
+        uses: dorny/paths-filter@v3
         id: changes
         with:
           filters: |
@@ -124,7 +124,7 @@ jobs:
 
       - name: 📜 Coverage report
         if: ${{ steps.changes.outputs.app == 'true' && matrix.os == 'ubuntu-latest' }}
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/cobertura-coverage.xml
