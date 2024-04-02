@@ -116,7 +116,7 @@ jobs:
 
       - name: 📜 Test report
         if: ${{ steps.changes.outputs.app == 'true' && matrix.os == 'ubuntu-latest' }}
-        uses: phoenix-actions/test-reporting@v12
+        uses: phoenix-actions/test-reporting@v14
         with:
           name: 📜 Test report
           path: 'reports/jest-*.xml'
