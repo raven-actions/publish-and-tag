@@ -78,24 +78,31 @@ jobs:
               - 'jest.config.js'
               - 'tsconfig.json'
 
+      - name: 🚧 Install pnpm
+        if: ${{ steps.changes.outputs.app == 'true' }}
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
       - name: 🚧 Setup Node
         if: ${{ steps.changes.outputs.app == 'true' }}
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-          cache: npm
+          cache: pnpm
 
       - name: 🔀 Install dependencies
         if: ${{ steps.changes.outputs.app == 'true' }}
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: 🏗️ Build
         if: ${{ steps.changes.outputs.app == 'true' }}
-        run: npm run build:ci
+        run: pnpm build:ci
 
       - name: 🧪 Test
         if: ${{ steps.changes.outputs.app == 'true' }}
-        run: npm run test:ci:cov
+        run: pnpm test:ci:cov
         continue-on-error: true
 
       - name: 📤 Upload test results
