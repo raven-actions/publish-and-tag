@@ -55,8 +55,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       nock:
-        specifier: ^13.5.4
-        version: 13.5.4
+        specifier: ^13.5.6
+        version: 13.5.6
       prettier:
         specifier: ^3.3.2
         version: 3.3.2
@@ -1424,8 +1424,8 @@ packages:
   nice-try@1.0.5:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}
 
-  nock@13.5.4:
-    resolution: {integrity: sha512-yAyTfdeNJGGBFxWdzSKCBYxs5FxLbCg5X5Q4ets974hcQzG1+qCxvIyOo4j2Ry6MUlhWVMX4OoYDefAIIwupjw==}
+  nock@13.5.6:
+    resolution: {integrity: sha512-o2zOYiCpzRqSzPj0Zt/dQ/DqZeYoaQ7TUonc/xUPjCGl9WeHpNbxgVvOquXYAaJzI0M9BXV3HTzG0p8IUAbBTQ==}
     engines: {node: '>= 10.13'}
 
   node-fetch@2.7.0:
@@ -3683,7 +3683,7 @@ snapshots:
 
   nice-try@1.0.5: {}
 
-  nock@13.5.4:
+  nock@13.5.6:
     dependencies:
       debug: 4.3.5
       json-stringify-safe: 5.0.1
