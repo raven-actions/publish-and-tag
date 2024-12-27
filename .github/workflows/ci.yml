@@ -131,7 +131,7 @@ jobs:
 
       - name: 📜 Coverage report
         if: ${{ steps.changes.outputs.app == 'true' && matrix.os == 'ubuntu-latest' }}
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/cobertura-coverage.xml
