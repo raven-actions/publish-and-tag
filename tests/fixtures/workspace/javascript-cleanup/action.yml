@@ -1,5 +1,0 @@
-name: JavaScript Action
-description: JavaScript Action
-runs:
-  using: node20
-  main: index.js
