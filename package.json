@@ -44,7 +44,8 @@
     "run:dev": "pnpm dlx @vercel/ncc run ./src/index.ts",
     "run": "node dist/index.js",
     "deps:ck": "pnpm outdated --long",
-    "deps": "pnpm update --latest"
+    "deps:up": "pnpm update --latest",
+    "deps:ci": "pnpm install --frozen-lockfile"
   },
   "dependencies": {
     "@actions/core": "^1.11.1",

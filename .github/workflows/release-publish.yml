@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: 🩺 Debug
         if: ${{ env.DEBUG == 'true' }}
-        uses: raven-actions/debug@v1
+        uses: raven-actions/debug@13e7c5b2e0436a1b85276087eba43ec7d46bd955 # v1.1.0
         with:
           vars-context: ${{ toJson(vars) }}
           secrets-context: ${{ toJson(secrets) }}
@@ -38,40 +38,45 @@ jobs:
           inputs-context: ${{ toJson(inputs) }}
 
       - name: 🔑 Get Token
-        uses: wow-actions/use-app-token@v2
+        uses: actions/create-github-app-token@c1a285145b9d317df6ced56c09f525b5c2b6f755 # v1.11.1
         id: get-token
         with:
-          app_id: ${{ secrets.ORG_BOT_APP_ID }}
-          private_key: ${{ secrets.ORG_BOT_PRIVATE_KEY }}
-          fallback: ${{ github.token }}
+          app-id: ${{ secrets.ORG_BOT_APP_ID }}
+          private-key: ${{ secrets.ORG_BOT_PRIVATE_KEY }}
 
       - name: ⤵️ Checkout
         uses: actions/checkout@v4
         with:
-          token: ${{ steps.get-token.outputs.BOT_TOKEN }}
+          token: ${{ steps.get-token.outputs.token }}
+
+      - name: 🚧 Setup pnpm
+        uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
+        with:
+          version: 9
+          run_install: false
 
       - name: 🚧 Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-          cache: npm
+          cache: pnpm
 
       - name: 🔀 Install dependencies
-        run: npm ci
+        run: pnpm deps:ci
 
       - name: 🏗️ Build
-        run: npm run build:ci
+        run: pnpm build:ci
 
       - name: 🤖 Get bot details
         id: bot-details
         uses: raven-actions/bot-details@v1
         with:
-          bot-slug-name: ${{ steps.get-token.outputs.BOT_NAME }}
+          bot-slug-name: ${{ steps.get-token.outputs.app-slug }}
 
       - name: 🚀 Publish and Tag Action
         uses: ./
         with:
-          github_token: ${{ steps.get-token.outputs.BOT_TOKEN }}
+          github_token: ${{ steps.get-token.outputs.token }}
           tag_name: ${{ env.TAG_NAME }}
           rewrite_tags: true
           latest: true
