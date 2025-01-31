@@ -51,7 +51,7 @@
     "@actions/core": "^1.11.1",
     "@actions/glob": "^0.5.0",
     "actions-toolkit": "^6.0.1",
-    "semver": "^7.6.3"
+    "semver": "^7.7.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
