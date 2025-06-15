@@ -48,11 +48,11 @@ describe('cleanup-action-manifest', () => {
 
   it('should throw an error when the YAML is invalid', async () => {
     jest.spyOn(fileHelper, 'readFile').mockReturnValue('test: {')
-    await expect(cleanupActionManifest(tools)).rejects.toThrowError(/Unable to parse Action Manifest file/)
+    await expect(cleanupActionManifest(tools)).rejects.toThrow(/Unable to parse Action Manifest file/)
   })
 
   it('should throw an error when the YAML is not an object', async () => {
     jest.spyOn(fileHelper, 'readFile').mockReturnValue('not an object')
-    await expect(cleanupActionManifest(tools)).rejects.toThrowError(/does not contain valid YAML object/)
+    await expect(cleanupActionManifest(tools)).rejects.toThrow(/does not contain valid YAML object/)
   })
 })

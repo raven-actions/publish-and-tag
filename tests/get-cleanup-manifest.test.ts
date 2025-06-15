@@ -35,6 +35,6 @@ describe('get-make-latest', () => {
 
   it('not bool value', () => {
     process.env.INPUT_CLEANUP_MANIFEST = 'test'
-    expect(() => getCleanupManifest(tools)).toThrowError('cleanup_manifest is not valid bool value!')
+    expect(() => getCleanupManifest(tools)).toThrow('cleanup_manifest is not valid bool value!')
   })
 })

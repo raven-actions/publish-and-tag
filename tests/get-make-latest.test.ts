@@ -35,6 +35,6 @@ describe('get-make-latest', () => {
 
   it('not bool value', () => {
     process.env.INPUT_LATEST = 'test'
-    expect(() => getMakeLatest(tools)).toThrowError('latest is not valid bool value!')
+    expect(() => getMakeLatest(tools)).toThrow('latest is not valid bool value!')
   })
 })

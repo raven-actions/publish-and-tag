@@ -25,7 +25,7 @@ describe('file-helper', () => {
   })
 
   it('throws if the file does not exist', () => {
-    expect(() => fileHelper.readFile(tools.workspace, 'nope')).toThrowError('nope does not exist.')
+    expect(() => fileHelper.readFile(tools.workspace, 'nope')).toThrow('nope does not exist.')
   })
 
   it('action metadata file exists', () => {
@@ -34,6 +34,6 @@ describe('file-helper', () => {
 
   it('throws if the action metadata file does not exist', () => {
     tools.workspace = path.resolve(tools.workspace, 'dist')
-    expect(() => fileHelper.checkActionManifestFile(tools.workspace)).toThrowError(`Neither 'action.yml' nor 'action.yaml' exist.`)
+    expect(() => fileHelper.checkActionManifestFile(tools.workspace)).toThrow(`Neither 'action.yml' nor 'action.yaml' exist.`)
   })
 })
