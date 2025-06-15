@@ -25,8 +25,8 @@ jobs:
   build-publish-tag:
     name: Build, Publish and Tag
     runs-on: ubuntu-latest
-    # permissions:
-    #   contents: write
+    permissions:
+      contents: write
     steps:
       - name: 🩺 Debug
         if: ${{ env.DEBUG == 'true' }}
