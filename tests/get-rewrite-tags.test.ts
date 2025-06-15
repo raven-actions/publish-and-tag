@@ -35,6 +35,6 @@ describe('get-rewrite-tags', () => {
 
   it('not bool value', () => {
     process.env.INPUT_REWRITE_TAGS = 'test'
-    expect(() => getRewriteTags(tools)).toThrowError('rewrite_tags is not valid bool value!')
+    expect(() => getRewriteTags(tools)).toThrow('rewrite_tags is not valid bool value!')
   })
 })
