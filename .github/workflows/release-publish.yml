@@ -17,6 +17,9 @@ on:
           - 'true'
           - 'false'
 
+permissions:
+  contents: write
+
 env:
   DEBUG: ${{ inputs.debug || secrets.ACTIONS_RUNNER_DEBUG || vars.ACTIONS_RUNNER_DEBUG || secrets.ACTIONS_STEP_DEBUG || vars.ACTIONS_STEP_DEBUG || false }}
   TAG_NAME: ${{ github.event.inputs.tag-name || github.event.release.tag_name }}
@@ -33,7 +36,6 @@ jobs:
         uses: raven-actions/debug@13e7c5b2e0436a1b85276087eba43ec7d46bd955 # v1.1.0
         with:
           vars-context: ${{ toJson(vars) }}
-          secrets-context: ${{ toJson(secrets) }}
           needs-context: ${{ toJson(needs) }}
           inputs-context: ${{ toJson(inputs) }}
 
