@@ -1,7 +1,11 @@
-import {generateToolkit} from './helpers'
+import {generateToolkit} from './helpers.js'
 import {Toolkit} from 'actions-toolkit'
-import {getMainFromPackage, getFilesFromPackage} from '../src/lib/get-from-package'
+import {getMainFromPackage, getFilesFromPackage} from '../src/lib/get-from-package.js'
 import path from 'path'
+import {fileURLToPath} from 'url'
+import {jest} from '@jest/globals'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('get-from-package (JavaScript Action)', () => {
   let tools: Toolkit

@@ -1,7 +1,7 @@
 import {Toolkit} from 'actions-toolkit'
 import * as glob from '@actions/glob'
 import * as core from '@actions/core'
-import {isFile} from './file-helper'
+import {isFile} from './file-helper.js'
 import path from 'path'
 
 export async function getMainFromPackage(tools: Toolkit): Promise<string | undefined> {

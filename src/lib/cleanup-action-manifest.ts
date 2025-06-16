@@ -1,9 +1,14 @@
 import jsYaml from 'js-yaml'
 import {Toolkit} from 'actions-toolkit'
-import {readFile, writeFile, checkActionManifestFile} from './file-helper'
-import {getMainFromPackage} from './get-from-package'
+import {readFile as defaultReadFile, writeFile as defaultWriteFile, checkActionManifestFile} from './file-helper.js'
+import {getMainFromPackage} from './get-from-package.js'
 
-export default async function cleanupActionManifest(tools: Toolkit): Promise<void> {
+export default async function cleanupActionManifest(
+  tools: Toolkit,
+  // Optional dependency injection for testing
+  readFile: typeof defaultReadFile = defaultReadFile,
+  writeFile: typeof defaultWriteFile = defaultWriteFile
+): Promise<void> {
   const actionManifestFile = checkActionManifestFile(tools.workspace)
   const actionManifestContent = readFile(tools.workspace, actionManifestFile)
   const mainFromPackage = await getMainFromPackage(tools)

@@ -1,6 +1,7 @@
-import getRewriteTags from '../src/lib/get-rewrite-tags'
-import {generateToolkit} from './helpers'
+import getRewriteTags from '../src/lib/get-rewrite-tags.js'
+import {generateToolkit} from './helpers.js'
 import {Toolkit} from 'actions-toolkit'
+import {jest} from '@jest/globals'
 
 describe('get-rewrite-tags', () => {
   let tools: Toolkit

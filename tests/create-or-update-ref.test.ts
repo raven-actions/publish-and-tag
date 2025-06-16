@@ -1,7 +1,8 @@
 import nock from 'nock'
-import createOrUpdateRef from '../src/lib/create-or-update-ref'
-import {generateToolkit} from './helpers'
+import createOrUpdateRef from '../src/lib/create-or-update-ref.js'
+import {generateToolkit} from './helpers.js'
 import {Toolkit} from 'actions-toolkit'
+import {jest} from '@jest/globals'
 
 describe('create-or-update-ref', () => {
   let tools: Toolkit

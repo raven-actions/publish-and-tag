@@ -1,6 +1,7 @@
-import getCleanupManifest from '../src/lib/get-cleanup-manifest'
-import {generateToolkit} from './helpers'
+import getCleanupManifest from '../src/lib/get-cleanup-manifest.js'
+import {generateToolkit} from './helpers.js'
 import {Toolkit} from 'actions-toolkit'
+import {jest} from '@jest/globals'
 
 describe('get-make-latest', () => {
   let tools: Toolkit

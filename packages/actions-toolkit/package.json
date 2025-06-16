@@ -1,0 +1,94 @@
+{
+  "name": "actions-toolkit",
+  "type": "module",
+  "version": "7.0.0",
+  "description": "A toolkit for building GitHub Actions in Node.js",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "bin": {
+    "actions-toolkit": "./bin/cli.js"
+  },
+  "files": [
+    "/bin",
+    "/lib"
+  ],
+  "scripts": {
+    "build": "rimraf lib && tsc -p tsconfig.json",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "test": "tsc --noEmit -p tests && jest --coverage && npm run lint",
+    "test:update": "tsc --noEmit -p tests && jest --coverage -u && npm run lint",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JasonEtco/actions-toolkit.git"
+  },
+  "keywords": [
+    "github",
+    "github actions",
+    "typescript",
+    "github api"
+  ],
+  "author": "Jason Etcovitch <jasonetco@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JasonEtco/actions-toolkit/issues"
+  },
+  "homepage": "https://github.com/JasonEtco/actions-toolkit#readme",
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.29.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.34.0",
+    "@typescript-eslint/parser": "^8.34.0",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "jest": "^30.0.0",
+    "nock": "^14.0.5",
+    "rimraf": "^6.0.1",
+    "ts-jest": "^29.4.0",
+    "typescript": "^5.8.3"
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ]
+  },
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/exec": "^1.1.1",
+    "@octokit/rest": "^22.0.0",
+    "@types/flat-cache": "^2.0.2",
+    "@types/minimist": "^1.2.5",
+    "enquirer": "^2.4.1",
+    "minimist": "^1.2.8",
+    "pino": "^9.7.0",
+    "pino-pretty": "^13.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFiles": [
+      "<rootDir>/tests/setup.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/lib/"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "transform": {
+      ".+\\.tsx?$": "ts-jest"
+    },
+    "testMatch": [
+      "<rootDir>/tests/**/*.test.(ts|js)"
+    ],
+    "globals": {
+      "ts-jest": {
+        "babelConfig": false
+      }
+    }
+  }
+}

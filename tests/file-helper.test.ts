@@ -1,8 +1,9 @@
 import fs from 'fs'
 import path from 'path'
-import * as fileHelper from '../src/lib/file-helper'
+import * as fileHelper from '../src/lib/file-helper.js'
 import {Toolkit} from 'actions-toolkit'
-import {generateToolkit} from './helpers'
+import {generateToolkit} from './helpers.js'
+import {jest} from '@jest/globals'
 
 describe('file-helper', () => {
   let tools: Toolkit

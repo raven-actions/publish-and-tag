@@ -7,6 +7,7 @@
     "Jason Etcovitch"
   ],
   "license": "MIT",
+  "type": "module",
   "private": true,
   "main": "dist/index.js",
   "files": [
@@ -34,12 +35,12 @@
     "cleanup:deps": "pnpm cleanup && pnpm dlx rimraf node_modules && pnpm dlx rimraf pnpm-lock.yaml",
     "format": "prettier --write **/*.ts",
     "format:ck": "prettier --check **/*.ts",
-    "package": "pnpm dlx @vercel/ncc build ./src/index.ts --minify --source-map --license licenses.txt",
-    "package:esbuild": "pnpm dlx esbuild ./src/index.ts --bundle --minify --sourcemap --platform=node --target=node20 --format=cjs --packages=external --outfile=dist/index.js",
-    "test": "jest",
-    "test:cov": "jest --coverage",
-    "test:ci": "jest --ci",
-    "test:ci:cov": "jest --ci --coverage --json --outputFile=coverage/report.json",
+    "package": "pnpm dlx @vercel/ncc build ./src/index.ts --source-map --license licenses.txt",
+    "package:esbuild": "pnpm dlx esbuild ./src/index.ts --bundle --sourcemap --platform=node --target=node20 --outfile=dist/index.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:cov": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "test:ci": "node --experimental-vm-modules node_modules/jest/bin/jest.js --ci",
+    "test:ci:cov": "node --experimental-vm-modules node_modules/jest/bin/jest.js --ci --coverage --json --outputFile=coverage/report.json",
     "build": "pnpm cleanup && pnpm format && pnpm package",
     "build:ci": "pnpm build",
     "run:dev": "pnpm dlx @vercel/ncc run ./src/index.ts",
@@ -51,13 +52,14 @@
   "dependencies": {
     "@actions/core": "^1.11.1",
     "@actions/glob": "^0.5.0",
-    "actions-toolkit": "^6.0.1",
+    "actions-toolkit": "workspace:*",
     "semver": "^7.7.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
+    "@jest/globals": "^30.0.0",
     "@tsconfig/node20": "^20.1.6",
-    "@types/jest": "^29.5.14",
+    "@types/jest": "^30.0.0",
     "@types/js-yaml": "^4.0.9",
     "@types/semver": "^7.7.0",
     "@types/signale": "^1.4.7",

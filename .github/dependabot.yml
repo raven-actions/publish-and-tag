@@ -13,9 +13,13 @@ updates:
       include: scope
     labels:
       - dependencies
+    groups:
+      all:
+        patterns: ['*']
 
   - package-ecosystem: npm
-    directory: /
+    directories:
+      - '/**/*'
     schedule:
       interval: daily
     commit-message:
@@ -24,3 +28,6 @@ updates:
       include: scope
     labels:
       - dependencies
+    groups:
+      all:
+        patterns: ['*']

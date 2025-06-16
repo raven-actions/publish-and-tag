@@ -1,15 +1,18 @@
 import fs from 'fs'
 import path from 'path'
+import {fileURLToPath} from 'url'
 import {Toolkit} from 'actions-toolkit'
-import {generateToolkit} from './helpers'
-import * as fileHelper from '../src/lib/file-helper'
-import cleanupActionManifest from '../src/lib/cleanup-action-manifest'
+import {generateToolkit} from './helpers.js'
+import cleanupActionManifest from '../src/lib/cleanup-action-manifest.js'
+import {jest} from '@jest/globals'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('cleanup-action-manifest', () => {
   let tools: Toolkit
 
   beforeEach(() => {
-    jest.spyOn(fileHelper, 'writeFile').mockReturnValue(undefined)
+    // No global mocking needed with dependency injection
   })
 
   afterEach(() => {
@@ -22,8 +25,16 @@ describe('cleanup-action-manifest', () => {
     tools = generateToolkit()
 
     const sourceActionManifest = fs.readFileSync(path.resolve(tools.workspace, 'action.yml'), 'utf8')
-    await cleanupActionManifest(tools)
-    expect(fileHelper.writeFile).toHaveBeenCalledWith(tools.workspace, 'action.yml', sourceActionManifest)
+
+    // Create mock functions
+    const mockReadFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string) => string>
+    const mockWriteFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string, content: string) => void>
+
+    mockReadFile.mockReturnValue(sourceActionManifest)
+
+    await cleanupActionManifest(tools, mockReadFile, mockWriteFile)
+
+    expect(mockWriteFile).toHaveBeenCalledWith(tools.workspace, 'action.yml', sourceActionManifest)
   })
 
   it('should not update the runs property when mainFromPackage is docker', async () => {
@@ -32,8 +43,14 @@ describe('cleanup-action-manifest', () => {
 
     const sourceActionManifest = fs.readFileSync(path.resolve(tools.workspace, 'action.yml'), 'utf8')
 
-    await cleanupActionManifest(tools)
-    expect(fileHelper.writeFile).toHaveBeenCalledWith(tools.workspace, 'action.yml', sourceActionManifest)
+    // Create mock functions
+    const mockReadFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string) => string>
+    const mockWriteFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string, content: string) => void>
+
+    mockReadFile.mockReturnValue(sourceActionManifest)
+
+    await cleanupActionManifest(tools, mockReadFile, mockWriteFile)
+    expect(mockWriteFile).toHaveBeenCalledWith(tools.workspace, 'action.yml', sourceActionManifest)
   })
 
   it('should update the runs property when mainFromPackage is javascript', async () => {
@@ -41,18 +58,35 @@ describe('cleanup-action-manifest', () => {
     tools = generateToolkit()
 
     const sourceActionManifest = fs.readFileSync(path.resolve(tools.workspace, 'action-expected.yml'), 'utf8')
+    const originalActionManifest = fs.readFileSync(path.resolve(tools.workspace, 'action.yml'), 'utf8')
 
-    await cleanupActionManifest(tools)
-    expect(fileHelper.writeFile).toHaveBeenCalledWith(tools.workspace, 'action.yml', sourceActionManifest)
+    // Create mock functions
+    const mockReadFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string) => string>
+    const mockWriteFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string, content: string) => void>
+
+    mockReadFile.mockReturnValue(originalActionManifest)
+
+    await cleanupActionManifest(tools, mockReadFile, mockWriteFile)
+    expect(mockWriteFile).toHaveBeenCalledWith(tools.workspace, 'action.yml', sourceActionManifest)
   })
 
   it('should throw an error when the YAML is invalid', async () => {
-    jest.spyOn(fileHelper, 'readFile').mockReturnValue('test: {')
-    await expect(cleanupActionManifest(tools)).rejects.toThrow(/Unable to parse Action Manifest file/)
+    // Create mock functions
+    const mockReadFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string) => string>
+    const mockWriteFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string, content: string) => void>
+
+    mockReadFile.mockReturnValue('test: {')
+
+    await expect(cleanupActionManifest(tools, mockReadFile, mockWriteFile)).rejects.toThrow(/Unable to parse Action Manifest file/)
   })
 
   it('should throw an error when the YAML is not an object', async () => {
-    jest.spyOn(fileHelper, 'readFile').mockReturnValue('not an object')
-    await expect(cleanupActionManifest(tools)).rejects.toThrow(/does not contain valid YAML object/)
+    // Create mock functions
+    const mockReadFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string) => string>
+    const mockWriteFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string, content: string) => void>
+
+    mockReadFile.mockReturnValue('not an object')
+
+    await expect(cleanupActionManifest(tools, mockReadFile, mockWriteFile)).rejects.toThrow(/does not contain valid YAML object/)
   })
 })

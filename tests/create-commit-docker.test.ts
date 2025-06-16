@@ -1,9 +1,12 @@
 import nock from 'nock'
 import path from 'path'
-import createCommit from '../src/lib/create-commit'
-import {generateToolkit} from './helpers'
+import {fileURLToPath} from 'url'
+import createCommit from '../src/lib/create-commit.js'
+import {generateToolkit} from './helpers.js'
 import {Toolkit} from 'actions-toolkit'
-import * as getFilesFromPackage from '../src/lib/get-from-package'
+import {jest} from '@jest/globals'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('create-commit (Docker Action)', () => {
   let tools: Toolkit
@@ -33,6 +36,8 @@ describe('create-commit (Docker Action)', () => {
     gitAuthorEmail = '41898282+github-actions[bot]@users.noreply.github.com'
     gitCommitterName = 'github-actions[bot]'
     gitCommitterEmail = '41898282+github-actions[bot]@users.noreply.github.com'
+
+    jest.clearAllMocks()
   })
 
   afterEach(() => {
@@ -41,18 +46,25 @@ describe('create-commit (Docker Action)', () => {
   })
 
   it('chmod', async () => {
-    jest.spyOn(getFilesFromPackage, 'getFilesFromPackage').mockReturnValueOnce(
-      Promise.resolve({
-        files: ['entrypoint.sh', 'Dockerfile']
-      })
-    )
-    await createCommit(tools, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail)
+    // Create a properly typed mock function for getFilesFromPackage
+    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<(tools: Toolkit) => Promise<{files: string[]}>>
+    mockGetFilesFromPackage.mockResolvedValue({
+      files: ['entrypoint.sh', 'Dockerfile']
+    })
+
+    // Use dependency injection to pass the mock
+    await createCommit(tools, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail, mockGetFilesFromPackage)
 
     expect(commitParams.message).toBe('Automatic compilation')
     expect(commitParams.parents).toEqual([tools.context.sha])
 
+    // Verify the mock was called
+    expect(mockGetFilesFromPackage).toHaveBeenCalledWith(tools)
+
+    // Now we should have exactly 3 items: action.yml + entrypoint.sh + Dockerfile
     expect(treeParams.tree).toHaveLength(3)
     expect(treeParams.tree.some((obj: any) => obj.path === 'entrypoint.sh' && obj.mode === '100755')).toBeTruthy()
     expect(treeParams.tree.some((obj: any) => obj.path === 'Dockerfile' && obj.mode === '100644')).toBeTruthy()
+    expect(treeParams.tree.some((obj: any) => obj.path === 'action.yml' && obj.mode === '100644')).toBeTruthy()
   })
 })
