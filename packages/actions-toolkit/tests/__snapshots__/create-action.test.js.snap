@@ -18,7 +18,6 @@ LABEL "com.github.actions.name"="My Project Name"
 LABEL "com.github.actions.description"="A cool project"
 # Here are all of the available icons: https://feathericons.com/
 LABEL "com.github.actions.icon"="anchor"
-# And all of the available colors: https://developer.github.com/actions/creating-github-actions/creating-a-docker-container/#label
 LABEL "com.github.actions.color"="blue"
 
 # Copy the package.json and package-lock.json

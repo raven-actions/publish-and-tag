@@ -216,7 +216,7 @@ _Note!_ This is not a plain object, it's an instance of [Proxy](https://develope
 
 ### tools.command(command, (args, match) => Promise<void>)
 
-Respond to a slash-command posted in a GitHub issue, comment, pull request, pull request review or commit comment. Arguments to the slash command are parsed by [minimist](https://github.com/substack/minimist). You can use a slash command in a larger comment, but the command must be at the start of the line:
+Respond to a slash-command posted in a GitHub issue, comment, pull request, pull request review or commit comment. Arguments to the slash command are parsed by minimist. You can use a slash command in a larger comment, but the command must be at the start of the line:
 
 ```
 Hey, let's deploy this!
@@ -291,7 +291,7 @@ A path to a clone of the repository.
 
 ### tools.exit
 
-A collection of methods to end the action's process and tell GitHub what status to set (success, neutral or failure). Internally, these methods call `process.exit` with the [appropriate exit code](https://developer.github.com/actions/creating-github-actions/accessing-the-runtime-environment/#exit-codes-and-statuses). You can pass an optional message to each one to be logged before exiting. This can be used like an early return:
+A collection of methods to end the action's process and tell GitHub what status to set (success, neutral or failure). Internally, these methods call `process.exit` with the [appropriate exit code](https://docs.github.com/en/actions/sharing-automations/creating-actions/setting-exit-codes-for-actions). You can pass an optional message to each one to be logged before exiting. This can be used like an early return:
 
 ```js
 if (someCheck) tools.exit.neutral('No _action_ necessary!')
