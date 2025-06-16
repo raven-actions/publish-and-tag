@@ -13,34 +13,43 @@ repos:
         # files: .pre-commit-config.yaml
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: check-symlinks
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
       - id: trailing-whitespace
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
       - id: check-case-conflict
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
       - id: check-toml
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
       - id: check-yaml
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
         args: [--allow-multiple-documents]
       - id: check-json
-        exclude: (package-lock.json|.vscode/)
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
       - id: pretty-format-json
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
         args:
           - '--autofix'
           - '--no-sort-keys'
-        exclude: (package-lock.json|.vscode/)
       - id: end-of-file-fixer
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
       - id: no-commit-to-branch
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
       - id: check-executables-have-shebangs
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
       - id: check-vcs-permalinks
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
 
   - repo: https://gitlab.com/bmares/check-json5
     rev: v1.0.0
     hooks:
       - id: check-json5
-        exclude: package-lock.json
+        exclude: (package-lock.json|packages/actions-toolkit/lib/)
 
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.18.4
+    rev: v8.27.2
     hooks:
       - id: gitleaks
         args:

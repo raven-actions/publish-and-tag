@@ -7,6 +7,6 @@ export default async function makeReleaseLatest(tools: Toolkit, releaseId: numbe
     ...tools.context.repo,
     release_id: releaseId,
     prerelease: false,
-    make_latest: true
+    make_latest: 'true'
   })
 }

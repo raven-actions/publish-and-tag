@@ -1,9 +1,12 @@
 import nock from 'nock'
 import path from 'path'
-import createCommit from '../src/lib/create-commit'
-import {generateToolkit} from './helpers'
+import {fileURLToPath} from 'url'
+import createCommit from '../src/lib/create-commit.js'
+import {generateToolkit} from './helpers.js'
 import {Toolkit} from 'actions-toolkit'
-import * as getFilesFromPackage from '../src/lib/get-from-package'
+import {jest} from '@jest/globals'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('create-commit (Composite Action)', () => {
   let tools: Toolkit
@@ -41,12 +44,12 @@ describe('create-commit (Composite Action)', () => {
   })
 
   it('chmod', async () => {
-    jest.spyOn(getFilesFromPackage, 'getFilesFromPackage').mockReturnValueOnce(
-      Promise.resolve({
-        files: ['entrypoint.sh', 'main.js']
-      })
-    )
-    await createCommit(tools, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail)
+    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<(tools: Toolkit) => Promise<{files: string[]}>>
+    mockGetFilesFromPackage.mockResolvedValue({
+      files: ['entrypoint.sh', 'main.js']
+    })
+
+    await createCommit(tools, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail, mockGetFilesFromPackage)
 
     expect(commitParams.message).toBe('Automatic compilation')
     expect(commitParams.parents).toEqual([tools.context.sha])

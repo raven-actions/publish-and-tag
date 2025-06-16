@@ -1,6 +1,12 @@
 import fs from 'fs'
 import path from 'path'
+import {fileURLToPath} from 'url'
 import jsYaml from 'js-yaml'
+
+// Import Jest types for globals
+import '@jest/globals'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * Helper that reads the `action.yml` and includes the default values

@@ -1,7 +1,8 @@
 import nock from 'nock'
 import {Toolkit} from 'actions-toolkit'
-import publishAndTagAction from '../src/lib'
-import {generateToolkit} from './helpers'
+import publishAndTagAction from '../src/lib/index.js'
+import {generateToolkit} from './helpers.js'
+import {jest} from '@jest/globals'
 
 describe('publish-and-tag', () => {
   let tools: Toolkit

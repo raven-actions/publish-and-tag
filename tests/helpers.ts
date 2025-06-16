@@ -1,9 +1,8 @@
-import {Toolkit} from 'actions-toolkit'
-import {Signale} from 'signale'
+import {Toolkit, createLogger} from 'actions-toolkit'
 
 export function generateToolkit(): Toolkit {
   const tools = new Toolkit({
-    logger: new Signale({disabled: true})
+    logger: createLogger({disabled: true})
   })
 
   return tools

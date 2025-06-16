@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Toolkit #getPackageJSON returns the package.json file as a JSON object 1`] = `
+Object {
+  "action": Object {
+    "foo": true,
+  },
+}
+`;
+
+exports[`Toolkit #getPackageJSON throws if the package.json file could not be found 1`] = `"package.json could not be found in your project's root."`;
+
+exports[`Toolkit #readFile gets the contents of a file 1`] = `"I'm writing this on a plane ✈️"`;
+
+exports[`Toolkit #readFile gets the contents of a file with custom encoding 1`] = `"SSdtIHdyaXRpbmcgdGhpcyBvbiBhIHBsYW5lIOKciO+4jw=="`;
+
+exports[`Toolkit #readFile throws if the file could not be found 1`] = `"File DONTREADME.md could not be found in your project's workspace. You may need the actions/checkout action to clone the repository first."`;
+
+exports[`Toolkit#constructor events exits if the event is not allowed with a single event 1`] = `
+Array [
+  Array [
+    "Event \`issues.opened\` is not supported by this action.",
+  ],
+]
+`;
+
+exports[`Toolkit#constructor events exits if the event is not allowed with a single event with an action 1`] = `
+Array [
+  Array [
+    "Event \`issues.opened\` is not supported by this action.",
+  ],
+]
+`;
+
+exports[`Toolkit#constructor events exits if the event is not allowed with an array of events 1`] = `
+Array [
+  Array [
+    "Event \`issues.opened\` is not supported by this action.",
+  ],
+]
+`;
+
+exports[`Toolkit#constructor events exits if the event is not allowed with an array of events with actions 1`] = `
+Array [
+  Array [
+    "Event \`issues.opened\` is not supported by this action.",
+  ],
+]
+`;
+
+exports[`Toolkit#constructor missing env vars logs the expected string with missing env vars 1`] = `
+Array [
+  Array [
+    "There are environment variables missing from this runtime, but would be present on GitHub.
+- HOME",
+  ],
+]
+`;
+
+exports[`Toolkit#constructor secrets calls the exit.failure with missing secrets 1`] = `
+Array [
+  Array [
+    "The following secrets are required for this GitHub Action to run:
+- DO_NOT_EXIST",
+  ],
+]
+`;

@@ -1,6 +1,6 @@
 import {Toolkit} from 'actions-toolkit'
-import {readFile, checkActionManifestFile} from './file-helper'
-import {getFilesFromPackage} from './get-from-package'
+import {readFile, checkActionManifestFile} from './file-helper.js'
+import {getFilesFromPackage as defaultGetFilesFromPackage} from './get-from-package.js'
 
 export default async function createCommit(
   tools: Toolkit,
@@ -8,7 +8,9 @@ export default async function createCommit(
   gitAuthorName: string,
   gitAuthorEmail: string,
   gitCommitterName: string,
-  gitCommitterEmail: string
+  gitCommitterEmail: string,
+  // Optional dependency injection for testing
+  getFilesFromPackage: typeof defaultGetFilesFromPackage = defaultGetFilesFromPackage
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 ): Promise<any> {
   const {files} = await getFilesFromPackage(tools)

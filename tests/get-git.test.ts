@@ -1,6 +1,7 @@
-import * as getGit from '../src/lib/get-git'
-import {generateToolkit} from './helpers'
+import * as getGit from '../src/lib/get-git.js'
+import {generateToolkit} from './helpers.js'
 import {Toolkit} from 'actions-toolkit'
+import {jest} from '@jest/globals'
 
 describe('get-git', () => {
   let tools: Toolkit
