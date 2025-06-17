@@ -47,7 +47,7 @@ jobs:
           private-key: ${{ secrets.ORG_BOT_PRIVATE_KEY }}
 
       - name: ⤵️ Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           token: ${{ steps.get-token.outputs.token }}
 
@@ -58,7 +58,7 @@ jobs:
           run_install: false
 
       - name: 🚧 Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: .node-version
           cache: pnpm
@@ -71,7 +71,7 @@ jobs:
 
       - name: 🤖 Get bot details
         id: bot-details
-        uses: raven-actions/bot-details@v1
+        uses: raven-actions/bot-details@b2d5fd6eb98adc0cb67df864daa834849f3a8bc0 # v1.1.0
         with:
           bot-slug-name: ${{ steps.get-token.outputs.app-slug }}
 
