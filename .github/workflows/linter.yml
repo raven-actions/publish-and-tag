@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 ---
 name: Linter
 
@@ -10,6 +11,7 @@ on:
       - ready_for_review
       - synchronize
       - reopened
+  merge_group:
   push:
     branches:
       - main
