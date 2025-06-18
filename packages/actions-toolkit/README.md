@@ -1,18 +1,9 @@
+<!-- cSpell:ignore Etco -->
+# GitHub Actions Toolkit
+
 This project is no longer actively maintained. See [actions/toolkit](https://github.com/actions/toolkit) for the officially supported SDK for GitHub Actions.
 
 ---
-
-<h3 align="center">GitHub Actions Toolkit</h3>
-
-<p align="center">
-  An opinionated toolkit for building GitHub Actions in Node.js<br>
-  <a href="#usage">Usage</a> •
-  <a href="#api">API</a> •
-  <a href="#how-to-test-your-github-actions">How to test your Action</a> •
-  <a href="#faq">FAQ</a>
-</p>
-
-<p align="center"><a href="https://github.com/JasonEtco/actions-toolkit"><img alt="GitHub Actions status" src="https://github.com/JasonEtco/actions-toolkit/workflows/Node%20CI/badge.svg"></a> <a href="https://codecov.io/gh/JasonEtco/actions-toolkit/"><img src="https://badgen.now.sh/codecov/c/github/JasonEtco/actions-toolkit" alt="Codecov"></a></p>
 
 This toolkit is an opinionated alternative to (and wrapper around) the [official toolkit](https://github.com/actions/toolkit). `actions/toolkit` makes many features optional in the interest of performance, so you may prefer to use it instead of this library.
 
@@ -31,32 +22,19 @@ const tools = new Toolkit()
 
 ### Bootstrap a new action
 
-```
+```shell
 npx actions-toolkit my-cool-action
 ```
 
 This will create a new folder `my-cool-action` with the following files:
 
-```
+```shell
 ├── Dockerfile
 ├── action.yml
 ├── index.js
 ├── index.test.js
 └── package.json
 ```
-
-## API
-
-* [The Toolkit class](#toolkit-options)
-* [Authenticated GitHub API client](#toolsgithub)
-* [Logging](#toolslog)
-* [Getting workflows' inputs](#toolsinputs)
-* [Output information from your action](#toolsoutputs)
-* [Slash commands](#toolscommandcommand-args-match--promise)
-* [Reading files](#toolsreadfilepath-encoding--utf8)
-* [Run a CLI command](#toolsexec)
-* [End the action's process](#toolsexit)
-* [Inspect the webhook event payload](#toolscontext)
 
 ### Toolkit options
 
@@ -104,7 +82,7 @@ You can pass a custom token used for authenticating with the GitHub API:
 
 ```js
 const tools = new Toolkit({
-  token: '...'
+  token: ''
 })
 ```
 
@@ -121,8 +99,6 @@ Toolkit.run(async tools => {
   // Action code
 }, { event: 'push' })
 ```
-
-<br>
 
 ### tools.github
 
@@ -154,8 +130,6 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-<br>
-
 ### tools.log
 
 This library comes with a slightly-customized instance of [Signale](https://github.com/klaussinani/signale), a great **logging utility**. Check out their docs for [the full list of methods](https://github.com/klaussinani/signale#usage). You can use those methods in your action:
@@ -173,15 +147,13 @@ try {
 
 In the GitHub Actions output, this is the result:
 
-```
+```shell
 ℹ  info      Welcome to this example!
 ℹ  info      Gonna try this...
 ✖  fatal     Error: Something bad happened!
     at Object.<anonymous> (/index.js:5:17)
     at Module._compile (internal/modules/cjs/loader.js:734:30)
 ```
-
-<br>
 
 ### tools.inputs
 
@@ -201,8 +173,6 @@ console.log(tools.inputs.foo) // -> 'bar'
 
 _Note!_ This is not a plain object, it's an instance of [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy), so be aware that there may be some differences.
 
-<br>
-
 ### tools.outputs
 
 GitHub Actions workflows can define some "outputs" - options that can be passed to the next actions. You can access those using `tools.outputs`:
@@ -213,13 +183,11 @@ tools.outputs.foo = 'bar'
 
 _Note!_ This is not a plain object, it's an instance of [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy), so be aware that there may be some differences.
 
-<br>
-
-### tools.command(command, (args, match) => Promise<void>)
+### tools.command(command, (args, match) => Promise\<void\>)
 
 Respond to a slash-command posted in a GitHub issue, comment, pull request, pull request review or commit comment. Arguments to the slash command are parsed by minimist. You can use a slash command in a larger comment, but the command must be at the start of the line:
 
-```
+```shell
 Hey, let's deploy this!
 /deploy --app example --container node:alpine
 ```
@@ -233,7 +201,7 @@ tools.command('deploy', async (args: ParsedArgs, match: RegExpExecArray) => {
 
 The handler will run multiple times for each match:
 
-```
+```shell
 /deploy 1
 /deploy 2
 /deploy 3
@@ -246,8 +214,6 @@ console.log(i)
 // -> 3
 ```
 
-<br>
-
 ### tools.getPackageJSON()
 
 Get the package.json file in the project root and returns it as an object.
@@ -255,8 +221,6 @@ Get the package.json file in the project root and returns it as an object.
 ```js
 const pkg = tools.getPackageJSON()
 ```
-
-<br>
 
 ### tools.readFile(path, [encoding = 'utf8'])
 
@@ -266,8 +230,6 @@ Get the contents of a file in the repository. Should be used with [actions/check
 const contents = await tools.readFile('example.md')
 ```
 
-<br>
-
 ### tools.exec
 
 Run a CLI command in the workspace. This uses [@actions/exec](https://github.com/actions/toolkit/tree/HEAD/packages/exec) under the hood so check there for the full usage.
@@ -276,19 +238,13 @@ Run a CLI command in the workspace. This uses [@actions/exec](https://github.com
 const result = await tools.exec('npm audit')
 ```
 
-<br>
-
 ### tools.token
 
 The GitHub API token being used to authenticate requests.
 
-<br>
-
 ### tools.workspace
 
 A path to a clone of the repository.
-
-<br>
 
 ### tools.exit
 
@@ -299,8 +255,6 @@ if (someCheck) tools.exit.neutral('No _action_ necessary!')
 if (anError) tools.exit.failure('We failed!')
 tools.exit.success('We did it team!')
 ```
-
-<br>
 
 ### tools.context
 

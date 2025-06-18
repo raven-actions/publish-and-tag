@@ -1,3 +1,4 @@
+<!-- cSpell:ignore mheap -->
 # 🚀🔖 Publish and Tag Action
 
 [![GitHub - marketplace](https://img.shields.io/badge/marketplace-publish--and--tag-blue?logo=github&style=flat-square)](https://github.com/marketplace/actions/publish-and-tag)
