@@ -16,5 +16,6 @@ config-variables: null
 # "ignore" is an array of regular expression patterns. Matched error messages
 # are ignored. This is similar to the "-ignore" command line option.
 paths:
-#  .github/workflows/**/*.yml:
-#    ignore: []
+  .github/workflows/**/*.{yml,yaml}:
+    ignore:
+      - 'file "dist/index.js" does not exist'
