@@ -56,7 +56,7 @@ EXCLUDED_DIRECTORIES:
   - ".terraform"
   - "dist"
 
-ACTION_ACTIONLINT_CONFIG_FILE: .github/actionlint.yml
+ACTION_ACTIONLINT_CONFIG_FILE: .github/linters/actionlint.yml
 MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .github/linters/.markdownlint.yml
 YAML_YAMLLINT_CONFIG_FILE: .github/linters/.yamllint.yml
 REPOSITORY_GITLEAKS_CONFIG_FILE: .github/linters/.gitleaks.toml
