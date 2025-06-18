@@ -82,7 +82,7 @@ You can pass a custom token used for authenticating with the GitHub API:
 
 ```javascript
 const tools = new Toolkit({
-  token: ''
+  token: '1234567890abcdefghi'
 })
 ```
 
