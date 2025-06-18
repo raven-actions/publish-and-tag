@@ -15,7 +15,7 @@ This toolkit is an opinionated alternative to (and wrapper around) the [official
 npm install actions-toolkit
 ```
 
-```js
+```javascript
 const { Toolkit } = require('actions-toolkit')
 const tools = new Toolkit()
 ```
@@ -42,7 +42,7 @@ This will create a new folder `my-cool-action` with the following files:
 
 An optional list of [events that this action works with](https://help.github.com/en/actions/reference/events-that-trigger-workflows). If omitted, the action will run for any event - if present, the action will exit with a failing status code for any event that is not allowed.
 
-```js
+```javascript
 const tools = new Toolkit({
   event: ['issues', 'pull_requests']
 })
@@ -50,7 +50,7 @@ const tools = new Toolkit({
 
 You can also pass a single string:
 
-```js
+```javascript
 const tools = new Toolkit({
   event: 'issues'
 })
@@ -58,7 +58,7 @@ const tools = new Toolkit({
 
 And/or strings that include an action (what actually happened to trigger this event) for even more specificity:
 
-```js
+```javascript
 const tools = new Toolkit({
   event: ['issues.opened']
 })
@@ -68,7 +68,7 @@ const tools = new Toolkit({
 
 You can choose to pass a list of secrets that must be included in the workflow that runs your Action. This ensures that your Action has the secrets it needs to function correctly:
 
-```js
+```javascript
 const tools = new Toolkit({
   secrets: ['SUPER_SECRET_KEY']
 })
@@ -80,7 +80,7 @@ If any of the listed secrets are missing, the Action will fail and log a message
 
 You can pass a custom token used for authenticating with the GitHub API:
 
-```js
+```javascript
 const tools = new Toolkit({
   token: ''
 })
@@ -94,7 +94,7 @@ Run an asynchronous function that receives an instance of `Toolkit` as its argum
 
 The toolkit instance can be configured by passing `Toolkit` options as the second argument to `Toolkit.run`.
 
-```js
+```javascript
 Toolkit.run(async tools => {
   // Action code
 }, { event: 'push' })
@@ -104,7 +104,7 @@ Toolkit.run(async tools => {
 
 Returns an [Octokit SDK](https://octokit.github.io/rest.js) client authenticated for this repository. See [https://octokit.github.io/rest.js](https://octokit.github.io/rest.js) for the API.
 
-```js
+```javascript
 const newIssue = await tools.github.issues.create({
   ...tools.context.repo,
   title: 'New issue!',
@@ -114,7 +114,7 @@ const newIssue = await tools.github.issues.create({
 
 You can also make GraphQL requests:
 
-```js
+```javascript
 const result = await tools.github.graphql(query, variables)
 ```
 
@@ -134,7 +134,7 @@ env:
 
 This library comes with a slightly-customized instance of [Signale](https://github.com/klaussinani/signale), a great **logging utility**. Check out their docs for [the full list of methods](https://github.com/klaussinani/signale#usage). You can use those methods in your action:
 
-```js
+```javascript
 tools.log('Welcome to this example!')
 tools.log.info('Gonna try this...')
 try {
@@ -167,7 +167,7 @@ with:
 
 You can access those using `tools.inputs`:
 
-```js
+```javascript
 console.log(tools.inputs.foo) // -> 'bar'
 ```
 
@@ -177,7 +177,7 @@ _Note!_ This is not a plain object, it's an instance of [Proxy](https://develope
 
 GitHub Actions workflows can define some "outputs" - options that can be passed to the next actions. You can access those using `tools.outputs`:
 
-```js
+```javascript
 tools.outputs.foo = 'bar'
 ```
 
@@ -192,7 +192,7 @@ Hey, let's deploy this!
 /deploy --app example --container node:alpine
 ```
 
-```ts
+```typescript
 tools.command('deploy', async (args: ParsedArgs, match: RegExpExecArray) => {
   console.log(args)
   // -> { app: 'example', container: 'node:alpine' }
@@ -207,7 +207,7 @@ The handler will run multiple times for each match:
 /deploy 3
 ```
 
-```ts
+```typescript
 let i = 0
 await tools.command('deploy', () => { i++ })
 console.log(i)
@@ -218,7 +218,7 @@ console.log(i)
 
 Get the package.json file in the project root and returns it as an object.
 
-```js
+```javascript
 const pkg = tools.getPackageJSON()
 ```
 
@@ -226,7 +226,7 @@ const pkg = tools.getPackageJSON()
 
 Get the contents of a file in the repository. Should be used with [actions/checkout](https://github.com/actions/checkout) to clone the repository in the actions workflow.
 
-```js
+```javascript
 const contents = await tools.readFile('example.md')
 ```
 
@@ -234,7 +234,7 @@ const contents = await tools.readFile('example.md')
 
 Run a CLI command in the workspace. This uses [@actions/exec](https://github.com/actions/toolkit/tree/HEAD/packages/exec) under the hood so check there for the full usage.
 
-```js
+```javascript
 const result = await tools.exec('npm audit')
 ```
 
@@ -250,7 +250,7 @@ A path to a clone of the repository.
 
 A collection of methods to end the action's process and tell GitHub what status to set (success, neutral or failure). Internally, these methods call `process.exit` with the [appropriate exit code](https://docs.github.com/en/actions/sharing-automations/creating-actions/setting-exit-codes-for-actions). You can pass an optional message to each one to be logged before exiting. This can be used like an early return:
 
-```js
+```javascript
 if (someCheck) tools.exit.neutral('No _action_ necessary!')
 if (anError) tools.exit.failure('We failed!')
 tools.exit.success('We did it team!')
@@ -305,7 +305,7 @@ Similar to building CLIs, GitHub Actions usually works by running a file with `n
 <details>
 <summary>index.js</summary>
 
-```js
+```javascript
 const { Toolkit } = require('actions-toolkit')
 Toolkit.run(async tools => {
   tools.log.success('Yay!')
@@ -317,7 +317,7 @@ Toolkit.run(async tools => {
 <details>
 <summary>index.test.js</summary>
 
-```js
+```javascript
 const { Toolkit } = require('actions-toolkit')
 describe('tests', () => {
   let action
