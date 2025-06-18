@@ -36,7 +36,7 @@ This Code of Conduct applies within all community spaces and when an individual 
 
 ## 🚓 Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for the enforcement at the [LinkedIn](https://www.linkedin.com/in/DariuszPorowski)[ message](https://www.linkedin.com/in/DariuszPorowski). All complaints will be reviewed and investigated promptly and fairly.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for the enforcement at the [LinkedIn](https://www.linkedin.com/in/DariuszPorowski)[message](https://www.linkedin.com/in/DariuszPorowski). All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders must respect the privacy and security of the reporter of any incident.
 

@@ -26,7 +26,7 @@ MD029:
 # MD033/no-inline-html - Inline HTML
 MD033:
   # Allowed elements
-  allowed_elements: ["br", "pre"]
+  allowed_elements: ["br", "pre", "details", "summary"]
 
 # MD041/first-line-heading/first-line-h1
 # MD041: false
