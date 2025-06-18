@@ -1,8 +1,11 @@
 # yaml-language-server: $schema=https://json.schemastore.org/dependabot-2.0.json
-# Please see the documentation for all configuration options:
-# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+# See GitHub's documentation for more information on this file:
+# https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
 ---
 version: 2
+
+enable-beta-ecosystems: true
+
 updates:
   - package-ecosystem: github-actions
     directory: /
@@ -12,14 +15,14 @@ updates:
       prefix: ci
       include: scope
     labels:
-      - dependencies
+      - "deps/github-actions"
     groups:
       all:
-        patterns: ['*']
+        patterns: ["*"]
 
   - package-ecosystem: npm
     directories:
-      - '/**/*'
+      - "/**/*"
     schedule:
       interval: daily
     commit-message:
@@ -27,11 +30,11 @@ updates:
       prefix-development: chore
       include: scope
     labels:
-      - dependencies
+      - "deps/js-ts"
     ignore:
-      - dependency-name: '@types/node'
+      - dependency-name: "@types/node"
         update-types:
-          - 'version-update:semver-major'
+          - "version-update:semver-major"
     groups:
       all:
-        patterns: ['*']
+        patterns: ["*"]
