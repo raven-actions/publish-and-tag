@@ -21,7 +21,7 @@ This toolkit is an opinionated alternative to (and wrapper around) the [official
 ### Installation
 
 ```sh
-$ npm install actions-toolkit
+npm install actions-toolkit
 ```
 
 ```js
@@ -32,7 +32,7 @@ const tools = new Toolkit()
 ### Bootstrap a new action
 
 ```
-$ npx actions-toolkit my-cool-action
+npx actions-toolkit my-cool-action
 ```
 
 This will create a new folder `my-cool-action` with the following files:
@@ -104,7 +104,7 @@ You can pass a custom token used for authenticating with the GitHub API:
 
 ```js
 const tools = new Toolkit({
-  token: '1234567890abcdefghi'
+  token: '...'
 })
 ```
 
@@ -121,6 +121,7 @@ Toolkit.run(async tools => {
   // Action code
 }, { event: 'push' })
 ```
+
 <br>
 
 ### tools.github
@@ -356,8 +357,8 @@ Toolkit.run(async tools => {
   tools.log.success('Yay!')
 })
 ```
-</details>
 
+</details>
 
 <details>
 <summary>index.test.js</summary>
@@ -384,6 +385,7 @@ describe('tests', () => {
   })
 })
 ```
+
 </details>
 
 You can then mock things by tweaking environment variables and redefining `tools.context.payload`. You can check out [this repo's tests](https://github.com/JasonEtco/create-an-issue/blob/HEAD/tests/) as an example.
