@@ -26,7 +26,8 @@
     "ghcr.io/eitsupi/devcontainer-features/go-task:1": {}
   },
   "onCreateCommand": {
-    "chown-local": "sudo chown -R $(id -un):$(id -gn) $HOME/.local"
+    "chown-local": "sudo chown -R $(id -un):$(id -gn) $HOME/.local",
+    "setup-tools": "task tools"
   },
   "postCreateCommand": {
     "git-safe-dir": "git config --global --add safe.directory ${containerWorkspaceFolder}"

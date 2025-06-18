@@ -22,8 +22,12 @@ tasks:
           APP: "{{.ITEM}}"
         platforms: [darwin]
       - cmd: |
-          sudo apt update \
-            && sudo apt install shellcheck -y
+          latest_version=$(curl --location --silent "https://api.github.com/repos/koalaman/shellcheck/releases/latest" | jq -r .tag_name)
+          download_url=$(curl --location --silent "https://api.github.com/repos/koalaman/shellcheck/releases/latest" | grep 'browser_download_url.*linux.x86_64.*tar.xz' | grep -o 'https://[^"]*')
+          curl --location -o /tmp/shellcheck.tar.xz "${download_url}"
+          tar -xf /tmp/shellcheck.tar.xz --directory /tmp
+          rm /tmp/shellcheck.tar.xz
+          sudo install "/tmp/shellcheck-${latest_version}/shellcheck" /usr/local/bin/shellcheck && rm -rf "/tmp/shellcheck-${latest_version}"
         platforms: [linux]
 
   # * Install shfmt
