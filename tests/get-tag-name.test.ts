@@ -1,4 +1,4 @@
-import getTagName from '../src/lib/get-tag-name.js'
+import getTagName from '../src/get-tag-name.js'
 import {generateToolkit} from './helpers.js'
 import {Toolkit} from 'actions-toolkit'
 import {jest} from '@jest/globals'

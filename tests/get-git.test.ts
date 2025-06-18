@@ -1,4 +1,4 @@
-import * as getGit from '../src/lib/get-git.js'
+import * as getGit from '../src/get-git.js'
 import {generateToolkit} from './helpers.js'
 import {Toolkit} from 'actions-toolkit'
 import {jest} from '@jest/globals'

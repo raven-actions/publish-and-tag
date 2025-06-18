@@ -3,17 +3,17 @@
   "type": "module",
   "version": "7.0.0",
   "description": "A toolkit for building GitHub Actions in Node.js",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "bin": {
     "actions-toolkit": "./bin/cli.js"
   },
   "files": [
     "/bin",
-    "/lib"
+    "/dist"
   ],
   "scripts": {
-    "build": "rimraf lib && tsc -p tsconfig.json",
+    "build": "rimraf dist && tsc -p tsconfig.json",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "tsc --noEmit -p tests && jest --coverage && npm run lint",
     "test:update": "tsc --noEmit -p tests && jest --coverage -u && npm run lint",
@@ -72,7 +72,7 @@
       "<rootDir>/tests/setup.ts"
     ],
     "coveragePathIgnorePatterns": [
-      "<rootDir>/lib/"
+      "<rootDir>/dist/"
     ],
     "moduleFileExtensions": [
       "ts",

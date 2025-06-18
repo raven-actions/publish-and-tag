@@ -14,7 +14,7 @@
     "pretty": true,
     "strict": true,
     "sourceMap": true,
-    "outDir": "./lib",
+    "outDir": "./dist",
     "skipLibCheck": true,
     "noImplicitAny": true,
     "esModuleInterop": true,

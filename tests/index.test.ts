@@ -1,6 +1,6 @@
 import nock from 'nock'
 import {Toolkit} from 'actions-toolkit'
-import publishAndTagAction from '../src/lib/index.js'
+import {action} from '../src/main.js'
 import {generateToolkit} from './helpers.js'
 import {jest} from '@jest/globals'
 
@@ -37,7 +37,7 @@ describe('publish-and-tag', () => {
       .post('/repos/raven-actions/test/git/trees')
       .reply(200)
 
-    await publishAndTagAction(tools)
+    await action(tools)
 
     expect(nock.isDone()).toBeTruthy()
   })
@@ -58,7 +58,7 @@ describe('publish-and-tag', () => {
       .post('/repos/raven-actions/test/git/trees')
       .reply(200)
 
-    await publishAndTagAction(tools)
+    await action(tools)
 
     expect(nock.isDone()).toBeTruthy()
   })
@@ -74,7 +74,7 @@ describe('publish-and-tag', () => {
 
     tools.context.payload.release.draft = true
 
-    await publishAndTagAction(tools)
+    await action(tools)
 
     expect(nock.isDone()).toBeTruthy()
   })
@@ -90,7 +90,7 @@ describe('publish-and-tag', () => {
 
     tools.context.payload.release.prerelease = true
 
-    await publishAndTagAction(tools)
+    await action(tools)
 
     expect(nock.isDone()).toBeTruthy()
   })
@@ -114,7 +114,7 @@ describe('publish-and-tag', () => {
     tools.context.event = 'pull_request'
     process.env.INPUT_TAG_NAME = 'v2.0.0'
 
-    await publishAndTagAction(tools)
+    await action(tools)
 
     expect(nock.isDone()).toBeTruthy()
   })
@@ -146,7 +146,7 @@ describe('publish-and-tag', () => {
     tools.context.payload.release.prerelease = true
     process.env.INPUT_LATEST = 'true'
 
-    await publishAndTagAction(tools)
+    await action(tools)
     expect(params.make_latest).toBeTruthy()
     expect(nock.isDone()).toBeTruthy()
   })

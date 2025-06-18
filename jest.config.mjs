@@ -1,13 +1,14 @@
-/** @type {import('jest').Config} */
+/** @type {import('ts-jest').JestConfigWithTsJest} **/
 export default {
-  preset: 'ts-jest/presets/default-esm',
+  preset: 'ts-jest',
   extensionsToTreatAsEsm: ['.ts'],
   clearMocks: true,
   testEnvironment: 'node',
   setupFiles: ['<rootDir>/tests/setup.ts'],
-  coveragePathIgnorePatterns: ['<rootDir>/lib/', '/node_modules/'],
+  coveragePathIgnorePatterns: ['<rootDir>/dist/', '/node_modules/'],
   moduleFileExtensions: ['ts', 'js'],
   testMatch: ['<rootDir>/tests/**/*.test.(ts|js)'],
+  testPathIgnorePatterns: ['/dist/', '/node_modules/'],
   transform: {
     '^.+\\.ts$': [
       'ts-jest',
@@ -21,8 +22,9 @@ export default {
   },
   verbose: true,
   reporters: ['default', 'summary', ['github-actions', {silent: false}], ['jest-junit', {outputDirectory: 'reports', outputName: 'jest-report.xml'}]],
-  coverageDirectory: 'coverage',
-  coverageReporters: ['clover', 'json', 'lcov', 'text', 'text-summary', 'cobertura'],
+  collectCoverageFrom: ['<rootDir>/src/**'],
+  coverageDirectory: '<rootDir>/coverage',
+  coverageReporters: ['clover', 'json', 'json-summary', 'lcov', 'text', 'text-summary', 'cobertura'],
   coverageThreshold: {
     global: {
       global: {

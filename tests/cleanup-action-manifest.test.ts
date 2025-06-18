@@ -3,7 +3,7 @@ import path from 'path'
 import {fileURLToPath} from 'url'
 import {Toolkit} from 'actions-toolkit'
 import {generateToolkit} from './helpers.js'
-import cleanupActionManifest from '../src/lib/cleanup-action-manifest.js'
+import cleanupActionManifest from '../src/cleanup-action-manifest.js'
 import {jest} from '@jest/globals'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

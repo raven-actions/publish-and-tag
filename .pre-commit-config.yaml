@@ -16,37 +16,37 @@ repos:
     rev: v5.0.0
     hooks:
       - id: check-symlinks
-        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/dist/)
       - id: trailing-whitespace
-        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/dist/)
       - id: check-case-conflict
-        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/dist/)
       - id: check-toml
-        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/dist/)
       - id: check-yaml
-        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/dist/)
         args: [--allow-multiple-documents]
       - id: check-json
-        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/dist/)
       - id: pretty-format-json
-        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/dist/)
         args:
           - '--autofix'
           - '--no-sort-keys'
       - id: end-of-file-fixer
-        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/dist/)
       - id: no-commit-to-branch
-        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/dist/)
       - id: check-executables-have-shebangs
-        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/dist/)
       - id: check-vcs-permalinks
-        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/lib/)
+        exclude: (package-lock.json|pnpm-lock.yaml|.vscode/|packages/actions-toolkit/dist/)
 
   - repo: https://gitlab.com/bmares/check-json5
     rev: v1.0.0
     hooks:
       - id: check-json5
-        exclude: (package-lock.json|packages/actions-toolkit/lib/)
+        exclude: (package-lock.json|packages/actions-toolkit/dist/)
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.27.2

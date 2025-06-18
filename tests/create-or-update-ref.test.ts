@@ -1,5 +1,5 @@
 import nock from 'nock'
-import createOrUpdateRef from '../src/lib/create-or-update-ref.js'
+import createOrUpdateRef from '../src/create-or-update-ref.js'
 import {generateToolkit} from './helpers.js'
 import {Toolkit} from 'actions-toolkit'
 import {jest} from '@jest/globals'
