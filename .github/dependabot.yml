@@ -20,6 +20,19 @@ updates:
       all:
         patterns: ["*"]
 
+  - package-ecosystem: devcontainers
+    directory: /
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: build
+      include: scope
+    labels:
+      - "deps/devcontainer"
+    groups:
+      all:
+        patterns: ["*"]
+
   - package-ecosystem: npm
     directories:
       - "/**/*"
