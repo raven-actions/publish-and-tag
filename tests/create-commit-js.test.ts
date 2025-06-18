@@ -1,5 +1,5 @@
 import nock from 'nock'
-import createCommit from '../src/lib/create-commit.js'
+import createCommit from '../src/create-commit.js'
 import {generateToolkit} from './helpers.js'
 import {Toolkit} from 'actions-toolkit'
 import {jest} from '@jest/globals'

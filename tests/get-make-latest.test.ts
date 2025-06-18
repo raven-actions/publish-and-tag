@@ -1,4 +1,4 @@
-import getMakeLatest from '../src/lib/get-make-latest.js'
+import getMakeLatest from '../src/get-make-latest.js'
 import {generateToolkit} from './helpers.js'
 import {Toolkit} from 'actions-toolkit'
 import {jest} from '@jest/globals'

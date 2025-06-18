@@ -11,7 +11,7 @@ import getMakeLatest from './get-make-latest.js'
 import getCleanupManifest from './get-cleanup-manifest.js'
 import cleanupActionManifest from './cleanup-action-manifest.js'
 
-export default async function publishAndTagAction(tools: Toolkit): Promise<void> {
+export async function action(tools: Toolkit): Promise<void> {
   // Get the tag to update
   const tagName = getTagName(tools)
   tools.log.info(`Updating tag [${tagName}]`)
@@ -90,4 +90,8 @@ export default async function publishAndTagAction(tools: Toolkit): Promise<void>
   tools.outputs.semver_major = semverMajorStr ? semverMajorStr : ''
   tools.outputs.semver_minor = semverMinorStr ? semverMinorStr : ''
   tools.outputs.semver_patch = semverPatchStr ? semverPatchStr : ''
+}
+
+export async function run(): Promise<void> {
+  await action(new Toolkit())
 }

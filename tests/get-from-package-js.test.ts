@@ -2,7 +2,7 @@ import path from 'path'
 import {fileURLToPath} from 'url'
 import {generateToolkit} from './helpers.js'
 import {Toolkit} from 'actions-toolkit'
-import {getMainFromPackage, getFilesFromPackage} from '../src/lib/get-from-package.js'
+import {getMainFromPackage, getFilesFromPackage} from '../src/get-from-package.js'
 import {jest} from '@jest/globals'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

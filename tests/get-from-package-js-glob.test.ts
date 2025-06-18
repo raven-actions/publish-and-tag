@@ -1,6 +1,6 @@
 import {generateToolkit} from './helpers.js'
 import {Toolkit} from 'actions-toolkit'
-import {getMainFromPackage, getFilesFromPackage} from '../src/lib/get-from-package.js'
+import {getMainFromPackage, getFilesFromPackage} from '../src/get-from-package.js'
 import path from 'path'
 import {fileURLToPath} from 'url'
 import {jest} from '@jest/globals'
