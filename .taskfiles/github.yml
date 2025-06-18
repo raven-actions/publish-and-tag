@@ -68,5 +68,5 @@ tasks:
   lint:
     desc: Lint GitHub files
     cmds:
-      - actionlint
+      - actionlint -config-file ".github/linters/actionlint.yml"
     dir: "{{.ROOT_DIR}}"
