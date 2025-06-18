@@ -14,7 +14,7 @@
       "args": [
         "@github/local-action",
         ".",
-        "src/index.ts",
+        "src/main.ts",
         ".env"
       ],
       "console": "integratedTerminal",

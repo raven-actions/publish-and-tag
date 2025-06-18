@@ -1,6 +1,6 @@
 import nock from 'nock'
 import {Toolkit} from 'actions-toolkit'
-import {action} from '../src/index.js'
+import {action} from '../src/main.js'
 import {generateToolkit} from './helpers.js'
 import {jest} from '@jest/globals'
 

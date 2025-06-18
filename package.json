@@ -47,7 +47,7 @@
     "build": "pnpm cleanup && pnpm format && pnpm package",
     "build:ci": "pnpm build",
     "run:dev": "pnpm dlx @vercel/ncc run ./src/index.ts",
-    "run:local": "pnpm dlx @github/local-action . src/index.ts .env",
+    "run:local": "pnpm dlx @github/local-action . src/main.ts .env",
     "run": "node dist/index.js",
     "deps:ck": "pnpm outdated --long",
     "deps:up": "pnpm update --latest",
