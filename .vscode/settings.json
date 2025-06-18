@@ -21,7 +21,12 @@
     "CODEOWNERS": "ignore",
     "**/.github/workflows/*.y*ml": "yaml",
     "*.env*": "properties",
-    ".lycheeignore": "ignore"
+    ".lycheeignore": "ignore",
+    "tsconfig.json": "jsonc",
+    "*.tsconfig.json": "jsonc",
+    "tsconfig.*.json": "jsonc",
+    "project.json": "jsonc",
+    "*.tsbuildinfo": "jsonc"
   },
   // editor
   "editor.inlineSuggest.enabled": true,
