@@ -78,7 +78,7 @@
     "nock": "^14.0.5",
     "prettier": "^3.5.3",
     "pretty-quick": "^4.2.2",
-    "rollup": "^4.43.0",
+    "rollup": "^4.44.0",
     "signale": "^1.4.0",
     "ts-jest": "^29.4.0",
     "typescript": "^5.8.3",
