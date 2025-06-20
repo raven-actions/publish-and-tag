@@ -4,10 +4,10 @@ const fs = require('fs')
 const https = require('https')
 const path = require('path')
 
-https.get('https://unpkg.com/feather-icons/dist/icons.json', resp => {
+https.get('https://unpkg.com/feather-icons/dist/icons.json', (resp) => {
   let data = ''
 
-  resp.on('data', chunk => {
+  resp.on('data', (chunk) => {
     data += chunk
   })
 
@@ -17,7 +17,7 @@ https.get('https://unpkg.com/feather-icons/dist/icons.json', resp => {
 
     const iconsFilePath = path.join(process.cwd(), 'bin', 'feather-icons.json')
 
-    fs.writeFile(iconsFilePath, JSON.stringify(iconNames, null, 2), err => {
+    fs.writeFile(iconsFilePath, JSON.stringify(iconNames, null, 2), (err) => {
       if (err) throw err
     })
   })

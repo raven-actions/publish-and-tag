@@ -20,7 +20,7 @@ const mkdir = promisify(fs.mkdir)
  * @param {string} filename The template filename to read.
  * @returns {Promise<string>} The template file string contents.
  */
-async function readTemplate (filename) {
+async function readTemplate(filename) {
   const templateDir = path.join(__dirname, 'template')
   return readFile(path.join(templateDir, filename), 'utf8')
 }
@@ -31,7 +31,7 @@ async function readTemplate (filename) {
  * @param {string} value The string value.
  * @returns {boolean} Whether the string is empty or not.
  */
-const isNotEmpty = value => value.length > 0
+const isNotEmpty = (value) => value.length > 0
 
 /**
  * The options object returned from the CLI questionnaire prompt.
@@ -47,7 +47,7 @@ const isNotEmpty = value => value.length > 0
  *
  * @returns {Promise<PromptAnswers>} An object containing prompt answers.
  */
-async function getActionMetadata () {
+async function getActionMetadata() {
   return prompt([
     {
       type: 'input',
@@ -86,7 +86,7 @@ async function getActionMetadata () {
  * @param {PromptAnswers} answers The CLI prompt answers.
  * @returns {Promise<string>} The Dockerfile contents.
  */
-async function createDockerfile (answers) {
+async function createDockerfile(answers) {
   const dockerfileTemplate = await readTemplate('Dockerfile')
   return dockerfileTemplate
     .replace(':NAME', answers.name)
@@ -102,13 +102,9 @@ async function createDockerfile (answers) {
  * @param {PromptAnswers} answers The CLI prompt answers.
  * @returns {Promise<string>} The action.yml contents.
  */
-async function createActionYaml (answers) {
+async function createActionYaml(answers) {
   const template = await readTemplate('action.yml')
-  return template
-    .replace(':NAME', answers.name)
-    .replace(':DESCRIPTION', answers.description)
-    .replace(':ICON', answers.icon)
-    .replace(':COLOR', answers.color)
+  return template.replace(':NAME', answers.name).replace(':DESCRIPTION', answers.description).replace(':ICON', answers.icon).replace(':COLOR', answers.color)
 }
 
 /**
@@ -118,10 +114,9 @@ async function createActionYaml (answers) {
  * @param {PromptAnswers} answers The CLI prompt answers.
  * @returns {Promise<string>} The index.test.js contents.
  */
-async function createIndexTest (answers) {
+async function createIndexTest(answers) {
   const indexTest = await readTemplate('index.test.js')
-  return indexTest
-    .replace(':NAME', answers.name)
+  return indexTest.replace(':NAME', answers.name)
 }
 
 /**
@@ -131,7 +126,7 @@ async function createIndexTest (answers) {
  * @param {string} name The action package name.
  * @returns {object} The `package.json` contents.
  */
-function createPackageJson (name) {
+function createPackageJson(name) {
   const { version, devDependencies } = require('../package.json')
   return {
     name,
@@ -158,11 +153,14 @@ function createPackageJson (name) {
  * @param {import("signale").Signale} [logger] The Signale logger.
  * @returns {Promise<void>} Nothing.
  */
-module.exports = async function createAction (argv, signale = new Signale({
-  config: {
-    displayLabel: false
-  }
-})) {
+module.exports = async function createAction(
+  argv,
+  signale = new Signale({
+    config: {
+      displayLabel: false
+    }
+  })
+) {
   const args = minimist(argv)
   const directoryName = args._[0]
   if (!directoryName || args.help) {
@@ -170,7 +168,7 @@ module.exports = async function createAction (argv, signale = new Signale({
     return process.exit(1)
   }
 
-  signale.star('Welcome to actions-toolkit! Let\'s get started creating an action.\n')
+  signale.star("Welcome to actions-toolkit! Let's get started creating an action.\n")
 
   const base = path.join(process.cwd(), directoryName)
   try {
@@ -195,16 +193,18 @@ module.exports = async function createAction (argv, signale = new Signale({
   const packageJson = createPackageJson(directoryName)
   const entrypoint = await readTemplate('index.js')
 
-  await Promise.all([
-    ['package.json', JSON.stringify(packageJson, null, 2)],
-    ['Dockerfile', dockerfile],
-    ['action.yml', actionYaml],
-    ['index.js', entrypoint],
-    ['index.test.js', indexTest]
-  ].map(async ([filename, contents]) => {
-    signale.info(`Creating ${filename}...`)
-    await writeFile(path.join(base, filename), contents)
-  }))
+  await Promise.all(
+    [
+      ['package.json', JSON.stringify(packageJson, null, 2)],
+      ['Dockerfile', dockerfile],
+      ['action.yml', actionYaml],
+      ['index.js', entrypoint],
+      ['index.test.js', indexTest]
+    ].map(async ([filename, contents]) => {
+      signale.info(`Creating ${filename}...`)
+      await writeFile(path.join(base, filename), contents)
+    })
+  )
 
   signale.log('\n------------------------------------\n')
   signale.success(`Done! Enjoy building your GitHub Action!`)

@@ -21,7 +21,7 @@ export default {
     '^(\\.{1,2}/.*)\\.js$': '$1'
   },
   verbose: true,
-  reporters: ['default', 'summary', ['github-actions', {silent: false}], ['jest-junit', {outputDirectory: 'reports', outputName: 'jest-report.xml'}]],
+  reporters: ['default', 'summary', ['github-actions', { silent: false }], ['jest-junit', { outputDirectory: 'reports', outputName: 'jest-report.xml' }]],
   collectCoverageFrom: ['<rootDir>/src/**'],
   coverageDirectory: '<rootDir>/coverage',
   coverageReporters: ['clover', 'json', 'json-summary', 'lcov', 'text', 'text-summary', 'cobertura'],

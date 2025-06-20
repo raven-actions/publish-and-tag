@@ -1,62 +1,12 @@
 {
   "name": "actions-toolkit",
-  "version": "7.0.0",
   "description": "A toolkit for building GitHub Actions in Node.js",
-  "type": "module",
-  "private": true,
-  "main": "./dist/index.js",
-  "module": "dist/index.js",
-  "types": "./dist/index.d.ts",
+  "version": "7.0.0",
+  "author": "Jason Etcovitch <jasonetco@gmail.com>",
   "bin": {
     "actions-toolkit": "./bin/cli.js"
   },
-  "files": [
-    "/bin",
-    "/dist"
-  ],
-  "scripts": {
-    "build": "rimraf dist && tsc -p tsconfig.json",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "test": "tsc --noEmit -p tests && jest --coverage && pnpm lint",
-    "test:update": "tsc --noEmit -p tests && jest --coverage -u && pnpm lint",
-    "prepare": "pnpm build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JasonEtco/actions-toolkit.git"
-  },
-  "keywords": [
-    "github",
-    "github actions",
-    "typescript",
-    "github api"
-  ],
-  "author": "Jason Etcovitch <jasonetco@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/JasonEtco/actions-toolkit/issues"
-  },
-  "homepage": "https://github.com/JasonEtco/actions-toolkit#readme",
-  "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
-    "@eslint/js": "^9.29.0",
-    "@types/jest": "^30.0.0",
-    "@types/node": "^24.0.3",
-    "@typescript-eslint/eslint-plugin": "^8.34.1",
-    "@typescript-eslint/parser": "^8.34.1",
-    "eslint": "^9.29.0",
-    "eslint-config-prettier": "^10.1.5",
-    "jest": "^30.0.1",
-    "nock": "^14.0.5",
-    "rimraf": "^6.0.1",
-    "ts-jest": "^29.4.0",
-    "typescript": "^5.8.3"
-  },
-  "standard": {
-    "env": [
-      "jest"
-    ]
-  },
+  "bugs": "https://github.com/JasonEtco/actions-toolkit/issues",
   "dependencies": {
     "@actions/core": "^1.11.1",
     "@actions/exec": "^1.1.1",
@@ -68,6 +18,26 @@
     "pino": "^9.7.0",
     "pino-pretty": "^13.0.0"
   },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.29.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.34.1",
+    "@typescript-eslint/parser": "^8.34.1",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "jest": "^30.0.2",
+    "nock": "^14.0.5",
+    "rimraf": "^6.0.1",
+    "ts-jest": "^29.4.0",
+    "typescript": "^5.8.3"
+  },
+  "files": [
+    "/bin",
+    "/dist"
+  ],
+  "homepage": "https://github.com/JasonEtco/actions-toolkit#readme",
   "jest": {
     "testEnvironment": "node",
     "setupFiles": [
@@ -92,5 +62,30 @@
         "babelConfig": false
       }
     }
-  }
+  },
+  "keywords": [
+    "github",
+    "github actions",
+    "github api",
+    "typescript"
+  ],
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "dist/index.js",
+  "private": true,
+  "repository": "JasonEtco/actions-toolkit.git",
+  "scripts": {
+    "build": "rimraf dist && tsc -p tsconfig.json",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "prepare": "pnpm build",
+    "test": "tsc --noEmit -p tests && jest --coverage && pnpm lint",
+    "test:update": "tsc --noEmit -p tests && jest --coverage -u && pnpm lint"
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ]
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts"
 }

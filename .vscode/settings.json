@@ -68,6 +68,14 @@
       "url": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json"
     }
   ],
+  // javascript
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  // typescript
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   // others
   "dotenv.enableAutocloaking": false,
   "eslint.format.enable": true,

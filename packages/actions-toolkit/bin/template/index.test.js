@@ -4,7 +4,9 @@ describe(':NAME', () => {
   let action, tools
 
   // Mock Toolkit.run to define `action` so we can call it
-  Toolkit.run = jest.fn((actionFn) => { action = actionFn })
+  Toolkit.run = jest.fn((actionFn) => {
+    action = actionFn
+  })
   // Load up our entrypoint file
   require('.')
 

@@ -1,0 +1,4 @@
+# yaml-language-server: $schema=../../node_modules/syncpack/dist/schema.json
+# docs: https://jamiemason.github.io/syncpack/config/syncpackrc/
+---
+strict: true
