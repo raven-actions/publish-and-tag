@@ -1,9 +1,9 @@
 import path from 'path'
-import {fileURLToPath} from 'url'
-import {generateToolkit} from './helpers.js'
-import {Toolkit} from 'actions-toolkit'
-import {getMainFromPackage, getFilesFromPackage} from '../src/get-from-package.js'
-import {jest} from '@jest/globals'
+import { fileURLToPath } from 'url'
+import { generateToolkit } from './helpers.js'
+import { Toolkit } from 'actions-toolkit'
+import { getMainFromPackage, getFilesFromPackage } from '../src/get-from-package.js'
+import { jest } from '@jest/globals'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -19,20 +19,20 @@ describe('get-from-package (JavaScript Action)', () => {
   })
 
   it('main', async () => {
-    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({main: 'dist/index.js'})
+    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({ main: 'dist/index.js' })
     const result = await getMainFromPackage(tools)
     expect(result).toBe('dist/index.js')
   })
 
   it('files - only main', async () => {
-    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({main: 'dist/index.js'})
+    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({ main: 'dist/index.js' })
     const result = await getFilesFromPackage(tools)
     expect(result.files).toHaveLength(1)
     expect(result.files?.some((obj: any) => obj === 'dist/index.js')).toBeTruthy()
   })
 
   it('files - only additional files', async () => {
-    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({files: ['dist/index.js', 'README.md']})
+    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({ files: ['dist/index.js', 'README.md'] })
     const result = await getFilesFromPackage(tools)
     expect(result.files).toHaveLength(2)
     expect(result.files?.some((obj: any) => obj === 'dist/index.js')).toBeTruthy()

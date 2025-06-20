@@ -1,14 +1,14 @@
-import {Toolkit} from 'actions-toolkit'
+import { Toolkit } from 'actions-toolkit'
 
 export default async function createOrUpdateRef(tools: Toolkit, sha: string, tagName: string): Promise<void> {
   const refName = `tags/v${tagName}`
   tools.log.info(`Updating major version tag ${refName}`)
-  const {data: matchingRefs} = await tools.github.git.listMatchingRefs({
+  const { data: matchingRefs } = await tools.github.git.listMatchingRefs({
     ...tools.context.repo,
     ref: refName
   })
 
-  const matchingRef = matchingRefs.find(refObj => {
+  const matchingRef = matchingRefs.find((refObj) => {
     return refObj.ref.endsWith(refName)
   })
 

@@ -1,7 +1,7 @@
 import getTagName from '../src/get-tag-name.js'
-import {generateToolkit} from './helpers.js'
-import {Toolkit} from 'actions-toolkit'
-import {jest} from '@jest/globals'
+import { generateToolkit } from './helpers.js'
+import { Toolkit } from 'actions-toolkit'
+import { jest } from '@jest/globals'
 
 describe('update-tag', () => {
   let tools: Toolkit

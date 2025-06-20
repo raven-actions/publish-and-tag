@@ -1,9 +1,9 @@
-import {generateToolkit} from './helpers.js'
-import {Toolkit} from 'actions-toolkit'
-import {getMainFromPackage, getFilesFromPackage} from '../src/get-from-package.js'
+import { generateToolkit } from './helpers.js'
+import { Toolkit } from 'actions-toolkit'
+import { getMainFromPackage, getFilesFromPackage } from '../src/get-from-package.js'
 import path from 'path'
-import {fileURLToPath} from 'url'
-import {jest} from '@jest/globals'
+import { fileURLToPath } from 'url'
+import { jest } from '@jest/globals'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -21,7 +21,7 @@ describe('get-from-package (JavaScript Action)', () => {
   })
 
   it('main', async () => {
-    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({main: 'dist/index.js'})
+    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({ main: 'dist/index.js' })
     const result = await getMainFromPackage(tools)
     expect(result).toBe('dist/index.js')
   })

@@ -22,7 +22,7 @@ export function createInputProxy<I extends InputType = InputType>() {
     },
     ownKeys() {
       const keys = Object.keys(process.env)
-      const filtered = keys.filter(key => key.startsWith('INPUT_'))
+      const filtered = keys.filter((key) => key.startsWith('INPUT_'))
       return filtered
     }
   })

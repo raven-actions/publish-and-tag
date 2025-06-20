@@ -1,10 +1,10 @@
 import nock from 'nock'
 import path from 'path'
-import {fileURLToPath} from 'url'
+import { fileURLToPath } from 'url'
 import createCommit from '../src/create-commit.js'
-import {generateToolkit} from './helpers.js'
-import {Toolkit} from 'actions-toolkit'
-import {jest} from '@jest/globals'
+import { generateToolkit } from './helpers.js'
+import { Toolkit } from 'actions-toolkit'
+import { jest } from '@jest/globals'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -44,7 +44,7 @@ describe('create-commit (Composite Action)', () => {
   })
 
   it('chmod', async () => {
-    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<(tools: Toolkit) => Promise<{files: string[]}>>
+    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<(tools: Toolkit) => Promise<{ files: string[] }>>
     mockGetFilesFromPackage.mockResolvedValue({
       files: ['entrypoint.sh', 'main.js']
     })

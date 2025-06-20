@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
     "allowJs": false,
     "lib": [
-      "es2015",
-      "es2017"
+      "es2022"
     ],
-    "module": "node16",
-    "moduleResolution": "node16",
-    "target": "es5",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "es2022",
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,

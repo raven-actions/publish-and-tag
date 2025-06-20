@@ -1,12 +1,12 @@
 import * as core from '@actions/core';
 export function createInputProxy() {
     return new Proxy({}, {
-        get: function (_, name) {
+        get(_, name) {
             // When we attempt to get `inputs.___`, instead
             // we call `core.getInput`.
             return core.getInput(name);
         },
-        getOwnPropertyDescriptor: function () {
+        getOwnPropertyDescriptor() {
             // We need to overwrite this to ensure that
             // keys are enumerated
             return {
@@ -15,9 +15,9 @@ export function createInputProxy() {
                 writable: false
             };
         },
-        ownKeys: function () {
-            var keys = Object.keys(process.env);
-            var filtered = keys.filter(function (key) { return key.startsWith('INPUT_'); });
+        ownKeys() {
+            const keys = Object.keys(process.env);
+            const filtered = keys.filter((key) => key.startsWith('INPUT_'));
             return filtered;
         }
     });

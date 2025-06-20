@@ -1,10 +1,10 @@
 import nock from 'nock'
 import path from 'path'
 import * as core from '@actions/core'
-import {fileURLToPath} from 'url'
-import {Toolkit} from '../src/index.js'
-import {NeutralCode} from '../src/exit.js'
-import {createLogger} from '../src/logger.js'
+import { fileURLToPath } from 'url'
+import { Toolkit } from '../src/index.js'
+import { NeutralCode } from '../src/exit.js'
+import { createLogger } from '../src/logger.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -13,15 +13,17 @@ describe('Toolkit', () => {
 
   beforeEach(() => {
     // Mock core.setFailed to a noop
-    jest.spyOn(core, 'setFailed').mockImplementationOnce(f => f)
+    jest.spyOn(core, 'setFailed').mockImplementationOnce((f) => f)
 
-    toolkit = new Toolkit({logger: createLogger({disabled: true})})
+    toolkit = new Toolkit({ logger: createLogger({ disabled: true }) })
   })
 
   describe('.run', () => {
     it('runs the async function passed to it', async () => {
       const spy = jest.fn(() => Promise.resolve('hi'))
-      const actual = await Toolkit.run(spy, {logger: createLogger({disabled: true})})
+      const actual = await Toolkit.run(spy, {
+        logger: createLogger({ disabled: true })
+      })
       // Test that the function was called
       expect(spy).toHaveBeenCalled()
       // Make sure it was called with a Toolkit instance
@@ -32,7 +34,9 @@ describe('Toolkit', () => {
 
     it('runs a non-async function passed to it', async () => {
       const spy = jest.fn(() => 'hi')
-      const actual = await Toolkit.run(spy, {logger: createLogger({disabled: true})})
+      const actual = await Toolkit.run(spy, {
+        logger: createLogger({ disabled: true })
+      })
       // Check that it returned a value as an async function
       expect(actual).toBe('hi')
     })
@@ -42,11 +46,11 @@ describe('Toolkit', () => {
       const exitFailure = jest.fn<never, any>()
 
       await Toolkit.run(
-        async twolkit => {
+        async (twolkit) => {
           twolkit.exit.failure = exitFailure
           throw err
         },
-        {logger: createLogger({disabled: true})}
+        { logger: createLogger({ disabled: true }) }
       )
 
       expect(exitFailure).toHaveBeenCalledTimes(1)
@@ -63,7 +67,7 @@ describe('Toolkit', () => {
 
       const scoped = nock('https://api.github.com')
         .post('/graphql')
-        .reply(200, {data: {errors: []}})
+        .reply(200, { data: { errors: [] } })
 
       await toolkit.github.graphql('query { }')
       expect(scoped.isDone()).toBe(true)
@@ -107,31 +111,33 @@ describe('Toolkit', () => {
     })
 
     it('calls the handler without any args', async () => {
-      toolkit.context.payload.comment = {body: '/action'}
+      toolkit.context.payload.comment = { body: '/action' }
       await toolkit.command('action', spy)
       expect(spy).toHaveBeenCalled()
     })
 
     it('ignores commands not at the beginning of the line', async () => {
-      toolkit.context.payload.comment = {body: 'Hello /action'}
+      toolkit.context.payload.comment = { body: 'Hello /action' }
       await toolkit.command('action', spy)
       expect(spy).not.toHaveBeenCalled()
     })
 
     it('only matches the exact command', async () => {
-      toolkit.context.payload.comment = {body: '/actionssssssssss'}
+      toolkit.context.payload.comment = { body: '/actionssssssssss' }
       await toolkit.command('action', spy)
       expect(spy).not.toHaveBeenCalled()
     })
 
     it('calls the handler with a command at the beginning of a line that is not the first line', async () => {
-      toolkit.context.payload.comment = {body: 'Hello\n/action'}
+      toolkit.context.payload.comment = { body: 'Hello\n/action' }
       await toolkit.command('action', spy)
       expect(spy).toHaveBeenCalled()
     })
 
     it('calls the handler with parsed args', async () => {
-      toolkit.context.payload.comment = {body: '/action testing another --file index.js'}
+      toolkit.context.payload.comment = {
+        body: '/action testing another --file index.js'
+      }
       await toolkit.command('action', spy)
       expect(spy).toHaveBeenCalled()
       expect(spy).toHaveBeenCalledWith(
@@ -144,7 +150,7 @@ describe('Toolkit', () => {
     })
 
     it('does not call the handler if the body does not contain the command', async () => {
-      toolkit.context.payload.comment = {body: 'Hello how are you'}
+      toolkit.context.payload.comment = { body: 'Hello how are you' }
       await toolkit.command('action', spy)
       expect(spy).not.toHaveBeenCalled()
     })
@@ -155,14 +161,16 @@ describe('Toolkit', () => {
     })
 
     it('calls the handler multiple times for multiple matches', async () => {
-      toolkit.context.payload.comment = {body: '/action\n/action testing\n/action'}
+      toolkit.context.payload.comment = {
+        body: '/action\n/action testing\n/action'
+      }
       await toolkit.command('action', spy)
       expect(spy).toHaveBeenCalledTimes(3)
     })
 
     it('does not call the handler if the sender was a bot', async () => {
-      toolkit.context.payload.comment = {body: '/action'}
-      toolkit.context.payload.sender = {type: 'Bot'}
+      toolkit.context.payload.comment = { body: '/action' }
+      toolkit.context.payload.sender = { type: 'Bot' }
       await toolkit.command('action', spy)
       expect(spy).not.toHaveBeenCalled()
     })
@@ -170,9 +178,9 @@ describe('Toolkit', () => {
 
   describe('#wrapLogger', () => {
     it('wraps the provided logger and allows for a callable class', () => {
-      const logger = createLogger({disabled: true})
+      const logger = createLogger({ disabled: true })
       const infoSpy = jest.spyOn(logger, 'info')
-      const twolkit = new Toolkit({logger})
+      const twolkit = new Toolkit({ logger })
 
       twolkit.log('Hello!')
       twolkit.log.info('Hi!')
@@ -190,11 +198,15 @@ describe('Toolkit', () => {
 
 describe('Toolkit#constructor', () => {
   let logger: ReturnType<typeof createLogger>
-  let loggerSpy: {error: jest.SpyInstance; warn: jest.SpyInstance; fatal: jest.SpyInstance}
+  let loggerSpy: {
+    error: jest.SpyInstance
+    warn: jest.SpyInstance
+    fatal: jest.SpyInstance
+  }
   let exit: (code?: number) => never
 
   beforeEach(() => {
-    logger = createLogger({disabled: true})
+    logger = createLogger({ disabled: true })
     loggerSpy = {
       error: jest.spyOn(logger, 'error'),
       warn: jest.spyOn(logger, 'warn'),
@@ -209,44 +221,44 @@ describe('Toolkit#constructor', () => {
   describe('missing env vars', () => {
     it('logs the expected string with missing env vars', () => {
       delete process.env.HOME
-      new Toolkit({logger})
+      new Toolkit({ logger })
       expect(loggerSpy.warn.mock.calls).toMatchSnapshot()
     })
   })
 
   describe('events', () => {
     it('exits if the event is not allowed with an array of events', () => {
-      new Toolkit({logger, event: ['pull_request']})
+      new Toolkit({ logger, event: ['pull_request'] })
       expect(process.exit).toHaveBeenCalledWith(NeutralCode)
       expect(loggerSpy.error.mock.calls).toMatchSnapshot()
     })
 
     it('does not exit if the event is one of the allowed with an array of events', () => {
-      new Toolkit({logger, event: ['pull_request', 'issues']})
+      new Toolkit({ logger, event: ['pull_request', 'issues'] })
       expect(process.exit).not.toHaveBeenCalled()
       expect(logger.error).not.toHaveBeenCalled()
     })
 
     it('exits if the event is not allowed with a single event', () => {
-      new Toolkit({logger, event: 'pull_request'})
+      new Toolkit({ logger, event: 'pull_request' })
       expect(process.exit).toHaveBeenCalledWith(NeutralCode)
       expect(loggerSpy.error.mock.calls).toMatchSnapshot()
     })
 
     it('exits if the event is not allowed with an array of events with actions', () => {
-      new Toolkit({logger, event: ['pull_request.opened']})
+      new Toolkit({ logger, event: ['pull_request.opened'] })
       expect(process.exit).toHaveBeenCalledWith(NeutralCode)
       expect(loggerSpy.error.mock.calls).toMatchSnapshot()
     })
 
     it('exits if the event is not allowed with a single event with an action', () => {
-      new Toolkit({logger, event: 'pull_request.opened'})
+      new Toolkit({ logger, event: 'pull_request.opened' })
       expect(process.exit).toHaveBeenCalledWith(NeutralCode)
       expect(loggerSpy.error.mock.calls).toMatchSnapshot()
     })
 
     it('does not exit if the event is allowed with a single event with an action', () => {
-      new Toolkit({logger, event: 'issues.opened'})
+      new Toolkit({ logger, event: 'issues.opened' })
       expect(process.exit).not.toHaveBeenCalledWith()
     })
   })
@@ -254,13 +266,13 @@ describe('Toolkit#constructor', () => {
   describe('secrets', () => {
     it('does nothing when passed an empty array', () => {
       logger.fatal = jest.fn()
-      new Toolkit({logger, secrets: []})
+      new Toolkit({ logger, secrets: [] })
       expect(logger.fatal).not.toHaveBeenCalled()
     })
 
     it('does nothing when no required secrets are missing', () => {
       process.env.I_EXIST = 'boo'
-      new Toolkit({logger, secrets: ['I_EXIST']})
+      new Toolkit({ logger, secrets: ['I_EXIST'] })
       expect(loggerSpy.fatal).not.toHaveBeenCalled()
     })
 
@@ -268,7 +280,7 @@ describe('Toolkit#constructor', () => {
       // Delete this, juuuust in case
       delete process.env.DO_NOT_EXIST
 
-      new Toolkit({logger, secrets: ['DO_NOT_EXIST']})
+      new Toolkit({ logger, secrets: ['DO_NOT_EXIST'] })
       expect(loggerSpy.fatal).toHaveBeenCalled()
       expect(loggerSpy.fatal.mock.calls).toMatchSnapshot()
     })
@@ -277,7 +289,7 @@ describe('Toolkit#constructor', () => {
   describe('token', () => {
     it('uses a different GitHub token', async () => {
       const toolkit = new Toolkit({
-        logger: createLogger({disabled: true}),
+        logger: createLogger({ disabled: true }),
         token: 'customtoken'
       })
 

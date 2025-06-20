@@ -1,8 +1,8 @@
 import nock from 'nock'
 import createOrUpdateRef from '../src/create-or-update-ref.js'
-import {generateToolkit} from './helpers.js'
-import {Toolkit} from 'actions-toolkit'
-import {jest} from '@jest/globals'
+import { generateToolkit } from './helpers.js'
+import { Toolkit } from 'actions-toolkit'
+import { jest } from '@jest/globals'
 
 describe('create-or-update-ref', () => {
   let tools: Toolkit
@@ -20,7 +20,7 @@ describe('create-or-update-ref', () => {
       .patch('/repos/raven-actions/test/git/refs/tags%2Fv1')
       .reply(200)
       .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv1')
-      .reply(200, [{ref: 'tags/v1'}])
+      .reply(200, [{ ref: 'tags/v1' }])
 
     await createOrUpdateRef(tools, '123abc', '1')
 

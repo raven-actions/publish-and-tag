@@ -1,9 +1,11 @@
 {
   "name": "actions-toolkit",
-  "type": "module",
   "version": "7.0.0",
   "description": "A toolkit for building GitHub Actions in Node.js",
+  "type": "module",
+  "private": true,
   "main": "./dist/index.js",
+  "module": "dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
     "actions-toolkit": "./bin/cli.js"
@@ -15,9 +17,9 @@
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.json",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "test": "tsc --noEmit -p tests && jest --coverage && npm run lint",
-    "test:update": "tsc --noEmit -p tests && jest --coverage -u && npm run lint",
-    "prepare": "npm run build"
+    "test": "tsc --noEmit -p tests && jest --coverage && pnpm lint",
+    "test:update": "tsc --noEmit -p tests && jest --coverage -u && pnpm lint",
+    "prepare": "pnpm build"
   },
   "repository": {
     "type": "git",

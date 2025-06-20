@@ -1,7 +1,7 @@
 import jsYaml from 'js-yaml'
-import {Toolkit} from 'actions-toolkit'
-import {readFile as defaultReadFile, writeFile as defaultWriteFile, checkActionManifestFile} from './file-helper.js'
-import {getMainFromPackage} from './get-from-package.js'
+import { Toolkit } from 'actions-toolkit'
+import { readFile as defaultReadFile, writeFile as defaultWriteFile, checkActionManifestFile } from './file-helper.js'
+import { getMainFromPackage } from './get-from-package.js'
 
 export default async function cleanupActionManifest(
   tools: Toolkit,
