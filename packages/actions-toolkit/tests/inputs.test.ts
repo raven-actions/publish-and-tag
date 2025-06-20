@@ -1,4 +1,4 @@
-import {createInputProxy, InputType} from '../src/inputs.js'
+import { createInputProxy, InputType } from '../src/inputs.js'
 
 describe('createInputProxy', () => {
   let inputs: InputType
@@ -23,13 +23,13 @@ describe('createInputProxy', () => {
     })
 
     it('accepts the correct types', () => {
-      inputs = createInputProxy<{example: string}>()
+      inputs = createInputProxy<{ example: string }>()
       const result = inputs.example
       expect(result).toBe('pizza')
     })
 
     it('gets a property with a - in it', () => {
-      inputs = createInputProxy<{'example-name': string}>()
+      inputs = createInputProxy<{ 'example-name': string }>()
       const result = inputs['example-name']
       expect(result).toBe('pizza')
     })

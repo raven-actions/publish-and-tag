@@ -1,4 +1,4 @@
-import {Toolkit} from 'actions-toolkit'
+import { Toolkit } from 'actions-toolkit'
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export default async function makeReleaseLatest(tools: Toolkit, releaseId: number): Promise<any> {

@@ -1,15 +1,15 @@
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
-import fs, {EncodingOption} from 'fs'
-import minimist, {ParsedArgs} from 'minimist'
+import fs, { EncodingOption } from 'fs'
+import minimist, { ParsedArgs } from 'minimist'
 import path from 'path'
-import {Octokit} from '@octokit/rest'
-import {Context} from './context.js'
-import {Exit} from './exit.js'
-import {getBody} from './get-body.js'
-import {createInputProxy, InputType} from './inputs.js'
-import {createOutputProxy, OutputType} from './outputs.js'
-import {Logger, LoggerFunc, createLogger} from './logger.js'
+import { Octokit } from '@octokit/rest'
+import { Context } from './context.js'
+import { Exit } from './exit.js'
+import { getBody } from './get-body.js'
+import { createInputProxy, InputType } from './inputs.js'
+import { createOutputProxy, OutputType } from './outputs.js'
+import { Logger, LoggerFunc, createLogger } from './logger.js'
 
 export interface ToolkitOptions {
   /**
@@ -117,7 +117,7 @@ export class Toolkit<I extends InputType = InputType, O extends OutputType = Out
     this.opts = opts
 
     // Create the logging instance
-    this.log = this.wrapLogger(opts.logger || createLogger({disabled: false}))
+    this.log = this.wrapLogger(opts.logger || createLogger({ disabled: false }))
 
     // Print a console warning for missing environment variables
     this.warnForMissingEnvVars()
@@ -138,7 +138,7 @@ export class Toolkit<I extends InputType = InputType, O extends OutputType = Out
     // Setup nested objects
     this.exit = new Exit(this.log)
     this.context = new Context()
-    this.github = new Octokit({auth: `token ${this.token}`})
+    this.github = new Octokit({ auth: `token ${this.token}` })
 
     // Check stuff
     this.checkAllowedEvents(this.opts.event)
@@ -159,7 +159,9 @@ export class Toolkit<I extends InputType = InputType, O extends OutputType = Out
     const pathToFile = path.join(this.workspace, filename)
 
     if (!fs.existsSync(pathToFile)) {
-      throw new Error(`File ${filename} could not be found in your project's workspace. You may need the actions/checkout action to clone the repository first.`)
+      throw new Error(
+        `File ${filename} could not be found in your project's workspace. You may need the actions/checkout action to clone the repository first.`
+      )
     }
 
     return fs.promises.readFile(pathToFile, encoding)
@@ -225,7 +227,7 @@ export class Toolkit<I extends InputType = InputType, O extends OutputType = Out
   private checkAllowedEvents(event: string | string[] | undefined) {
     if (!event) return
 
-    const passed = Array.isArray(event) ? event.some(e => this.eventIsAllowed(e)) : this.eventIsAllowed(event)
+    const passed = Array.isArray(event) ? event.some((e) => this.eventIsAllowed(e)) : this.eventIsAllowed(event)
 
     if (!passed) {
       const actionStr = this.context.payload.action ? `.${this.context.payload.action}` : ''
@@ -263,10 +265,10 @@ export class Toolkit<I extends InputType = InputType, O extends OutputType = Out
       'GITHUB_SHA'
     ]
 
-    const requiredButMissing = requiredEnvVars.filter(key => !Object.prototype.hasOwnProperty.call(process.env, key))
+    const requiredButMissing = requiredEnvVars.filter((key) => !Object.prototype.hasOwnProperty.call(process.env, key))
     if (requiredButMissing.length > 0) {
       // This isn't being run inside of a GitHub Action environment!
-      const list = requiredButMissing.map(key => `- ${key}`).join('\n')
+      const list = requiredButMissing.map((key) => `- ${key}`).join('\n')
       const warning = `There are environment variables missing from this runtime, but would be present on GitHub.\n${list}`
       this.log.warn(warning)
     }
@@ -278,24 +280,24 @@ export class Toolkit<I extends InputType = InputType, O extends OutputType = Out
   private checkRequiredSecrets(secrets?: string[]) {
     if (!secrets || secrets.length === 0) return
     // Filter missing but required secrets
-    const requiredButMissing = secrets.filter(key => !Object.prototype.hasOwnProperty.call(process.env, key))
+    const requiredButMissing = secrets.filter((key) => !Object.prototype.hasOwnProperty.call(process.env, key))
     // Everything we need is here
     if (requiredButMissing.length === 0) return
     // Exit with a failing status
-    const list = requiredButMissing.map(key => `- ${key}`).join('\n')
+    const list = requiredButMissing.map((key) => `- ${key}`).join('\n')
     this.exit.failure(`The following secrets are required for this GitHub Action to run:\n${list}`)
   }
 }
 
 // Export logger components
-export {Logger, createLogger} from './logger.js'
-export type {LoggerFunc} from './logger.js'
+export { Logger, createLogger } from './logger.js'
+export type { LoggerFunc } from './logger.js'
 
 // Export other components
-export {Context} from './context.js'
-export {Exit} from './exit.js'
-export {getBody} from './get-body.js'
-export {createInputProxy} from './inputs.js'
-export type {InputType} from './inputs.js'
-export {createOutputProxy} from './outputs.js'
-export type {OutputType} from './outputs.js'
+export { Context } from './context.js'
+export { Exit } from './exit.js'
+export { getBody } from './get-body.js'
+export { createInputProxy } from './inputs.js'
+export type { InputType } from './inputs.js'
+export { createOutputProxy } from './outputs.js'
+export type { OutputType } from './outputs.js'

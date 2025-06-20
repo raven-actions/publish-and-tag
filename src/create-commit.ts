@@ -1,6 +1,6 @@
-import {Toolkit} from 'actions-toolkit'
-import {readFile, checkActionManifestFile} from './file-helper.js'
-import {getFilesFromPackage as defaultGetFilesFromPackage} from './get-from-package.js'
+import { Toolkit } from 'actions-toolkit'
+import { readFile, checkActionManifestFile } from './file-helper.js'
+import { getFilesFromPackage as defaultGetFilesFromPackage } from './get-from-package.js'
 
 export default async function createCommit(
   tools: Toolkit,
@@ -13,7 +13,7 @@ export default async function createCommit(
   getFilesFromPackage: typeof defaultGetFilesFromPackage = defaultGetFilesFromPackage
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 ): Promise<any> {
-  const {files} = await getFilesFromPackage(tools)
+  const { files } = await getFilesFromPackage(tools)
   const actionManifestGitTree = await getActionManifestGitTree(tools)
   const filesGitTree = await getFilesGitTree(tools, files)
 
@@ -63,7 +63,7 @@ async function getActionManifestGitTree(tools: Toolkit): Promise<any[]> {
 async function getFilesGitTree(tools: Toolkit, files: string[]): Promise<any[]> {
   tools.log.info('Adding files to the git tree')
   return Promise.all(
-    files.map(async fileName => ({
+    files.map(async (fileName) => ({
       path: fileName,
       mode: fileName.endsWith('.sh') || fileName.endsWith('.bash') ? '100755' : '100644',
       type: 'blob',

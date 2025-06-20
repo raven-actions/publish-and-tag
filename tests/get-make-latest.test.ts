@@ -1,7 +1,7 @@
 import getMakeLatest from '../src/get-make-latest.js'
-import {generateToolkit} from './helpers.js'
-import {Toolkit} from 'actions-toolkit'
-import {jest} from '@jest/globals'
+import { generateToolkit } from './helpers.js'
+import { Toolkit } from 'actions-toolkit'
+import { jest } from '@jest/globals'
 
 describe('get-make-latest', () => {
   let tools: Toolkit

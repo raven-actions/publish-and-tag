@@ -1,8 +1,8 @@
 import nock from 'nock'
 import updateTag from '../src/update-tag.js'
-import {generateToolkit} from './helpers.js'
-import {Toolkit} from 'actions-toolkit'
-import {jest} from '@jest/globals'
+import { generateToolkit } from './helpers.js'
+import { Toolkit } from 'actions-toolkit'
+import { jest } from '@jest/globals'
 
 describe('update-tag', () => {
   let tools: Toolkit

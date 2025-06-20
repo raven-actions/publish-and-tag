@@ -1,8 +1,8 @@
 import nock from 'nock'
 import makeReleaseLatest from '../src/make-release-latest.js'
-import {generateToolkit} from './helpers.js'
-import {Toolkit} from 'actions-toolkit'
-import {jest} from '@jest/globals'
+import { generateToolkit } from './helpers.js'
+import { Toolkit } from 'actions-toolkit'
+import { jest } from '@jest/globals'
 
 describe('make-release-latest', () => {
   let tools: Toolkit

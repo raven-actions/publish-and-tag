@@ -1,4 +1,4 @@
-import {Toolkit} from 'actions-toolkit'
+import { Toolkit } from 'actions-toolkit'
 
 export default function getRewriteTags(tools: Toolkit): boolean {
   let result = true

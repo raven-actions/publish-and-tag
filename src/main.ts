@@ -1,4 +1,4 @@
-import {Toolkit} from 'actions-toolkit'
+import { Toolkit } from 'actions-toolkit'
 import semver from 'semver'
 import createOrUpdateRef from './create-or-update-ref.js'
 import createCommit from './create-commit.js'
@@ -56,7 +56,7 @@ export async function action(tools: Toolkit): Promise<void> {
 
   // If this is a release event, only update the major ref for a full release.
   if (tools.context.event === 'release') {
-    const {id, draft, prerelease, html_url} = tools.context.payload.release
+    const { id, draft, prerelease, html_url } = tools.context.payload.release
     releaseId = id
 
     if ((draft || prerelease) && !makeLatest) {

@@ -1,5 +1,5 @@
-import {Exit, FailureCode, NeutralCode, SuccessCode} from '../src/exit.js'
-import {createLogger, Logger} from '../src/logger.js'
+import { Exit, FailureCode, NeutralCode, SuccessCode } from '../src/exit.js'
+import { createLogger, Logger } from '../src/logger.js'
 
 // Need to type these to properly iterate
 enum methods {
@@ -22,7 +22,7 @@ describe('Exit', () => {
 
     beforeEach(() => {
       // Create a logger to mock
-      logger = createLogger({disabled: true})
+      logger = createLogger({ disabled: true })
       loggerSpies = {
         success: jest.spyOn(logger, 'success'),
         info: jest.spyOn(logger, 'info'),

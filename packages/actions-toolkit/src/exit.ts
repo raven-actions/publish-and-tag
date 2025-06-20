@@ -1,4 +1,4 @@
-import {Logger} from './logger.js'
+import { Logger } from './logger.js'
 
 /**
  * The code to exit an action with a "success" state

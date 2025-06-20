@@ -1,8 +1,8 @@
 import nock from 'nock'
 import createCommit from '../src/create-commit.js'
-import {generateToolkit} from './helpers.js'
-import {Toolkit} from 'actions-toolkit'
-import {jest} from '@jest/globals'
+import { generateToolkit } from './helpers.js'
+import { Toolkit } from 'actions-toolkit'
+import { jest } from '@jest/globals'
 
 describe('create-commit (JavaScript Action)', () => {
   let tools: Toolkit
@@ -40,8 +40,8 @@ describe('create-commit (JavaScript Action)', () => {
   })
 
   it('creates the tree and commit - only main', async () => {
-    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<(tools: Toolkit) => Promise<{files: string[]}>>
-    mockGetFilesFromPackage.mockResolvedValue({files: ['dist/index.js']})
+    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<(tools: Toolkit) => Promise<{ files: string[] }>>
+    mockGetFilesFromPackage.mockResolvedValue({ files: ['dist/index.js'] })
 
     await createCommit(tools, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail, mockGetFilesFromPackage)
     expect(nock.isDone()).toBeTruthy()
@@ -56,7 +56,7 @@ describe('create-commit (JavaScript Action)', () => {
   })
 
   it('creates the tree - only files', async () => {
-    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<(tools: Toolkit) => Promise<{files: string[]}>>
+    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<(tools: Toolkit) => Promise<{ files: string[] }>>
     mockGetFilesFromPackage.mockResolvedValue({
       files: ['README.md', 'dist/additional.js']
     })
@@ -70,7 +70,7 @@ describe('create-commit (JavaScript Action)', () => {
   })
 
   it('creates the tree - main and files', async () => {
-    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<(tools: Toolkit) => Promise<{files: string[]}>>
+    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<(tools: Toolkit) => Promise<{ files: string[] }>>
     mockGetFilesFromPackage.mockResolvedValue({
       files: ['README.md', 'dist/additional.js', 'dist/cleanup.js', 'dist/index.js', 'dist/setup.js']
     })

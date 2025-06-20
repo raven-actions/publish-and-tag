@@ -1,33 +1,33 @@
-import {WebhookPayloadWithRepository} from '../src/context.js'
-import {getBody} from '../src/get-body.js'
+import { WebhookPayloadWithRepository } from '../src/context.js'
+import { getBody } from '../src/get-body.js'
 
 describe('getBody', () => {
   let payload: WebhookPayloadWithRepository
 
   beforeEach(() => {
     payload = {
-      repository: {name: 'pizza', owner: {login: 'JasonEtco'}}
+      repository: { name: 'pizza', owner: { login: 'JasonEtco' } }
     }
   })
 
   it('returns the body of an issue', () => {
-    payload.issue = {number: 1, body: 'hello'}
+    payload.issue = { number: 1, body: 'hello' }
     expect(getBody(payload)).toBe('hello')
   })
 
   it('returns the body of an issue', () => {
-    payload.pull_request = {number: 1, body: 'hello'}
+    payload.pull_request = { number: 1, body: 'hello' }
     expect(getBody(payload)).toBe('hello')
   })
 
   it('returns the body of an comment', () => {
-    payload.comment = {body: 'hello'}
-    payload.issue = {number: 1, body: 'goodbye'}
+    payload.comment = { body: 'hello' }
+    payload.issue = { number: 1, body: 'goodbye' }
     expect(getBody(payload)).toBe('hello')
   })
 
   it('returns the body of a review', () => {
-    payload.review = {body: 'hello'}
+    payload.review = { body: 'hello' }
     expect(getBody(payload)).toBe('hello')
   })
 

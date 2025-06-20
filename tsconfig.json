@@ -2,10 +2,16 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "module": "NodeNext",
+    "lib": [
+      "ES2022"
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
     "outDir": "./dist",
     "noEmit": true,
-    "isolatedModules": true,
     "types": [
       "jest"
     ]
@@ -17,7 +23,7 @@
     "tests",
     "coverage",
     "dist",
-    "node_modules"
+    "**/node_modules/**"
   ],
   "include": [
     "src"

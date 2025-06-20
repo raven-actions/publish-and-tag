@@ -1,4 +1,4 @@
-import {Toolkit} from 'actions-toolkit'
+import { Toolkit } from 'actions-toolkit'
 
 export default function getMakeLatest(tools: Toolkit): boolean {
   let result = false

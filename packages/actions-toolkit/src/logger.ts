@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import {pino} from 'pino'
+import { pino } from 'pino'
 
 // Create logger levels that match common usage patterns
 const LOG_LEVELS = {
@@ -35,7 +35,7 @@ export class Logger {
       level: options.level ?? 'info',
       formatters: {
         level(label: string) {
-          return {level: label}
+          return { level: label }
         }
       },
       ...(options.prettyPrint && !process.env.GITHUB_ACTIONS
@@ -136,7 +136,7 @@ export class Logger {
   // Secret management (placeholder for compatibility)
   addSecrets(secrets: string[] | number[]): void {
     // GitHub Actions automatically masks secrets, so this is a no-op
-    secrets.forEach(secret => {
+    secrets.forEach((secret) => {
       if (process.env.GITHUB_ACTIONS) {
         core.setSecret(String(secret))
       }
@@ -149,7 +149,7 @@ export class Logger {
 
   private formatMessage(message: string, args: unknown[]): string {
     if (args.length === 0) return message
-    return `${message} ${args.map(arg => (typeof arg === 'object' ? JSON.stringify(arg) : String(arg))).join(' ')}`
+    return `${message} ${args.map((arg) => (typeof arg === 'object' ? JSON.stringify(arg) : String(arg))).join(' ')}`
   }
 }
 

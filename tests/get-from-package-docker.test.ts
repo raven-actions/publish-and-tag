@@ -1,9 +1,9 @@
 import path from 'path'
-import {fileURLToPath} from 'url'
-import {generateToolkit} from './helpers.js'
-import {Toolkit} from 'actions-toolkit'
-import {getMainFromPackage, getFilesFromPackage} from '../src/get-from-package.js'
-import {jest} from '@jest/globals'
+import { fileURLToPath } from 'url'
+import { generateToolkit } from './helpers.js'
+import { Toolkit } from 'actions-toolkit'
+import { getMainFromPackage, getFilesFromPackage } from '../src/get-from-package.js'
+import { jest } from '@jest/globals'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -21,19 +21,19 @@ describe('get-from-package (Docker Action)', () => {
   })
 
   it('main', async () => {
-    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({main: 'docker'})
+    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({ main: 'docker' })
     const result = await getMainFromPackage(tools)
     expect(result).toBe('docker')
   })
 
   it('files - only main', async () => {
-    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({main: 'docker'})
+    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({ main: 'docker' })
     const result = await getFilesFromPackage(tools)
     expect(result.files).toHaveLength(0)
   })
 
   it('files - only additional files', async () => {
-    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({files: ['Dockerfile']})
+    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({ files: ['Dockerfile'] })
     const result = await getFilesFromPackage(tools)
     expect(result.files).toHaveLength(1)
     expect(result.files?.some((obj: any) => obj === 'Dockerfile')).toBeTruthy()

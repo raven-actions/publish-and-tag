@@ -1,4 +1,4 @@
-import {Context} from '../src/context.js'
+import { Context } from '../src/context.js'
 
 describe('Context', () => {
   let context: Context
@@ -27,18 +27,18 @@ describe('Context', () => {
 
   describe('#repo', () => {
     it('returns attributes from the GITHUB_REPOSITORY', () => {
-      expect(context.repo).toEqual({owner: 'JasonEtco', repo: 'test'})
+      expect(context.repo).toEqual({ owner: 'JasonEtco', repo: 'test' })
     })
 
     it('returns attributes from the repository payload', () => {
       context.payload.repository = {
         name: 'you',
-        owner: {login: 'github'}
+        owner: { login: 'github' }
       }
 
       const before = process.env.GITHUB_REPOSITORY
       delete process.env.GITHUB_REPOSITORY
-      expect(context.repo).toEqual({owner: 'github', repo: 'you'})
+      expect(context.repo).toEqual({ owner: 'github', repo: 'you' })
       process.env.GITHUB_REPOSITORY = before
     })
 
@@ -53,13 +53,17 @@ describe('Context', () => {
 
   describe('#issue', () => {
     it('returns attributes from the repository payload', () => {
-      expect(context.issue).toEqual({owner: 'JasonEtco', repo: 'test', issue_number: 1})
+      expect(context.issue).toEqual({
+        owner: 'JasonEtco',
+        repo: 'test',
+        issue_number: 1
+      })
     })
 
     it('works with pull_request payloads', () => {
       context.payload = {
-        pull_request: {number: 2},
-        repository: {owner: {login: 'JasonEtco'}, name: 'test'}
+        pull_request: { number: 2 },
+        repository: { owner: { login: 'JasonEtco' }, name: 'test' }
       }
       expect(context.issue).toEqual({
         issue_number: 2,
@@ -69,7 +73,10 @@ describe('Context', () => {
     })
 
     it('works with payload.number payloads', () => {
-      context.payload = {number: 2, repository: {owner: {login: 'JasonEtco'}, name: 'test'}}
+      context.payload = {
+        number: 2,
+        repository: { owner: { login: 'JasonEtco' }, name: 'test' }
+      }
       expect(context.issue).toEqual({
         issue_number: 2,
         owner: 'JasonEtco',
@@ -79,7 +86,7 @@ describe('Context', () => {
 
     it('throws if no number was found', () => {
       context.payload = {
-        repository: {owner: {login: 'JasonEtco'}, name: 'test'}
+        repository: { owner: { login: 'JasonEtco' }, name: 'test' }
       }
 
       expect(() => context.issue).toThrow()
@@ -89,8 +96,8 @@ describe('Context', () => {
   describe('#pullRequest', () => {
     it('returns attributes from the repository payload', () => {
       context.payload = {
-        pull_request: {number: 2},
-        repository: {owner: {login: 'JasonEtco'}, name: 'test'}
+        pull_request: { number: 2 },
+        repository: { owner: { login: 'JasonEtco' }, name: 'test' }
       }
 
       expect(context.pullRequest).toEqual({
@@ -102,7 +109,7 @@ describe('Context', () => {
 
     it('throws if no pull_request object was found', () => {
       context.payload = {
-        repository: {owner: {login: 'JasonEtco'}, name: 'test'}
+        repository: { owner: { login: 'JasonEtco' }, name: 'test' }
       }
 
       expect(() => context.pullRequest).toThrow()

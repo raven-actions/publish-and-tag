@@ -1,4 +1,4 @@
-import {Toolkit} from 'actions-toolkit'
+import { Toolkit } from 'actions-toolkit'
 
 export function getGitCommitMessage(tools: Toolkit): string {
   let gitCommitMessage = 'Automatic compilation'
