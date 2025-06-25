@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
-    "@jest/globals": "^30.0.2",
+    "@jest/globals": "^30.0.3",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.1",
@@ -26,15 +26,15 @@
     "@types/semver": "^7.7.0",
     "@types/signale": "^1.4.7",
     "eslint": "^9.29.0",
-    "jest": "^30.0.2",
+    "jest": "^30.0.3",
     "jest-junit": "^16.0.0",
     "js-yaml": "^4.1.0",
     "nock": "^14.0.5",
-    "prettier": "^3.6.0",
+    "prettier": "^3.6.1",
     "rollup": "^4.44.0",
     "ts-jest": "^29.4.0",
     "typescript": "^5.8.3",
-    "typescript-eslint": "8.34.1"
+    "typescript-eslint": "8.35.0"
   },
   "files": [
     "dist/*",
