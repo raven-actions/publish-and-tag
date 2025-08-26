@@ -17,7 +17,7 @@ export interface LoggerOptions {
  * Built on top of Pino for better performance and ESM support
  */
 export declare class Logger {
-    private pino;
+    private p;
     private isDisabled;
     constructor(options?: LoggerOptions);
     info(message: string, ...args: unknown[]): void;

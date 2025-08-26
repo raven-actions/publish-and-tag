@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import { pino } from 'pino';
+import pino from 'pino';
 // Create logger levels that match common usage patterns
 const LOG_LEVELS = {
     trace: 10,
@@ -14,7 +14,7 @@ const LOG_LEVELS = {
  * Built on top of Pino for better performance and ESM support
  */
 export class Logger {
-    pino;
+    p;
     isDisabled;
     constructor(options = {}) {
         this.isDisabled = options.disabled ?? false;
@@ -39,7 +39,7 @@ export class Logger {
                 }
                 : {})
         };
-        this.pino = pino(pinoOptions);
+        this.p = pino(pinoOptions);
     }
     // Core logging methods
     info(message, ...args) {
@@ -49,7 +49,7 @@ export class Logger {
             core.info(this.formatMessage(message, args));
         }
         else {
-            this.pino.info(this.formatMessage(message, args));
+            this.p.info(this.formatMessage(message, args));
         }
     }
     debug(message, ...args) {
@@ -59,7 +59,7 @@ export class Logger {
             core.debug(this.formatMessage(message, args));
         }
         else {
-            this.pino.debug(this.formatMessage(message, args));
+            this.p.debug(this.formatMessage(message, args));
         }
     }
     warn(message, ...args) {
@@ -69,7 +69,7 @@ export class Logger {
             core.warning(this.formatMessage(message, args));
         }
         else {
-            this.pino.warn(this.formatMessage(message, args));
+            this.p.warn(this.formatMessage(message, args));
         }
     }
     error(message, ...args) {
@@ -79,7 +79,7 @@ export class Logger {
             core.error(this.formatMessage(message, args));
         }
         else {
-            this.pino.error(this.formatMessage(message, args));
+            this.p.error(this.formatMessage(message, args));
         }
     }
     fatal(message, ...args) {
@@ -89,7 +89,7 @@ export class Logger {
             core.error(this.formatMessage(message, args));
         }
         else {
-            this.pino.fatal(this.formatMessage(message, args));
+            this.p.fatal(this.formatMessage(message, args));
         }
     }
     // Signale compatibility methods
@@ -100,7 +100,7 @@ export class Logger {
             core.info(`✅ ${this.formatMessage(message, args)}`);
         }
         else {
-            this.pino.info(`✅ ${this.formatMessage(message, args)}`);
+            this.p.info(`✅ ${this.formatMessage(message, args)}`);
         }
     }
     complete(message, ...args) {
@@ -110,7 +110,7 @@ export class Logger {
             core.info(`✅ ${this.formatMessage(message, args)}`);
         }
         else {
-            this.pino.info(`✅ ${this.formatMessage(message, args)}`);
+            this.p.info(`✅ ${this.formatMessage(message, args)}`);
         }
     }
     // Logger state management
