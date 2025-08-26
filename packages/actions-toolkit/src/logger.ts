@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import { pino } from 'pino'
+import pino, { type Logger as PinoLogger, type LoggerOptions as PinoLoggerOptions } from 'pino'
 
 // Create logger levels that match common usage patterns
 const LOG_LEVELS = {
@@ -24,14 +24,14 @@ export interface LoggerOptions {
  * Built on top of Pino for better performance and ESM support
  */
 export class Logger {
-  private pino: pino.Logger
+  private p: PinoLogger
   private isDisabled: boolean
 
   constructor(options: LoggerOptions = {}) {
     this.isDisabled = options.disabled ?? false
 
     // Configure Pino with GitHub Actions-friendly options
-    const pinoOptions: pino.LoggerOptions = {
+    const pinoOptions: PinoLoggerOptions = {
       level: options.level ?? 'info',
       formatters: {
         level(label: string) {
@@ -52,7 +52,7 @@ export class Logger {
         : {})
     }
 
-    this.pino = pino(pinoOptions)
+    this.p = pino(pinoOptions)
   }
 
   // Core logging methods
@@ -61,7 +61,7 @@ export class Logger {
     if (process.env.GITHUB_ACTIONS) {
       core.info(this.formatMessage(message, args))
     } else {
-      this.pino.info(this.formatMessage(message, args))
+      this.p.info(this.formatMessage(message, args))
     }
   }
 
@@ -70,7 +70,7 @@ export class Logger {
     if (process.env.GITHUB_ACTIONS) {
       core.debug(this.formatMessage(message, args))
     } else {
-      this.pino.debug(this.formatMessage(message, args))
+      this.p.debug(this.formatMessage(message, args))
     }
   }
 
@@ -79,7 +79,7 @@ export class Logger {
     if (process.env.GITHUB_ACTIONS) {
       core.warning(this.formatMessage(message, args))
     } else {
-      this.pino.warn(this.formatMessage(message, args))
+      this.p.warn(this.formatMessage(message, args))
     }
   }
 
@@ -88,7 +88,7 @@ export class Logger {
     if (process.env.GITHUB_ACTIONS) {
       core.error(this.formatMessage(message, args))
     } else {
-      this.pino.error(this.formatMessage(message, args))
+      this.p.error(this.formatMessage(message, args))
     }
   }
 
@@ -97,7 +97,7 @@ export class Logger {
     if (process.env.GITHUB_ACTIONS) {
       core.error(this.formatMessage(message, args))
     } else {
-      this.pino.fatal(this.formatMessage(message, args))
+      this.p.fatal(this.formatMessage(message, args))
     }
   }
 
@@ -107,7 +107,7 @@ export class Logger {
     if (process.env.GITHUB_ACTIONS) {
       core.info(`✅ ${this.formatMessage(message, args)}`)
     } else {
-      this.pino.info(`✅ ${this.formatMessage(message, args)}`)
+      this.p.info(`✅ ${this.formatMessage(message, args)}`)
     }
   }
 
@@ -116,7 +116,7 @@ export class Logger {
     if (process.env.GITHUB_ACTIONS) {
       core.info(`✅ ${this.formatMessage(message, args)}`)
     } else {
-      this.pino.info(`✅ ${this.formatMessage(message, args)}`)
+      this.p.info(`✅ ${this.formatMessage(message, args)}`)
     }
   }
 
