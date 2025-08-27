@@ -22,7 +22,7 @@ export default async function cleanupActionManifest(
 
     if (mainFromPackage !== 'composite' && mainFromPackage !== 'docker' && mainFromPackage !== '') {
       config.runs = {
-        using: 'node20',
+        using: 'node24',
         main: mainFromPackage
       }
     }
