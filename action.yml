@@ -67,5 +67,5 @@ outputs:
     description: The URL of the release.
 
 runs:
-  using: node20
+  using: node24
   main: dist/index.js
