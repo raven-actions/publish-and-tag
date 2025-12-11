@@ -33,9 +33,7 @@ export async function getFilesFromPackage(): Promise<{ files: string[] }> {
     const filesRelative = allFiles.map((element) => core.toPosixPath(path.relative(workspace, element)))
 
     // Filter out main, action manifest files, and non-files, then deduplicate
-    const filteredFiles = filesRelative.filter(
-      (file) => file !== main && file !== 'action.yml' && file !== 'action.yaml' && isFile(workspace, file)
-    )
+    const filteredFiles = filesRelative.filter((file) => file !== main && file !== 'action.yml' && file !== 'action.yaml' && isFile(workspace, file))
 
     return { files: [...new Set([...filteredFiles, ...result])] }
   }
