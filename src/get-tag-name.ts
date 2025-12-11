@@ -1,12 +1,15 @@
-import { Toolkit } from 'actions-toolkit'
+import * as core from '@actions/core'
+import { context } from './toolkit.js'
 
-export default function getTagName(tools: Toolkit): string {
-  if (tools.inputs.tag_name) {
-    return tools.inputs.tag_name
+export default function getTagName(): string {
+  const tagNameInput = core.getInput('tag_name')
+  if (tagNameInput) {
+    return tagNameInput
   }
 
-  if (tools.context.event === 'release') {
-    return tools.context.payload.release.tag_name
+  if (context.eventName === 'release') {
+    const payload = context.payload as { release: { tag_name: string } }
+    return payload.release.tag_name
   }
 
   throw new Error('No tag_name was found or provided!')

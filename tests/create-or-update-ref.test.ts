@@ -1,14 +1,14 @@
 import nock from 'nock'
 import createOrUpdateRef from '../src/create-or-update-ref.js'
-import { generateToolkit } from './helpers.js'
-import { Toolkit } from 'actions-toolkit'
+import { generateMockOctokit } from './helpers.js'
+import { type OctokitClient } from '../src/toolkit.js'
 import { jest } from '@jest/globals'
 
 describe('create-or-update-ref', () => {
-  let tools: Toolkit
+  let octokit: OctokitClient
 
   beforeEach(() => {
-    tools = generateToolkit()
+    octokit = generateMockOctokit()
   })
 
   afterEach(() => {
@@ -22,7 +22,7 @@ describe('create-or-update-ref', () => {
       .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv1')
       .reply(200, [{ ref: 'tags/v1' }])
 
-    await createOrUpdateRef(tools, '123abc', '1')
+    await createOrUpdateRef(octokit, '123abc', '1')
 
     expect(nock.isDone()).toBeTruthy()
   })
@@ -38,7 +38,7 @@ describe('create-or-update-ref', () => {
       .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv1')
       .reply(200, [])
 
-    await createOrUpdateRef(tools, '123abc', '1')
+    await createOrUpdateRef(octokit, '123abc', '1')
 
     expect(nock.isDone()).toBeTruthy()
     expect(params.ref).toBe('refs/tags/v1')
@@ -55,7 +55,7 @@ describe('create-or-update-ref', () => {
       .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv1.0')
       .reply(200, [])
 
-    await createOrUpdateRef(tools, '123abc', '1.0')
+    await createOrUpdateRef(octokit, '123abc', '1.0')
 
     expect(nock.isDone()).toBeTruthy()
     expect(params.ref).toBe('refs/tags/v1.0')

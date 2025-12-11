@@ -1,11 +1,11 @@
 import nock from 'nock'
 import updateTag from '../src/update-tag.js'
-import { generateToolkit } from './helpers.js'
-import { Toolkit } from 'actions-toolkit'
+import { generateMockOctokit } from './helpers.js'
+import { type OctokitClient } from '../src/toolkit.js'
 import { jest } from '@jest/globals'
 
 describe('update-tag', () => {
-  let tools: Toolkit
+  let octokit: OctokitClient
   let params: any
 
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('update-tag', () => {
         params = body
       })
 
-    tools = generateToolkit()
+    octokit = generateMockOctokit()
   })
 
   afterEach(() => {
@@ -23,7 +23,7 @@ describe('update-tag', () => {
   })
 
   it('updates the tag', async () => {
-    await updateTag(tools, '123abc', 'v1.0.0')
+    await updateTag(octokit, '123abc', 'v1.0.0')
 
     expect(nock.isDone()).toBeTruthy()
     expect(params).toEqual({

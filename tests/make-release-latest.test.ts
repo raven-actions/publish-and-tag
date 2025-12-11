@@ -1,14 +1,14 @@
 import nock from 'nock'
 import makeReleaseLatest from '../src/make-release-latest.js'
-import { generateToolkit } from './helpers.js'
-import { Toolkit } from 'actions-toolkit'
+import { generateMockOctokit } from './helpers.js'
+import { type OctokitClient } from '../src/toolkit.js'
 import { jest } from '@jest/globals'
 
 describe('make-release-latest', () => {
-  let tools: Toolkit
+  let octokit: OctokitClient
 
   beforeEach(() => {
-    tools = generateToolkit()
+    octokit = generateMockOctokit()
   })
 
   afterEach(() => {
@@ -24,7 +24,7 @@ describe('make-release-latest', () => {
         params = body
       })
 
-    await makeReleaseLatest(tools, 123)
+    await makeReleaseLatest(octokit, 123)
     expect(nock.isDone()).toBeTruthy()
     expect(params.make_latest).toBeTruthy()
   })

@@ -1,14 +1,15 @@
-import { Toolkit } from 'actions-toolkit'
+import * as core from '@actions/core'
 
-export default function getMakeLatest(tools: Toolkit): boolean {
+export default function getMakeLatest(): boolean {
   let result = false
+  const latestInput = core.getInput('latest')
 
-  if (tools.inputs.latest) {
-    if (tools.inputs.latest !== 'true' && tools.inputs.latest !== 'false') {
+  if (latestInput) {
+    if (latestInput !== 'true' && latestInput !== 'false') {
       throw new Error('latest is not valid bool value!')
     }
 
-    result = tools.inputs.latest === 'true' ? true : false
+    result = latestInput === 'true'
   }
 
   return result

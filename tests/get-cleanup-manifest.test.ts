@@ -1,13 +1,8 @@
 import getCleanupManifest from '../src/get-cleanup-manifest.js'
-import { generateToolkit } from './helpers.js'
-import { Toolkit } from 'actions-toolkit'
 import { jest } from '@jest/globals'
 
-describe('get-make-latest', () => {
-  let tools: Toolkit
-
+describe('get-cleanup-manifest', () => {
   beforeEach(() => {
-    tools = generateToolkit()
     delete process.env.INPUT_CLEANUP_MANIFEST
   })
 
@@ -16,26 +11,26 @@ describe('get-make-latest', () => {
   })
 
   it('default', () => {
-    expect(getCleanupManifest(tools)).toBeFalsy()
+    expect(getCleanupManifest()).toBeFalsy()
   })
 
   it('empty', () => {
     process.env.INPUT_CLEANUP_MANIFEST = ''
-    expect(getCleanupManifest(tools)).toBeFalsy()
+    expect(getCleanupManifest()).toBeFalsy()
   })
 
   it('true', () => {
     process.env.INPUT_CLEANUP_MANIFEST = 'true'
-    expect(getCleanupManifest(tools)).toBeTruthy()
+    expect(getCleanupManifest()).toBeTruthy()
   })
 
   it('false', () => {
     process.env.INPUT_CLEANUP_MANIFEST = 'false'
-    expect(getCleanupManifest(tools)).toBeFalsy()
+    expect(getCleanupManifest()).toBeFalsy()
   })
 
   it('not bool value', () => {
     process.env.INPUT_CLEANUP_MANIFEST = 'test'
-    expect(() => getCleanupManifest(tools)).toThrow('cleanup_manifest is not valid bool value!')
+    expect(() => getCleanupManifest()).toThrow('cleanup_manifest is not valid bool value!')
   })
 })

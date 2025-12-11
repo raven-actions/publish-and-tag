@@ -1,10 +1,11 @@
-import { Toolkit } from 'actions-toolkit'
+import * as core from '@actions/core'
+import { context, type OctokitClient } from './toolkit.js'
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-export default async function makeReleaseLatest(tools: Toolkit, releaseId: number): Promise<any> {
-  tools.log.info('Making release latest')
-  return await tools.github.repos.updateRelease({
-    ...tools.context.repo,
+export default async function makeReleaseLatest(octokit: OctokitClient, releaseId: number): Promise<any> {
+  core.info('Making release latest')
+  return await octokit.rest.repos.updateRelease({
+    ...context.repo,
     release_id: releaseId,
     prerelease: false,
     make_latest: 'true'

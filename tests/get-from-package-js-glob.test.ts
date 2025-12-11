@@ -1,33 +1,30 @@
-import { generateToolkit } from './helpers.js'
-import { Toolkit } from 'actions-toolkit'
 import { getMainFromPackage, getFilesFromPackage } from '../src/get-from-package.js'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { jest } from '@jest/globals'
+import { setTestPackageJSON } from '../src/toolkit.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('get-from-package (JavaScript Action)', () => {
-  let tools: Toolkit
-
   beforeEach(() => {
     process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'glob')
-    tools = generateToolkit()
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    setTestPackageJSON(undefined)
+    jest.restoreAllMocks()
     delete process.env.GITHUB_WORKSPACE
   })
 
   it('main', async () => {
-    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({ main: 'dist/index.js' })
-    const result = await getMainFromPackage(tools)
+    setTestPackageJSON({ main: 'dist/index.js' })
+    const result = await getMainFromPackage()
     expect(result).toBe('dist/index.js')
   })
 
   it('files - main and additional files with * glob', async () => {
-    const result = await getFilesFromPackage(tools)
+    const result = await getFilesFromPackage()
     expect(result.files).toHaveLength(6)
     expect(result.files?.some((obj: any) => obj === 'dist/index.js')).toBeTruthy()
     expect(result.files?.some((obj: any) => obj === 'dist/additional.js')).toBeTruthy()

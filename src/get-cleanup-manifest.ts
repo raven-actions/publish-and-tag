@@ -1,14 +1,15 @@
-import { Toolkit } from 'actions-toolkit'
+import * as core from '@actions/core'
 
-export default function getCleanupManifest(tools: Toolkit): boolean {
+export default function getCleanupManifest(): boolean {
   let result = false
+  const cleanupManifestInput = core.getInput('cleanup_manifest')
 
-  if (tools.inputs.cleanup_manifest) {
-    if (tools.inputs.cleanup_manifest !== 'true' && tools.inputs.cleanup_manifest !== 'false') {
+  if (cleanupManifestInput) {
+    if (cleanupManifestInput !== 'true' && cleanupManifestInput !== 'false') {
       throw new Error('cleanup_manifest is not valid bool value!')
     }
 
-    result = tools.inputs.cleanup_manifest === 'true' ? true : false
+    result = cleanupManifestInput === 'true'
   }
 
   return result

@@ -1,14 +1,15 @@
-import { Toolkit } from 'actions-toolkit'
+import * as core from '@actions/core'
 
-export default function getRewriteTags(tools: Toolkit): boolean {
+export default function getRewriteTags(): boolean {
   let result = true
+  const rewriteTagsInput = core.getInput('rewrite_tags')
 
-  if (tools.inputs.rewrite_tags) {
-    if (tools.inputs.rewrite_tags !== 'true' && tools.inputs.rewrite_tags !== 'false') {
+  if (rewriteTagsInput) {
+    if (rewriteTagsInput !== 'true' && rewriteTagsInput !== 'false') {
       throw new Error('rewrite_tags is not valid bool value!')
     }
 
-    result = tools.inputs.rewrite_tags === 'true' ? true : false
+    result = rewriteTagsInput === 'true'
   }
 
   return result

@@ -1,11 +1,11 @@
 import nock from 'nock'
 import createCommit from '../src/create-commit.js'
-import { generateToolkit } from './helpers.js'
-import { Toolkit } from 'actions-toolkit'
+import { generateMockOctokit } from './helpers.js'
+import { context, type OctokitClient } from '../src/toolkit.js'
 import { jest } from '@jest/globals'
 
 describe('create-commit (JavaScript Action)', () => {
-  let tools: Toolkit
+  let octokit: OctokitClient
   let treeParams: any
   let commitParams: any
   let gitCommitMessage: string
@@ -19,13 +19,15 @@ describe('create-commit (JavaScript Action)', () => {
       .post('/repos/raven-actions/test/git/commits')
       .reply(200, (_, body) => {
         commitParams = body
+        return { sha: '123abc' }
       })
       .post('/repos/raven-actions/test/git/trees')
       .reply(200, (_, body) => {
         treeParams = body
+        return { sha: '456def' }
       })
 
-    tools = generateToolkit()
+    octokit = generateMockOctokit()
     gitCommitMessage = 'Automatic compilation'
     gitAuthorName = 'github-actions[bot]'
     gitAuthorEmail = '41898282+github-actions[bot]@users.noreply.github.com'
@@ -40,10 +42,10 @@ describe('create-commit (JavaScript Action)', () => {
   })
 
   it('creates the tree and commit - only main', async () => {
-    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<(tools: Toolkit) => Promise<{ files: string[] }>>
+    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<() => Promise<{ files: string[] }>>
     mockGetFilesFromPackage.mockResolvedValue({ files: ['dist/index.js'] })
 
-    await createCommit(tools, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail, mockGetFilesFromPackage)
+    await createCommit(octokit, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail, mockGetFilesFromPackage)
     expect(nock.isDone()).toBeTruthy()
 
     // Test that our tree was created correctly
@@ -52,16 +54,16 @@ describe('create-commit (JavaScript Action)', () => {
 
     // Test that our commit was created correctly
     expect(commitParams.message).toBe('Automatic compilation')
-    expect(commitParams.parents).toEqual([tools.context.sha])
+    expect(commitParams.parents).toEqual([context.sha])
   })
 
   it('creates the tree - only files', async () => {
-    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<(tools: Toolkit) => Promise<{ files: string[] }>>
+    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<() => Promise<{ files: string[] }>>
     mockGetFilesFromPackage.mockResolvedValue({
       files: ['README.md', 'dist/additional.js']
     })
 
-    await createCommit(tools, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail, mockGetFilesFromPackage)
+    await createCommit(octokit, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail, mockGetFilesFromPackage)
 
     // Test that our tree was created correctly
     expect(treeParams.tree).toHaveLength(3)
@@ -70,12 +72,12 @@ describe('create-commit (JavaScript Action)', () => {
   })
 
   it('creates the tree - main and files', async () => {
-    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<(tools: Toolkit) => Promise<{ files: string[] }>>
+    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<() => Promise<{ files: string[] }>>
     mockGetFilesFromPackage.mockResolvedValue({
       files: ['README.md', 'dist/additional.js', 'dist/cleanup.js', 'dist/index.js', 'dist/setup.js']
     })
 
-    await createCommit(tools, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail, mockGetFilesFromPackage)
+    await createCommit(octokit, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail, mockGetFilesFromPackage)
 
     // Test that our tree was created correctly
     expect(treeParams.tree).toHaveLength(6)

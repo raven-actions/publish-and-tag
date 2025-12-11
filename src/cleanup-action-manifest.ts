@@ -1,17 +1,18 @@
+import * as core from '@actions/core'
 import jsYaml from 'js-yaml'
-import { Toolkit } from 'actions-toolkit'
+import { getWorkspace } from './toolkit.js'
 import { readFile as defaultReadFile, writeFile as defaultWriteFile, checkActionManifestFile } from './file-helper.js'
 import { getMainFromPackage } from './get-from-package.js'
 
 export default async function cleanupActionManifest(
-  tools: Toolkit,
   // Optional dependency injection for testing
   readFile: typeof defaultReadFile = defaultReadFile,
   writeFile: typeof defaultWriteFile = defaultWriteFile
 ): Promise<void> {
-  const actionManifestFile = checkActionManifestFile(tools.workspace)
-  const actionManifestContent = readFile(tools.workspace, actionManifestFile)
-  const mainFromPackage = await getMainFromPackage(tools)
+  const workspace = getWorkspace()
+  const actionManifestFile = checkActionManifestFile(workspace)
+  const actionManifestContent = readFile(workspace, actionManifestFile)
+  const mainFromPackage = await getMainFromPackage()
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -27,8 +28,8 @@ export default async function cleanupActionManifest(
       }
     }
 
-    tools.log.info('Cleaning up Action Manifest file')
-    writeFile(tools.workspace, actionManifestFile, jsYaml.dump(config))
+    core.info('Cleaning up Action Manifest file')
+    writeFile(workspace, actionManifestFile, jsYaml.dump(config))
   } catch (error) {
     if (error instanceof jsYaml.YAMLException) {
       throw new Error(`Unable to parse Action Manifest file [${actionManifestFile}]: ${error.reason}`)

@@ -1,9 +1,10 @@
-import { Toolkit, createLogger } from 'actions-toolkit'
+import { Octokit } from '@octokit/rest'
+import { type OctokitClient } from '../src/toolkit.js'
 
-export function generateToolkit(): Toolkit {
-  const tools = new Toolkit({
-    logger: createLogger({ disabled: true })
-  })
-
-  return tools
+// Mock octokit for testing - uses @octokit/rest which nock can intercept
+export function generateMockOctokit(): OctokitClient {
+  return new Octokit({ auth: `token ${process.env.GITHUB_TOKEN || 'test-token'}` })
 }
+
+// Re-export context and utilities for tests
+export { context, getWorkspace, getPackageJSON, setTestPackageJSON } from '../src/toolkit.js'
