@@ -6,19 +6,20 @@ on:
     branches:
       - main
     paths:
-      - 'package-lock.json'
-      - 'package.json'
-      - '.github/workflows/**'
+      - package-lock.json
+      - package.json
+      - .github/workflows/**
     types:
       - opened
       - synchronize
       - reopened
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 jobs:
   dependabot:
     uses: raven-actions/.workflows/.github/workflows/__dependabot.yml@main
+    permissions:
+      contents: write
+      pull-requests: write
     secrets: inherit

@@ -11,11 +11,12 @@ on:
       - synchronize
       - reopened
 
-permissions:
-  contents: read
-  pull-requests: write
+permissions: {}
 
 jobs:
   dependency-review:
     uses: raven-actions/.workflows/.github/workflows/__dependency-review.yml@main
+    permissions:
+      contents: read
+      pull-requests: write
     secrets: inherit

@@ -42,7 +42,7 @@ A [GitHub Action](https://github.com/features/actions) for properly publishing a
 
 #### JavaScript (TypeScript) Action
 
-> This repository even uses it! `@vercel/ncc` supports TypeScript out of the box 😍 So, no need to include your `dist/` in the git.
+> This repository even uses it! So, no need to include your `dist/` in the git.
 
 The two important things you'll need to set in your action are the `main` field and the `build` script. Here's an example of a minimal `package.json` that will use `@vercel/ncc` to compile your action to `dist/index.js`, and update your `action.yml` or `action.yaml` file to use the `node24` runtime, and point `publish-and-tag` action at the compiled file.
 
@@ -111,7 +111,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.release.tag_name }}
 
@@ -122,7 +122,7 @@ jobs:
         run: npm run build
 
       - name: Publish and Tag Action
-        uses: raven-actions/publish-and-tag@v2
+        uses: raven-actions/publish-and-tag@v3
 ```
 
 ### Additional configuration
@@ -157,7 +157,7 @@ All inputs are `optional`.
 |         Name          |   Type   | Default                                                 | Description                                                                                                                                                                                                           |
 |:---------------------:|:--------:|:--------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |      `tag_name`       | `string` | *not set*                                               | The tag to update. If the workflow event is `release`, it will use the `tag_name` from the event payload. This option can be helpful when using this action in a workflow with other actions that generate a release. |
-|    `rewrite_tags`     |  `bool`  | `true`                                                  | Should rewrite major and minor tags?                                                                                                                                                                                  |
+|    `rewrite_tags`     |  `bool`  | `false`                                                 | Should rewrite major and minor tags?                                                                                                                                                                                  |
 |       `latest`        |  `bool`  | `false`                                                 | If the release is prerelease, should make the release the latest and change it to full release?                                                                                                                       |
 |  `cleanup_manifest`   |  `bool`  | `true`                                                  | Should cleanup/rewrite action manifest file (`action.yml` / `action.yaml`)? It means get rid of unnecessary comments and formatting yaml to yaml standards.                                                           |
 | `git_commit_message`  | `string` | `Automatic compilation`                                 | Custom git commit message.                                                                                                                                                                                            |

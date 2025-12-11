@@ -38,7 +38,7 @@ describe('publish-and-tag', () => {
     delete process.env['INPUT_TAG_NAME'];
     delete process.env['INPUT_COMMIT_MESSAGE'];
     delete process.env['INPUT_LATEST'];
-    delete process.env['INPUT_REWRITE_TAGS'];
+    process.env['INPUT_REWRITE_TAGS'] = 'true';
     delete process.env['INPUT_CLEANUP_MANIFEST'];
   });
 
@@ -157,6 +157,18 @@ describe('publish-and-tag', () => {
   it('skips rewriting major/minor refs when rewrite_tags is false', async () => {
     octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [] });
     process.env['INPUT_REWRITE_TAGS'] = 'false';
+
+    await action(octokit);
+
+    // Should not create/update major and minor refs
+    expect(octokit.mocks.createRef).not.toHaveBeenCalled();
+    // updateRef should only be called once for the tag itself
+    expect(octokit.mocks.updateRef).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not rewrite major/minor refs by default', async () => {
+    octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [] });
+    delete process.env['INPUT_REWRITE_TAGS'];
 
     await action(octokit);
 

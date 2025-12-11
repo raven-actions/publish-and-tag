@@ -7,11 +7,12 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: read
+permissions: {}
 
 jobs:
   draft-release:
     uses: raven-actions/.workflows/.github/workflows/__release-draft.yml@main
+    permissions:
+      contents: write
+      pull-requests: read
     secrets: inherit

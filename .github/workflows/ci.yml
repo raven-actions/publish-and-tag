@@ -14,6 +14,8 @@ on:
     branches:
       - main
 
+permissions: {}
+
 jobs:
   ci:
     uses: raven-actions/.workflows/.github/workflows/__ci-testcov.yml@main
