@@ -1,5 +1,5 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import getMakeLatest from '../src/get-make-latest.js'
-import { jest } from '@jest/globals'
 
 describe('get-make-latest', () => {
   beforeEach(() => {
@@ -7,7 +7,7 @@ describe('get-make-latest', () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it('default', () => {

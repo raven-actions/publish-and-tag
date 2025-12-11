@@ -1,5 +1,5 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import * as getGit from '../src/get-git.js'
-import { jest } from '@jest/globals'
 
 describe('get-git', () => {
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('get-git', () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   // git_commit_message

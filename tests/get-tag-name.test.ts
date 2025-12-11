@@ -1,5 +1,5 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import getTagName from '../src/get-tag-name.js'
-import { jest } from '@jest/globals'
 
 describe('get-tag-name', () => {
   beforeEach(() => {
@@ -7,7 +7,7 @@ describe('get-tag-name', () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it('gets the tag from the release payload', () => {

@@ -1,17 +1,17 @@
+import { describe, it, expect, afterEach, vi } from 'vitest'
 import fs from 'fs'
 import path from 'path'
 import * as fileHelper from '../src/file-helper.js'
 import { getWorkspace } from '../src/toolkit.js'
-import { jest } from '@jest/globals'
 
 describe('file-helper', () => {
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it('write the file', () => {
     const workspace = getWorkspace()
-    jest.spyOn(fs, 'writeFileSync').mockReturnValue(undefined)
+    vi.spyOn(fs, 'writeFileSync').mockReturnValue(undefined)
     expect(fileHelper.writeFile(workspace, 'test.md', 'test')).toBeUndefined()
   })
 

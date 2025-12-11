@@ -1,15 +1,15 @@
+import { describe, it, expect, afterEach, vi } from 'vitest'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { getWorkspace } from '../src/toolkit.js'
 import cleanupActionManifest from '../src/cleanup-action-manifest.js'
-import { jest } from '@jest/globals'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('cleanup-action-manifest', () => {
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
     delete process.env.GITHUB_WORKSPACE
   })
 
@@ -20,8 +20,8 @@ describe('cleanup-action-manifest', () => {
     const sourceActionManifest = fs.readFileSync(path.resolve(workspace, 'action.yml'), 'utf8')
 
     // Create mock functions
-    const mockReadFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string) => string>
-    const mockWriteFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string, content: string) => void>
+    const mockReadFile = vi.fn<(baseDir: string, file: string) => string>()
+    const mockWriteFile = vi.fn<(baseDir: string, file: string, content: string) => void>()
 
     mockReadFile.mockReturnValue(sourceActionManifest)
 
@@ -37,8 +37,8 @@ describe('cleanup-action-manifest', () => {
     const sourceActionManifest = fs.readFileSync(path.resolve(workspace, 'action.yml'), 'utf8')
 
     // Create mock functions
-    const mockReadFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string) => string>
-    const mockWriteFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string, content: string) => void>
+    const mockReadFile = vi.fn<(baseDir: string, file: string) => string>()
+    const mockWriteFile = vi.fn<(baseDir: string, file: string, content: string) => void>()
 
     mockReadFile.mockReturnValue(sourceActionManifest)
 
@@ -54,8 +54,8 @@ describe('cleanup-action-manifest', () => {
     const originalActionManifest = fs.readFileSync(path.resolve(workspace, 'action.yml'), 'utf8')
 
     // Create mock functions
-    const mockReadFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string) => string>
-    const mockWriteFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string, content: string) => void>
+    const mockReadFile = vi.fn<(baseDir: string, file: string) => string>()
+    const mockWriteFile = vi.fn<(baseDir: string, file: string, content: string) => void>()
 
     mockReadFile.mockReturnValue(originalActionManifest)
 
@@ -65,8 +65,8 @@ describe('cleanup-action-manifest', () => {
 
   it('should throw an error when the YAML is invalid', () => {
     // Create mock functions
-    const mockReadFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string) => string>
-    const mockWriteFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string, content: string) => void>
+    const mockReadFile = vi.fn<(baseDir: string, file: string) => string>()
+    const mockWriteFile = vi.fn<(baseDir: string, file: string, content: string) => void>()
 
     mockReadFile.mockReturnValue('test: {')
 
@@ -75,8 +75,8 @@ describe('cleanup-action-manifest', () => {
 
   it('should throw an error when the YAML is not an object', () => {
     // Create mock functions
-    const mockReadFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string) => string>
-    const mockWriteFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string, content: string) => void>
+    const mockReadFile = vi.fn<(baseDir: string, file: string) => string>()
+    const mockWriteFile = vi.fn<(baseDir: string, file: string, content: string) => void>()
 
     mockReadFile.mockReturnValue('not an object')
 

@@ -1,7 +1,7 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { getMainFromPackage, getFilesFromPackage } from '../src/get-from-package.js'
-import { jest } from '@jest/globals'
 import { setTestPackageJSON } from '../src/toolkit.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -13,7 +13,7 @@ describe('get-from-package (Composite Action)', () => {
 
   afterEach(() => {
     setTestPackageJSON(undefined)
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
     delete process.env.GITHUB_WORKSPACE
   })
 

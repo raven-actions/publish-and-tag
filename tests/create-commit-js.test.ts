@@ -1,8 +1,8 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import nock from 'nock'
 import createCommit from '../src/create-commit.js'
-import { generateMockOctokit } from './helpers.js'
+import { createMockOctokit } from './helpers.js'
 import { context, type OctokitClient } from '../src/toolkit.js'
-import { jest } from '@jest/globals'
 
 describe('create-commit (JavaScript Action)', () => {
   let octokit: OctokitClient
@@ -27,22 +27,22 @@ describe('create-commit (JavaScript Action)', () => {
         return { sha: '456def' }
       })
 
-    octokit = generateMockOctokit()
+    octokit = createMockOctokit()
     gitCommitMessage = 'Automatic compilation'
     gitAuthorName = 'github-actions[bot]'
     gitAuthorEmail = '41898282+github-actions[bot]@users.noreply.github.com'
     gitCommitterName = 'github-actions[bot]'
     gitCommitterEmail = '41898282+github-actions[bot]@users.noreply.github.com'
 
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it('creates the tree and commit - only main', async () => {
-    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<() => Promise<{ files: string[] }>>
+    const mockGetFilesFromPackage = vi.fn<() => Promise<{ files: string[] }>>()
     mockGetFilesFromPackage.mockResolvedValue({ files: ['dist/index.js'] })
 
     await createCommit(octokit, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail, mockGetFilesFromPackage)
@@ -58,7 +58,7 @@ describe('create-commit (JavaScript Action)', () => {
   })
 
   it('creates the tree - only files', async () => {
-    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<() => Promise<{ files: string[] }>>
+    const mockGetFilesFromPackage = vi.fn<() => Promise<{ files: string[] }>>()
     mockGetFilesFromPackage.mockResolvedValue({
       files: ['README.md', 'dist/additional.js']
     })
@@ -72,7 +72,7 @@ describe('create-commit (JavaScript Action)', () => {
   })
 
   it('creates the tree - main and files', async () => {
-    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<() => Promise<{ files: string[] }>>
+    const mockGetFilesFromPackage = vi.fn<() => Promise<{ files: string[] }>>()
     mockGetFilesFromPackage.mockResolvedValue({
       files: ['README.md', 'dist/additional.js', 'dist/cleanup.js', 'dist/index.js', 'dist/setup.js']
     })

@@ -1,5 +1,5 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import getRewriteTags from '../src/get-rewrite-tags.js'
-import { jest } from '@jest/globals'
 
 describe('get-rewrite-tags', () => {
   beforeEach(() => {
@@ -7,7 +7,7 @@ describe('get-rewrite-tags', () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it('default', () => {

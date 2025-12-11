@@ -1,10 +1,10 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import nock from 'nock'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import createCommit from '../src/create-commit.js'
-import { generateMockOctokit } from './helpers.js'
+import { createMockOctokit } from './helpers.js'
 import { context, type OctokitClient } from '../src/toolkit.js'
-import { jest } from '@jest/globals'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -32,7 +32,7 @@ describe('create-commit (Composite Action)', () => {
       })
 
     process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'composite')
-    octokit = generateMockOctokit()
+    octokit = createMockOctokit()
     gitCommitMessage = 'Automatic compilation'
     gitAuthorName = 'github-actions[bot]'
     gitAuthorEmail = '41898282+github-actions[bot]@users.noreply.github.com'
@@ -41,12 +41,12 @@ describe('create-commit (Composite Action)', () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
     delete process.env.GITHUB_WORKSPACE
   })
 
   it('chmod', async () => {
-    const mockGetFilesFromPackage = jest.fn() as jest.MockedFunction<() => Promise<{ files: string[] }>>
+    const mockGetFilesFromPackage = vi.fn<() => Promise<{ files: string[] }>>()
     mockGetFilesFromPackage.mockResolvedValue({
       files: ['entrypoint.sh', 'main.js']
     })

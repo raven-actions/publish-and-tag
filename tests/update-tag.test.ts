@@ -1,8 +1,8 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import nock from 'nock'
 import updateTag from '../src/update-tag.js'
-import { generateMockOctokit } from './helpers.js'
+import { createMockOctokit } from './helpers.js'
 import { type OctokitClient } from '../src/toolkit.js'
-import { jest } from '@jest/globals'
 
 describe('update-tag', () => {
   let octokit: OctokitClient
@@ -15,11 +15,11 @@ describe('update-tag', () => {
         params = body
       })
 
-    octokit = generateMockOctokit()
+    octokit = createMockOctokit()
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it('updates the tag', async () => {

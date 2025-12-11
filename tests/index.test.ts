@@ -1,15 +1,14 @@
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import nock from 'nock'
 import { action } from '../src/main.js'
-import { generateMockOctokit } from './helpers.js'
-import { type OctokitClient } from '../src/toolkit.js'
-import { jest } from '@jest/globals'
+import { createMockOctokit, type OctokitClient } from './helpers.js'
 
 describe('publish-and-tag', () => {
   let octokit: OctokitClient
 
   beforeEach(() => {
     nock.cleanAll()
-    octokit = generateMockOctokit()
+    octokit = createMockOctokit()
     delete process.env.INPUT_SETUP
     delete process.env.INPUT_TAG_NAME
     delete process.env.INPUT_COMMIT_MESSAGE
@@ -17,7 +16,7 @@ describe('publish-and-tag', () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    nock.cleanAll()
   })
 
   it('updates the ref and updates an existing major ref', async () => {
@@ -91,7 +90,7 @@ describe('publish-and-tag', () => {
   })
 
   it('updates an existing major ref and makes release latest', async () => {
-    let params: any
+    let params: unknown
 
     nock('https://api.github.com')
       .patch('/repos/raven-actions/test/releases/123')
@@ -116,7 +115,7 @@ describe('publish-and-tag', () => {
     process.env.INPUT_LATEST = 'true'
 
     await action(octokit)
-    expect(params.make_latest).toBeTruthy()
+    expect((params as { make_latest: unknown }).make_latest).toBeTruthy()
     expect(nock.isDone()).toBeTruthy()
   })
 })

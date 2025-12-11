@@ -1,10 +1,14 @@
 import { Octokit } from '@octokit/rest'
-import { type OctokitClient } from '../src/toolkit.js'
+import type { OctokitClient } from '../src/toolkit.js'
 
-// Mock octokit for testing - uses @octokit/rest which nock can intercept
-export function generateMockOctokit(): OctokitClient {
-  return new Octokit({ auth: `token ${process.env.GITHUB_TOKEN || 'test-token'}` })
+/**
+ * Creates a mock Octokit client for testing
+ * Uses @octokit/rest which nock can intercept
+ */
+export function createMockOctokit(): OctokitClient {
+  return new Octokit({ auth: `token ${process.env.GITHUB_TOKEN ?? 'test-token'}` })
 }
 
-// Re-export context and utilities for tests
+// Re-export utilities for tests
 export { context, getWorkspace, getPackageJSON, setTestPackageJSON } from '../src/toolkit.js'
+export type { OctokitClient } from '../src/toolkit.js'

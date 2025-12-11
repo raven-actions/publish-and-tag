@@ -1,5 +1,5 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import getCleanupManifest from '../src/get-cleanup-manifest.js'
-import { jest } from '@jest/globals'
 
 describe('get-cleanup-manifest', () => {
   beforeEach(() => {
@@ -7,7 +7,7 @@ describe('get-cleanup-manifest', () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it('default', () => {

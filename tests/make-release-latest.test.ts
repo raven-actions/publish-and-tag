@@ -1,18 +1,18 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import nock from 'nock'
 import makeReleaseLatest from '../src/make-release-latest.js'
-import { generateMockOctokit } from './helpers.js'
+import { createMockOctokit } from './helpers.js'
 import { type OctokitClient } from '../src/toolkit.js'
-import { jest } from '@jest/globals'
 
 describe('make-release-latest', () => {
   let octokit: OctokitClient
 
   beforeEach(() => {
-    octokit = generateMockOctokit()
+    octokit = createMockOctokit()
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it('true', async () => {
