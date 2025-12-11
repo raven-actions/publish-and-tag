@@ -23,7 +23,7 @@ export default defineConfig({
         }
       }
     },
-    reporters: ['verbose', 'junit'],
+    reporters: ['default', process.env['CI'] ? 'github-actions' : {}, 'verbose', 'junit'],
     outputFile: {
       junit: './reports/vitest-report.xml'
     },
