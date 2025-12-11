@@ -4,7 +4,7 @@ import { getWorkspace, getPackageJSON } from './toolkit.js'
 import { isFile } from './file-helper.js'
 import path from 'path'
 
-export async function getMainFromPackage(): Promise<string | undefined> {
+export function getMainFromPackage(): string | undefined {
   return getPackageJSON<{ main?: string }>()?.main
 }
 
@@ -19,11 +19,11 @@ export async function getFilesFromPackage(): Promise<{ files: string[] }> {
     throw new Error('Property "main" or "files" do not exist in your `package.json`.')
   }
 
-  let result: string[] = []
-  if (main) {
-    if (main !== 'composite' && main !== 'docker') {
-      result.push(main)
-    }
+  const result: string[] = []
+
+  // Add main file if it's a JavaScript action (not composite or docker)
+  if (main && main !== 'composite' && main !== 'docker') {
+    result.push(main)
   }
 
   if (files?.length) {
@@ -32,11 +32,12 @@ export async function getFilesFromPackage(): Promise<{ files: string[] }> {
     const allFiles = await globber.glob()
     const filesRelative = allFiles.map((element) => core.toPosixPath(path.relative(workspace, element)))
 
-    const newFiles = [
-      ...new Set(filesRelative.filter((str) => str !== main && str !== 'action.yml' && str !== 'action.yaml').filter((str) => true === isFile(workspace, str))),
-      ...result
-    ]
-    result = [...new Set(newFiles)]
+    // Filter out main, action manifest files, and non-files, then deduplicate
+    const filteredFiles = filesRelative.filter(
+      (file) => file !== main && file !== 'action.yml' && file !== 'action.yaml' && isFile(workspace, file)
+    )
+
+    return { files: [...new Set([...filteredFiles, ...result])] }
   }
 
   return { files: result }

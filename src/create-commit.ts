@@ -3,6 +3,14 @@ import { context, getWorkspace, type OctokitClient } from './toolkit.js'
 import { readFile, checkActionManifestFile } from './file-helper.js'
 import { getFilesFromPackage as defaultGetFilesFromPackage } from './get-from-package.js'
 
+interface GitCommit {
+  sha: string
+  node_id: string
+  url: string
+  html_url: string
+  message: string
+}
+
 export default async function createCommit(
   octokit: OctokitClient,
   gitCommitMessage: string,
@@ -12,8 +20,7 @@ export default async function createCommit(
   gitCommitterEmail: string,
   // Optional dependency injection for testing
   getFilesFromPackage: typeof defaultGetFilesFromPackage = defaultGetFilesFromPackage
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-): Promise<any> {
+): Promise<GitCommit> {
   const workspace = getWorkspace()
   const { files } = await getFilesFromPackage()
   const actionManifestGitTree = getActionManifestGitTree(workspace)
@@ -47,8 +54,14 @@ export default async function createCommit(
   return commit.data
 }
 
-// eslint-disable-next-line  @typescript-eslint/no-explicit-any
-function getActionManifestGitTree(workspace: string): any[] {
+interface GitTreeItem {
+  path: string
+  mode: '100644' | '100755' | '040000' | '160000' | '120000'
+  type: 'blob' | 'tree' | 'commit'
+  content: string
+}
+
+function getActionManifestGitTree(workspace: string): GitTreeItem[] {
   const actionManifestFile = checkActionManifestFile(workspace)
   core.info('Adding action metadata file to the git tree')
   return [
@@ -61,8 +74,7 @@ function getActionManifestGitTree(workspace: string): any[] {
   ]
 }
 
-// eslint-disable-next-line  @typescript-eslint/no-explicit-any
-function getFilesGitTree(workspace: string, files: string[]): any[] {
+function getFilesGitTree(workspace: string, files: string[]): GitTreeItem[] {
   core.info('Adding files to the git tree')
   return files.map((fileName) => ({
     path: fileName,

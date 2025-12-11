@@ -37,7 +37,7 @@ export async function action(octokit: OctokitClient): Promise<void> {
   const gitCommitterEmail = getGit.getGitCommitterEmail()
 
   if (cleanupManifest) {
-    await cleanupActionManifest()
+    cleanupActionManifest()
   }
 
   const commit = await createCommit(octokit, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail)
@@ -88,10 +88,10 @@ export async function action(octokit: OctokitClient): Promise<void> {
 
   // Set outputs
   core.setOutput('commit_sha', commit.sha)
-  core.setOutput('semver', semverStr ? semverStr : '')
-  core.setOutput('semver_major', semverMajorStr ? semverMajorStr : '')
-  core.setOutput('semver_minor', semverMinorStr ? semverMinorStr : '')
-  core.setOutput('semver_patch', semverPatchStr ? semverPatchStr : '')
+  core.setOutput('semver', semverStr ?? '')
+  core.setOutput('semver_major', semverMajorStr)
+  core.setOutput('semver_minor', semverMinorStr)
+  core.setOutput('semver_patch', semverPatchStr)
 }
 
 export async function run(): Promise<void> {

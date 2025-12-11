@@ -13,7 +13,7 @@ describe('cleanup-action-manifest', () => {
     delete process.env.GITHUB_WORKSPACE
   })
 
-  it('should not update the runs property when mainFromPackage is composite', async () => {
+  it('should not update the runs property when mainFromPackage is composite', () => {
     process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'composite')
     const workspace = getWorkspace()
 
@@ -25,12 +25,12 @@ describe('cleanup-action-manifest', () => {
 
     mockReadFile.mockReturnValue(sourceActionManifest)
 
-    await cleanupActionManifest(mockReadFile, mockWriteFile)
+    cleanupActionManifest(mockReadFile, mockWriteFile)
 
     expect(mockWriteFile).toHaveBeenCalledWith(workspace, 'action.yml', sourceActionManifest)
   })
 
-  it('should not update the runs property when mainFromPackage is docker', async () => {
+  it('should not update the runs property when mainFromPackage is docker', () => {
     process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'docker')
     const workspace = getWorkspace()
 
@@ -42,11 +42,11 @@ describe('cleanup-action-manifest', () => {
 
     mockReadFile.mockReturnValue(sourceActionManifest)
 
-    await cleanupActionManifest(mockReadFile, mockWriteFile)
+    cleanupActionManifest(mockReadFile, mockWriteFile)
     expect(mockWriteFile).toHaveBeenCalledWith(workspace, 'action.yml', sourceActionManifest)
   })
 
-  it('should update the runs property when mainFromPackage is javascript', async () => {
+  it('should update the runs property when mainFromPackage is javascript', () => {
     process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'javascript-cleanup')
     const workspace = getWorkspace()
 
@@ -59,27 +59,27 @@ describe('cleanup-action-manifest', () => {
 
     mockReadFile.mockReturnValue(originalActionManifest)
 
-    await cleanupActionManifest(mockReadFile, mockWriteFile)
+    cleanupActionManifest(mockReadFile, mockWriteFile)
     expect(mockWriteFile).toHaveBeenCalledWith(workspace, 'action.yml', sourceActionManifest)
   })
 
-  it('should throw an error when the YAML is invalid', async () => {
+  it('should throw an error when the YAML is invalid', () => {
     // Create mock functions
     const mockReadFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string) => string>
     const mockWriteFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string, content: string) => void>
 
     mockReadFile.mockReturnValue('test: {')
 
-    await expect(cleanupActionManifest(mockReadFile, mockWriteFile)).rejects.toThrow(/Unable to parse Action Manifest file/)
+    expect(() => cleanupActionManifest(mockReadFile, mockWriteFile)).toThrow(/Unable to parse Action Manifest file/)
   })
 
-  it('should throw an error when the YAML is not an object', async () => {
+  it('should throw an error when the YAML is not an object', () => {
     // Create mock functions
     const mockReadFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string) => string>
     const mockWriteFile = jest.fn() as jest.MockedFunction<(baseDir: string, file: string, content: string) => void>
 
     mockReadFile.mockReturnValue('not an object')
 
-    await expect(cleanupActionManifest(mockReadFile, mockWriteFile)).rejects.toThrow(/does not contain valid YAML object/)
+    expect(() => cleanupActionManifest(mockReadFile, mockWriteFile)).toThrow(/does not contain valid YAML object/)
   })
 })
