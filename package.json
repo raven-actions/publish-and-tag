@@ -59,7 +59,7 @@
     "deps:ci": "pnpm install --frozen-lockfile",
     "deps:ck": "pnpm outdated --long",
     "deps:up": "pnpm update --latest",
-    "format": "syncpack format && prettier --config ./.github/linters/.prettierrc.yml --write \"**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx}\"",
+    "format": "syncpack format && prettier --config ./.github/linters/.prettierrc.yml --write \"**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,jsonc}\"",
     "lint": "eslint . --config ./.github/linters/eslint.config.mjs",
     "package": "node esbuild.config.mjs",
     "run": "node dist/index.js",

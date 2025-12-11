@@ -8,17 +8,9 @@
       "runtimeVersion": "20",
       "runtimeExecutable": "npx",
       "cwd": "${workspaceRoot}",
-      "args": [
-        "@github/local-action",
-        ".",
-        "src/main.ts",
-        ".env"
-      ],
+      "args": ["@github/local-action", ".", "src/main.ts", ".env"],
       "console": "integratedTerminal",
-      "skipFiles": [
-        "<node_internals>/**",
-        "node_modules/**"
-      ]
+      "skipFiles": ["<node_internals>/**", "node_modules/**"]
     }
   ]
 }
