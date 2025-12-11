@@ -10,15 +10,12 @@ on:
         description: Tag name that the major tag will point to
         required: true
       debug:
-        type: choice
+        type: boolean
         description: Debug mode
         required: false
-        options:
-          - 'true'
-          - 'false'
+        default: false
 
-permissions:
-  contents: write
+permissions: {}
 
 env:
   DEBUG: ${{ inputs.debug || secrets.ACTIONS_RUNNER_DEBUG || vars.ACTIONS_RUNNER_DEBUG || secrets.ACTIONS_STEP_DEBUG || vars.ACTIONS_STEP_DEBUG || false }}
@@ -28,8 +25,8 @@ jobs:
   build-publish-tag:
     name: Build, Publish and Tag
     runs-on: ubuntu-latest
-    # permissions:
-    #   contents: write
+    permissions:
+      contents: write
     steps:
       - name: 🩺 Debug
         if: ${{ env.DEBUG == 'true' }}
@@ -54,8 +51,7 @@ jobs:
       - name: 🚧 Setup pnpm
         uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
         with:
-          version: 9
-          run_install: false
+          version: 10
 
       - name: 🚧 Setup Node
         uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
@@ -74,13 +70,13 @@ jobs:
         uses: raven-actions/bot-details@ee8966a9ff6e7e42cbfc4a56b4ddb60a9d1b40a6 # v1.2.0
         with:
           bot-slug-name: ${{ steps.get-token.outputs.app-slug }}
+          set-env: false
 
       - name: 🚀 Publish and Tag Action
         uses: ./
         with:
           github_token: ${{ steps.get-token.outputs.token }}
           tag_name: ${{ env.TAG_NAME }}
-          rewrite_tags: true
           latest: true
           git_commit_message: ${{ format('🚀 {0} release', env.TAG_NAME) }}
           git_author_name: ${{ steps.bot-details.outputs.name }}

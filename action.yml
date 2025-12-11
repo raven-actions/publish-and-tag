@@ -15,7 +15,7 @@ inputs:
   rewrite_tags:
     description: Should rewrite major and minor tags?
     required: false
-    default: "true"
+    default: "false"
   latest:
     description: Make release the latest release.
     required: false

@@ -1,13 +1,24 @@
-import js from '@eslint/js'
-import { defineConfig } from 'eslint/config'
-import tseslint from 'typescript-eslint'
-import globals from 'globals'
-import prettier from 'eslint-config-prettier'
+import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+import globals from 'globals';
+import prettier from 'eslint-config-prettier';
 
 export default defineConfig(
   // Global ignores - must be first
   {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**', '.dev/**', 'tests/fixtures/**', '**/*.js', '**/*.mjs', '**/*.cjs', '*.config.ts', '*.config.mjs']
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      'coverage/**',
+      '.dev/**',
+      'tests/fixtures/**',
+      '**/*.js',
+      '**/*.mjs',
+      '**/*.cjs',
+      '*.config.ts',
+      '*.config.mjs'
+    ]
   },
 
   // Base configs
@@ -95,4 +106,4 @@ export default defineConfig(
 
   // Prettier must be last to disable conflicting rules
   prettier
-)
+);

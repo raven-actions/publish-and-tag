@@ -90,12 +90,12 @@ describe('inputs', () => {
 
   describe('getRewriteTags', () => {
     it('default', () => {
-      expect(inputs.getRewriteTags()).toBeTruthy();
+      expect(inputs.getRewriteTags()).toBeFalsy();
     });
 
     it('empty', () => {
       process.env['INPUT_REWRITE_TAGS'] = '';
-      expect(inputs.getRewriteTags()).toBeTruthy();
+      expect(inputs.getRewriteTags()).toBeFalsy();
     });
 
     it('true', () => {

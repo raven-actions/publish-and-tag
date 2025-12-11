@@ -24,7 +24,7 @@ export function getMakeLatest(): boolean {
 }
 
 export function getRewriteTags(): boolean {
-  return getBooleanInput('rewrite_tags', true);
+  return getBooleanInput('rewrite_tags', false);
 }
 
 export function getTagName(): string {
