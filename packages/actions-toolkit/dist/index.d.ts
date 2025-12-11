@@ -95,7 +95,7 @@ export declare class Toolkit<I extends InputType = InputType, O extends OutputTy
      * @param filename - Name of the file
      * @param encoding - Encoding (usually utf8)
      */
-    readFile(filename: string, encoding?: EncodingOption): Promise<string | Buffer<ArrayBufferLike>>;
+    readFile(filename: string, encoding?: EncodingOption): Promise<string | NonSharedBuffer>;
     /**
      * Get the package.json file in the project root
      *
