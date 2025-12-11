@@ -22,7 +22,7 @@ A [GitHub Action](https://github.com/features/actions) for properly publishing a
 
 ## 📑 Table of Contents <!-- omit in toc -->
 
-- [🛠️ Usage](#️-usage)
+- [📚 Usage](#-usage)
   - [Prerequisites](#prerequisites)
     - [JavaScript (TypeScript) Action](#javascript-typescript-action)
     - [Docker Action](#docker-action)
@@ -36,7 +36,7 @@ A [GitHub Action](https://github.com/features/actions) for properly publishing a
 - [👥 Contributing](#-contributing)
 - [🛡️ License](#️-license)
 
-## 🛠️ Usage
+## 📚 Usage
 
 ### Prerequisites
 
