@@ -4,11 +4,17 @@ import createOrUpdateRef from './create-or-update-ref.js';
 import createCommit from './create-commit.js';
 import updateTag from './update-tag.js';
 import makeReleaseLatest from './make-release-latest.js';
-import getTagName from './get-tag-name.js';
-import * as getGit from './get-git.js';
-import getRewriteTags from './get-rewrite-tags.js';
-import getMakeLatest from './get-make-latest.js';
-import getCleanupManifest from './get-cleanup-manifest.js';
+import {
+  getTagName,
+  getRewriteTags,
+  getMakeLatest,
+  getCleanupManifest,
+  getGitCommitMessage,
+  getGitAuthorName,
+  getGitAuthorEmail,
+  getGitCommitterName,
+  getGitCommitterEmail
+} from './inputs.js';
 import cleanupActionManifest from './cleanup-action-manifest.js';
 import { context, getOctokit, type OctokitClient } from './toolkit.js';
 
@@ -30,11 +36,11 @@ export async function action(octokit: OctokitClient): Promise<void> {
   core.info(`Should cleanup action manifest? [${cleanupManifest}]`);
 
   // Create a new commit, with the new tree
-  const gitCommitMessage = getGit.getGitCommitMessage();
-  const gitAuthorName = getGit.getGitAuthorName();
-  const gitAuthorEmail = getGit.getGitAuthorEmail();
-  const gitCommitterName = getGit.getGitCommitterName();
-  const gitCommitterEmail = getGit.getGitCommitterEmail();
+  const gitCommitMessage = getGitCommitMessage();
+  const gitAuthorName = getGitAuthorName();
+  const gitAuthorEmail = getGitAuthorEmail();
+  const gitCommitterName = getGitCommitterName();
+  const gitCommitterEmail = getGitCommitterEmail();
 
   if (cleanupManifest) {
     cleanupActionManifest();
