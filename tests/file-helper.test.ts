@@ -1,40 +1,68 @@
-import fs from 'fs'
-import path from 'path'
-import * as fileHelper from '../src/file-helper.js'
-import { Toolkit } from 'actions-toolkit'
-import { generateToolkit } from './helpers.js'
-import { jest } from '@jest/globals'
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import fs from 'fs';
+import path from 'path';
+import * as fileHelper from '../src/file-helper.js';
+import { getWorkspace } from '../src/toolkit.js';
 
 describe('file-helper', () => {
-  let tools: Toolkit
-
-  beforeEach(() => {
-    tools = generateToolkit()
-  })
-
   afterEach(() => {
-    jest.resetAllMocks()
-  })
+    vi.restoreAllMocks();
+  });
 
-  it('write the file', () => {
-    jest.spyOn(fs, 'writeFileSync').mockReturnValue(undefined)
-    expect(fileHelper.writeFile(tools.workspace, 'test.md', 'test')).toBeUndefined()
-  })
+  describe('writeFile', () => {
+    it('writes the file successfully', () => {
+      const workspace = getWorkspace();
+      // Just verify the function runs without error
+      // Actual file write is tested by integration
+      expect(() => fileHelper.writeFile(workspace, 'test-output.txt', 'test content')).not.toThrow();
+      // Clean up
+      const testFile = path.resolve(workspace, 'test-output.txt');
+      if (fs.existsSync(testFile)) {
+        fs.unlinkSync(testFile);
+      }
+    });
+  });
 
-  it('reads the file and returns the contents', () => {
-    expect(fileHelper.readFile(tools.workspace, 'README.md')).toBe('# Hello\n')
-  })
+  describe('readFile', () => {
+    it('reads the file and returns the contents', () => {
+      const workspace = getWorkspace();
+      expect(fileHelper.readFile(workspace, 'README.md')).toBe('# Hello\n');
+    });
 
-  it('throws if the file does not exist', () => {
-    expect(() => fileHelper.readFile(tools.workspace, 'nope')).toThrow('nope does not exist.')
-  })
+    it('throws if the file does not exist', () => {
+      const workspace = getWorkspace();
+      expect(() => fileHelper.readFile(workspace, 'nope')).toThrow('nope does not exist.');
+    });
+  });
 
-  it('action metadata file exists', () => {
-    expect(fileHelper.checkActionManifestFile(tools.workspace)).toBe('action.yml')
-  })
+  describe('checkActionManifestFile', () => {
+    it('returns action.yml when it exists', () => {
+      const workspace = getWorkspace();
+      expect(fileHelper.checkActionManifestFile(workspace)).toBe('action.yml');
+    });
 
-  it('throws if the action metadata file does not exist', () => {
-    tools.workspace = path.resolve(tools.workspace, 'dist')
-    expect(() => fileHelper.checkActionManifestFile(tools.workspace)).toThrow(`Neither 'action.yml' nor 'action.yaml' exist.`)
-  })
-})
+    it('throws if neither action.yml nor action.yaml exist', () => {
+      const workspace = path.resolve(getWorkspace(), 'dist');
+      expect(() => fileHelper.checkActionManifestFile(workspace)).toThrow(
+        `Neither 'action.yml' nor 'action.yaml' exist.`
+      );
+    });
+  });
+
+  describe('isFile', () => {
+    it('returns true for files', () => {
+      const workspace = getWorkspace();
+      expect(fileHelper.isFile(workspace, 'README.md')).toBe(true);
+    });
+
+    it('returns false for directories', () => {
+      const workspace = getWorkspace();
+      expect(fileHelper.isFile(workspace, 'dist')).toBe(false);
+    });
+
+    it('throws for non-existent paths', () => {
+      const workspace = getWorkspace();
+      expect(() => fileHelper.isFile(workspace, 'nonexistent.txt')).toThrow();
+    });
+  });
+});

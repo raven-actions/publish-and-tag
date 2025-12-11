@@ -1,49 +1,45 @@
-import { Toolkit } from 'actions-toolkit'
-import * as glob from '@actions/glob'
-import * as core from '@actions/core'
-import { isFile } from './file-helper.js'
-import path from 'path'
+import * as glob from '@actions/glob';
+import * as core from '@actions/core';
+import { getWorkspace, getPackageJSON } from './toolkit.js';
+import { isFile } from './file-helper.js';
+import { isJavaScriptAction } from './utils.js';
+import path from 'path';
 
-export async function getMainFromPackage(tools: Toolkit): Promise<string | undefined> {
-  return tools.getPackageJSON<{ main?: string }>()?.main
+export function getMainFromPackage(): string | undefined {
+  return getPackageJSON<{ main?: string }>()?.main;
 }
 
-export async function getFilesFromPackage(tools: Toolkit): Promise<{ files: string[] }> {
-  const { main, files } = tools.getPackageJSON<{
-    main?: string
-    files?: string[]
-  }>()
+export async function getFilesFromPackage(): Promise<{ files: string[] }> {
+  const workspace = getWorkspace();
+  const { main, files } = getPackageJSON<{
+    main?: string;
+    files?: string[];
+  }>();
 
   if (!main && !files?.length) {
-    throw new Error('Property "main" or "files" do not exist in your `package.json`.')
+    throw new Error('Property "main" or "files" do not exist in your `package.json`.');
   }
 
-  let result: string[] = []
-  if (main) {
-    if (main !== 'composite' && main !== 'docker') {
-      result.push(main)
-    }
+  const result: string[] = [];
+
+  // Add main file if it's a JavaScript action (not composite or docker)
+  if (isJavaScriptAction(main)) {
+    result.push(main!);
   }
 
   if (files?.length) {
-    // const allFilePaths = files.reduce<string[]>((arr, file) => {
-    //   const filePaths = glob.sync(file, {cwd: tools.workspace})
-    //   return [...arr, ...filePaths]
-    // }, [])
+    const filesAbsolute = files.map((element) => path.resolve(workspace, element));
+    const globber = await glob.create(filesAbsolute.join('\n'));
+    const allFiles = await globber.glob();
+    const filesRelative = allFiles.map((element) => core.toPosixPath(path.relative(workspace, element)));
 
-    const filesAbsolute = files.map((element) => path.resolve(tools.workspace, element))
-    const globber = await glob.create(filesAbsolute.join('\n'))
-    const allFiles = await globber.glob()
-    const filesRelative = allFiles.map((element) => core.toPosixPath(path.relative(tools.workspace, element)))
+    // Filter out main, action manifest files, and non-files, then deduplicate
+    const filteredFiles = filesRelative.filter(
+      (file) => file !== main && file !== 'action.yml' && file !== 'action.yaml' && isFile(workspace, file)
+    );
 
-    const newFiles = [
-      ...new Set(
-        filesRelative.filter((str) => str !== main && str !== 'action.yml' && str !== 'action.yaml').filter((str) => true === isFile(tools.workspace, str))
-      ),
-      ...result
-    ]
-    result = [...new Set(newFiles)]
+    return { files: [...new Set([...filteredFiles, ...result])] };
   }
 
-  return { files: result }
+  return { files: result };
 }
