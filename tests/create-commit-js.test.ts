@@ -40,7 +40,7 @@ describe('create-commit (JavaScript Action)', () => {
 
     // Verify tree was created with correct files
     expect(octokit.mocks.createTree).toHaveBeenCalledTimes(1);
-    const treeCall = octokit.mocks.createTree.mock.calls[0][0];
+    const treeCall = octokit.mocks.createTree.mock.calls[0]![0];
     expect(treeCall.tree).toHaveLength(2);
     expect(treeCall.tree.some((obj: { path: string }) => obj.path === 'dist/index.js')).toBeTruthy();
 
@@ -71,7 +71,7 @@ describe('create-commit (JavaScript Action)', () => {
     );
 
     // Verify tree was created with correct files
-    const treeCall = octokit.mocks.createTree.mock.calls[0][0];
+    const treeCall = octokit.mocks.createTree.mock.calls[0]![0];
     expect(treeCall.tree).toHaveLength(3);
     expect(treeCall.tree.some((obj: { path: string }) => obj.path === 'README.md')).toBeTruthy();
     expect(treeCall.tree.some((obj: { path: string }) => obj.path === 'dist/additional.js')).toBeTruthy();
@@ -94,7 +94,7 @@ describe('create-commit (JavaScript Action)', () => {
     );
 
     // Verify tree was created with correct number of files
-    const treeCall = octokit.mocks.createTree.mock.calls[0][0];
+    const treeCall = octokit.mocks.createTree.mock.calls[0]![0];
     expect(treeCall.tree).toHaveLength(6);
   });
 });

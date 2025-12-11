@@ -8,13 +8,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe('get-from-package (Docker Action)', () => {
   beforeEach(() => {
-    process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'docker');
+    process.env['GITHUB_WORKSPACE'] = path.resolve(__dirname, 'fixtures', 'workspace', 'docker');
   });
 
   afterEach(() => {
     setTestPackageJSON(undefined);
     vi.restoreAllMocks();
-    delete process.env.GITHUB_WORKSPACE;
+    delete process.env['GITHUB_WORKSPACE'];
   });
 
   it('main', async () => {

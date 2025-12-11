@@ -8,13 +8,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe('get-from-package (Composite Action)', () => {
   beforeEach(() => {
-    process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'composite');
+    process.env['GITHUB_WORKSPACE'] = path.resolve(__dirname, 'fixtures', 'workspace', 'composite');
   });
 
   afterEach(() => {
     setTestPackageJSON(undefined);
     vi.restoreAllMocks();
-    delete process.env.GITHUB_WORKSPACE;
+    delete process.env['GITHUB_WORKSPACE'];
   });
 
   it('main', async () => {

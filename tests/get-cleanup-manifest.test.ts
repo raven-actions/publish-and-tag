@@ -3,7 +3,7 @@ import getCleanupManifest from '../src/get-cleanup-manifest.js';
 
 describe('get-cleanup-manifest', () => {
   beforeEach(() => {
-    delete process.env.INPUT_CLEANUP_MANIFEST;
+    delete process.env['INPUT_CLEANUP_MANIFEST'];
   });
 
   afterEach(() => {
@@ -16,23 +16,23 @@ describe('get-cleanup-manifest', () => {
   });
 
   it('empty', () => {
-    process.env.INPUT_CLEANUP_MANIFEST = '';
+    process.env['INPUT_CLEANUP_MANIFEST'] = '';
     // Empty string means use default (true)
     expect(getCleanupManifest()).toBeTruthy();
   });
 
   it('true', () => {
-    process.env.INPUT_CLEANUP_MANIFEST = 'true';
+    process.env['INPUT_CLEANUP_MANIFEST'] = 'true';
     expect(getCleanupManifest()).toBeTruthy();
   });
 
   it('false', () => {
-    process.env.INPUT_CLEANUP_MANIFEST = 'false';
+    process.env['INPUT_CLEANUP_MANIFEST'] = 'false';
     expect(getCleanupManifest()).toBeFalsy();
   });
 
   it('not bool value', () => {
-    process.env.INPUT_CLEANUP_MANIFEST = 'test';
+    process.env['INPUT_CLEANUP_MANIFEST'] = 'test';
     expect(() => getCleanupManifest()).toThrow('cleanup_manifest is not valid bool value!');
   });
 });

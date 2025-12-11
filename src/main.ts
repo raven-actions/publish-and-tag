@@ -67,7 +67,7 @@ export async function action(octokit: OctokitClient): Promise<void> {
     const payload = context.payload as {
       release: { id: number; draft: boolean; prerelease: boolean; html_url: string; make_latest: string };
     };
-    const { id, draft, prerelease, html_url } = payload.release;
+    const { id, draft, prerelease, html_url: htmlUrl } = payload.release;
     releaseId = id;
 
     if ((draft || prerelease) && !makeLatest) {
@@ -82,7 +82,7 @@ export async function action(octokit: OctokitClient): Promise<void> {
     core.setOutput('release_draft', draft.toString());
     core.setOutput('release_prerelease', prerelease.toString());
     core.setOutput('release_latest', shouldMakeLatest ? shouldMakeLatest.toString() : payload.release.make_latest);
-    core.setOutput('release_url', html_url.toString());
+    core.setOutput('release_url', htmlUrl);
   }
 
   if (shouldRewriteMajorAndMinorRef) {

@@ -8,10 +8,10 @@ describe('publish-and-tag', () => {
 
   beforeEach(() => {
     octokit = createMockOctokit();
-    delete process.env.INPUT_SETUP;
-    delete process.env.INPUT_TAG_NAME;
-    delete process.env.INPUT_COMMIT_MESSAGE;
-    delete process.env.INPUT_LATEST;
+    delete process.env['INPUT_SETUP'];
+    delete process.env['INPUT_TAG_NAME'];
+    delete process.env['INPUT_COMMIT_MESSAGE'];
+    delete process.env['INPUT_LATEST'];
   });
 
   afterEach(() => {
@@ -47,7 +47,7 @@ describe('publish-and-tag', () => {
 
   it('updates the ref with custom tag_name input', async () => {
     octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [] });
-    process.env.INPUT_TAG_NAME = 'v2.0.0';
+    process.env['INPUT_TAG_NAME'] = 'v2.0.0';
 
     await action(octokit);
 
@@ -65,7 +65,7 @@ describe('publish-and-tag', () => {
       .mockResolvedValueOnce({ data: [{ ref: 'tags/v1' }] })
       .mockResolvedValueOnce({ data: [{ ref: 'tags/v1.2' }] });
 
-    process.env.INPUT_LATEST = 'true';
+    process.env['INPUT_LATEST'] = 'true';
 
     await action(octokit);
 

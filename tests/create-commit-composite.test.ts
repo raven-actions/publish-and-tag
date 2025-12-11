@@ -16,7 +16,7 @@ describe('create-commit (Composite Action)', () => {
   let gitCommitterEmail: string;
 
   beforeEach(() => {
-    process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'composite');
+    process.env['GITHUB_WORKSPACE'] = path.resolve(__dirname, 'fixtures', 'workspace', 'composite');
     octokit = createMockOctokit();
     gitCommitMessage = 'Automatic compilation';
     gitAuthorName = 'github-actions[bot]';
@@ -27,7 +27,7 @@ describe('create-commit (Composite Action)', () => {
 
   afterEach(() => {
     vi.resetAllMocks();
-    delete process.env.GITHUB_WORKSPACE;
+    delete process.env['GITHUB_WORKSPACE'];
   });
 
   it('chmod', async () => {
@@ -55,7 +55,7 @@ describe('create-commit (Composite Action)', () => {
     );
 
     // Verify tree structure
-    const treeCall = octokit.mocks.createTree.mock.calls[0][0];
+    const treeCall = octokit.mocks.createTree.mock.calls[0]![0];
     expect(treeCall.tree).toHaveLength(3);
     expect(
       treeCall.tree.some((obj: { path: string; mode: string }) => obj.path === 'entrypoint.sh' && obj.mode === '100755')

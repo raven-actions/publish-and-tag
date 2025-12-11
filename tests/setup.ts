@@ -15,7 +15,7 @@ function getDefaultValues(): Record<string, string> {
   return Object.keys(inputs).reduce<Record<string, string>>(
     (sum, key) => ({
       ...sum,
-      [key]: inputs[key].default ?? ''
+      [key]: inputs[key]?.default ?? ''
     }),
     {}
   );

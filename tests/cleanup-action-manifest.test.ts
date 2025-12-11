@@ -10,11 +10,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 describe('cleanup-action-manifest', () => {
   afterEach(() => {
     vi.resetAllMocks();
-    delete process.env.GITHUB_WORKSPACE;
+    delete process.env['GITHUB_WORKSPACE'];
   });
 
   it('should not update the runs property when mainFromPackage is composite', () => {
-    process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'composite');
+    process.env['GITHUB_WORKSPACE'] = path.resolve(__dirname, 'fixtures', 'workspace', 'composite');
     const workspace = getWorkspace();
 
     const sourceActionManifest = fs.readFileSync(path.resolve(workspace, 'action.yml'), 'utf8');
@@ -31,7 +31,7 @@ describe('cleanup-action-manifest', () => {
   });
 
   it('should not update the runs property when mainFromPackage is docker', () => {
-    process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'docker');
+    process.env['GITHUB_WORKSPACE'] = path.resolve(__dirname, 'fixtures', 'workspace', 'docker');
     const workspace = getWorkspace();
 
     const sourceActionManifest = fs.readFileSync(path.resolve(workspace, 'action.yml'), 'utf8');
@@ -47,7 +47,7 @@ describe('cleanup-action-manifest', () => {
   });
 
   it('should update the runs property when mainFromPackage is javascript', () => {
-    process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'javascript-cleanup');
+    process.env['GITHUB_WORKSPACE'] = path.resolve(__dirname, 'fixtures', 'workspace', 'javascript-cleanup');
     const workspace = getWorkspace();
 
     const sourceActionManifest = fs.readFileSync(path.resolve(workspace, 'action-expected.yml'), 'utf8');

@@ -21,7 +21,7 @@ export type OctokitClient = Octokit;
  * Uses @octokit/rest directly (not @actions/github) for nock compatibility
  */
 export function getOctokit(token?: string): OctokitClient {
-  const resolvedToken = token || core.getInput('github_token') || process.env.GITHUB_TOKEN;
+  const resolvedToken = token || core.getInput('github_token') || process.env['GITHUB_TOKEN'];
   if (!resolvedToken) {
     throw new Error('No GitHub token provided');
   }
@@ -32,7 +32,7 @@ export function getOctokit(token?: string): OctokitClient {
  * Get the workspace path
  */
 export function getWorkspace(): string {
-  return process.env.GITHUB_WORKSPACE || process.cwd();
+  return process.env['GITHUB_WORKSPACE'] || process.cwd();
 }
 
 /**

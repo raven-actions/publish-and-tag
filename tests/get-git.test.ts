@@ -3,11 +3,11 @@ import * as getGit from '../src/get-git.js';
 
 describe('get-git', () => {
   beforeEach(() => {
-    delete process.env.INPUT_GIT_COMMIT_MESSAGE;
-    delete process.env.INPUT_GIT_AUTHOR_NAME;
-    delete process.env.INPUT_GIT_AUTHOR_EMAIL;
-    delete process.env.INPUT_GIT_COMMITTER_NAME;
-    delete process.env.INPUT_GIT_COMMITTER_EMAIL;
+    delete process.env['INPUT_GIT_COMMIT_MESSAGE'];
+    delete process.env['INPUT_GIT_AUTHOR_NAME'];
+    delete process.env['INPUT_GIT_AUTHOR_EMAIL'];
+    delete process.env['INPUT_GIT_COMMITTER_NAME'];
+    delete process.env['INPUT_GIT_COMMITTER_EMAIL'];
   });
 
   afterEach(() => {
@@ -21,13 +21,13 @@ describe('get-git', () => {
   });
 
   it('git-commit-message - empty', () => {
-    process.env.INPUT_GIT_COMMIT_MESSAGE = '';
+    process.env['INPUT_GIT_COMMIT_MESSAGE'] = '';
     const result = getGit.getGitCommitMessage();
     expect(result).toBe('Automatic compilation');
   });
 
   it('git-commit-message - custom', () => {
-    process.env.INPUT_GIT_COMMIT_MESSAGE = 'test commit message';
+    process.env['INPUT_GIT_COMMIT_MESSAGE'] = 'test commit message';
     const result = getGit.getGitCommitMessage();
     expect(result).toBe('test commit message');
   });
@@ -39,13 +39,13 @@ describe('get-git', () => {
   });
 
   it('git-author-name - empty', () => {
-    process.env.INPUT_GIT_AUTHOR_NAME = '';
+    process.env['INPUT_GIT_AUTHOR_NAME'] = '';
     const result = getGit.getGitAuthorName();
     expect(result).toBe('github-actions[bot]');
   });
 
   it('git-author-name - custom', () => {
-    process.env.INPUT_GIT_AUTHOR_NAME = 'custom-actions[bot]';
+    process.env['INPUT_GIT_AUTHOR_NAME'] = 'custom-actions[bot]';
     const result = getGit.getGitAuthorName();
     expect(result).toBe('custom-actions[bot]');
   });
@@ -57,13 +57,13 @@ describe('get-git', () => {
   });
 
   it('git-author-email - empty', () => {
-    process.env.INPUT_GIT_AUTHOR_EMAIL = '';
+    process.env['INPUT_GIT_AUTHOR_EMAIL'] = '';
     const result = getGit.getGitAuthorEmail();
     expect(result).toBe('41898282+github-actions[bot]@users.noreply.github.com');
   });
 
   it('git-author-email - custom', () => {
-    process.env.INPUT_GIT_AUTHOR_EMAIL = '12345678+custom-actions[bot]@users.noreply.github.com';
+    process.env['INPUT_GIT_AUTHOR_EMAIL'] = '12345678+custom-actions[bot]@users.noreply.github.com';
     const result = getGit.getGitAuthorEmail();
     expect(result).toBe('12345678+custom-actions[bot]@users.noreply.github.com');
   });
@@ -75,13 +75,13 @@ describe('get-git', () => {
   });
 
   it('git-committer-name - empty', () => {
-    process.env.INPUT_GIT_COMMITTER_NAME = '';
+    process.env['INPUT_GIT_COMMITTER_NAME'] = '';
     const result = getGit.getGitCommitterName();
     expect(result).toBe('github-actions[bot]');
   });
 
   it('git-committer-name - custom', () => {
-    process.env.INPUT_GIT_COMMITTER_NAME = 'custom-actions[bot]';
+    process.env['INPUT_GIT_COMMITTER_NAME'] = 'custom-actions[bot]';
     const result = getGit.getGitCommitterName();
     expect(result).toBe('custom-actions[bot]');
   });
@@ -93,13 +93,13 @@ describe('get-git', () => {
   });
 
   it('git-committer-email - empty', () => {
-    process.env.INPUT_GIT_COMMITTER_EMAIL = '';
+    process.env['INPUT_GIT_COMMITTER_EMAIL'] = '';
     const result = getGit.getGitCommitterEmail();
     expect(result).toBe('41898282+github-actions[bot]@users.noreply.github.com');
   });
 
   it('git-committer-email - custom', () => {
-    process.env.INPUT_GIT_COMMITTER_EMAIL = '12345678+custom-actions[bot]@users.noreply.github.com';
+    process.env['INPUT_GIT_COMMITTER_EMAIL'] = '12345678+custom-actions[bot]@users.noreply.github.com';
     const result = getGit.getGitCommitterEmail();
     expect(result).toBe('12345678+custom-actions[bot]@users.noreply.github.com');
   });

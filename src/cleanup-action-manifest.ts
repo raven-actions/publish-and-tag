@@ -24,7 +24,7 @@ export default function cleanupActionManifest(
 
     // Only update runs for JavaScript actions (not composite or docker)
     if (mainFromPackage && mainFromPackage !== 'composite' && mainFromPackage !== 'docker') {
-      configRecord.runs = {
+      configRecord['runs'] = {
         using: 'node24',
         main: mainFromPackage
       };

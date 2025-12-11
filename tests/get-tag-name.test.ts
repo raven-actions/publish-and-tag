@@ -3,7 +3,7 @@ import getTagName from '../src/get-tag-name.js';
 
 describe('get-tag-name', () => {
   beforeEach(() => {
-    delete process.env.INPUT_TAG_NAME;
+    delete process.env['INPUT_TAG_NAME'];
   });
 
   afterEach(() => {
@@ -17,7 +17,7 @@ describe('get-tag-name', () => {
   });
 
   it('gets the tag from the input', () => {
-    process.env.INPUT_TAG_NAME = 'v2.1.1';
+    process.env['INPUT_TAG_NAME'] = 'v2.1.1';
     const result = getTagName();
     expect(result).toBe('v2.1.1');
   });
@@ -27,7 +27,7 @@ describe('get-tag-name', () => {
   // Changing process.env.GITHUB_EVENT_NAME after import has no effect.
   it.skip('throws when no tag_name found', () => {
     // This would require jest.unstable_mockModule to mock the toolkit before import
-    process.env.GITHUB_EVENT_NAME = 'pizza';
+    process.env['GITHUB_EVENT_NAME'] = 'pizza';
     expect(() => getTagName()).toThrow('No tag_name was found or provided!');
   });
 });

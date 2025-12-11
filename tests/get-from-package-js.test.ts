@@ -48,7 +48,7 @@ describe('get-from-package (JavaScript Action)', () => {
   });
 
   it('files - main and additional files with * glob', async () => {
-    process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'glob');
+    process.env['GITHUB_WORKSPACE'] = path.resolve(__dirname, 'fixtures', 'workspace', 'glob');
     const result = await getFilesFromPackage();
     expect(result.files).toHaveLength(6);
     expect(result.files?.some((obj: any) => obj === 'dist/index.js')).toBeTruthy();
