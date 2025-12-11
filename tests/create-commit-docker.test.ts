@@ -1,17 +1,14 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import nock from 'nock'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import createCommit from '../src/create-commit.js'
-import { createMockOctokit } from './helpers.js'
+import { createMockOctokit, type MockOctokitMethods } from './helpers.js'
 import { context, type OctokitClient } from '../src/toolkit.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('create-commit (Docker Action)', () => {
-  let octokit: OctokitClient
-  let treeParams: any
-  let commitParams: any
+  let octokit: OctokitClient & { mocks: MockOctokitMethods }
   let gitCommitMessage: string
   let gitAuthorName: string
   let gitAuthorEmail: string
@@ -19,18 +16,6 @@ describe('create-commit (Docker Action)', () => {
   let gitCommitterEmail: string
 
   beforeEach(() => {
-    nock('https://api.github.com')
-      .post('/repos/raven-actions/test/git/commits')
-      .reply(200, (_, body) => {
-        commitParams = body
-        return { sha: '123abc' }
-      })
-      .post('/repos/raven-actions/test/git/trees')
-      .reply(200, (_, body) => {
-        treeParams = body
-        return { sha: '456def' }
-      })
-
     process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'docker')
     octokit = createMockOctokit()
     gitCommitMessage = 'Automatic compilation'
@@ -38,8 +23,6 @@ describe('create-commit (Docker Action)', () => {
     gitAuthorEmail = '41898282+github-actions[bot]@users.noreply.github.com'
     gitCommitterName = 'github-actions[bot]'
     gitCommitterEmail = '41898282+github-actions[bot]@users.noreply.github.com'
-
-    vi.clearAllMocks()
   })
 
   afterEach(() => {
@@ -48,25 +31,29 @@ describe('create-commit (Docker Action)', () => {
   })
 
   it('chmod', async () => {
-    // Create a properly typed mock function for getFilesFromPackage
     const mockGetFilesFromPackage = vi.fn<() => Promise<{ files: string[] }>>()
     mockGetFilesFromPackage.mockResolvedValue({
       files: ['entrypoint.sh', 'Dockerfile']
     })
 
-    // Use dependency injection to pass the mock
     await createCommit(octokit, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail, mockGetFilesFromPackage)
 
-    expect(commitParams.message).toBe('Automatic compilation')
-    expect(commitParams.parents).toEqual([context.sha])
+    // Verify commit was created correctly
+    expect(octokit.mocks.createCommit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'Automatic compilation',
+        parents: [context.sha]
+      })
+    )
 
-    // Verify the mock was called
+    // Verify mock was called
     expect(mockGetFilesFromPackage).toHaveBeenCalled()
 
-    // Now we should have exactly 3 items: action.yml + entrypoint.sh + Dockerfile
-    expect(treeParams.tree).toHaveLength(3)
-    expect(treeParams.tree.some((obj: any) => obj.path === 'entrypoint.sh' && obj.mode === '100755')).toBeTruthy()
-    expect(treeParams.tree.some((obj: any) => obj.path === 'Dockerfile' && obj.mode === '100644')).toBeTruthy()
-    expect(treeParams.tree.some((obj: any) => obj.path === 'action.yml' && obj.mode === '100644')).toBeTruthy()
+    // Verify tree structure: action.yml + entrypoint.sh + Dockerfile
+    const treeCall = octokit.mocks.createTree.mock.calls[0][0]
+    expect(treeCall.tree).toHaveLength(3)
+    expect(treeCall.tree.some((obj: { path: string; mode: string }) => obj.path === 'entrypoint.sh' && obj.mode === '100755')).toBeTruthy()
+    expect(treeCall.tree.some((obj: { path: string; mode: string }) => obj.path === 'Dockerfile' && obj.mode === '100644')).toBeTruthy()
+    expect(treeCall.tree.some((obj: { path: string; mode: string }) => obj.path === 'action.yml' && obj.mode === '100644')).toBeTruthy()
   })
 })

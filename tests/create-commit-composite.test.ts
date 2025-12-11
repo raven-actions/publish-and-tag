@@ -1,17 +1,14 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import nock from 'nock'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import createCommit from '../src/create-commit.js'
-import { createMockOctokit } from './helpers.js'
+import { createMockOctokit, type MockOctokitMethods } from './helpers.js'
 import { context, type OctokitClient } from '../src/toolkit.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('create-commit (Composite Action)', () => {
-  let octokit: OctokitClient
-  let treeParams: any
-  let commitParams: any
+  let octokit: OctokitClient & { mocks: MockOctokitMethods }
   let gitCommitMessage: string
   let gitAuthorName: string
   let gitAuthorEmail: string
@@ -19,18 +16,6 @@ describe('create-commit (Composite Action)', () => {
   let gitCommitterEmail: string
 
   beforeEach(() => {
-    nock('https://api.github.com')
-      .post('/repos/raven-actions/test/git/commits')
-      .reply(200, (_, body) => {
-        commitParams = body
-        return { sha: '123abc' }
-      })
-      .post('/repos/raven-actions/test/git/trees')
-      .reply(200, (_, body) => {
-        treeParams = body
-        return { sha: '456def' }
-      })
-
     process.env.GITHUB_WORKSPACE = path.resolve(__dirname, 'fixtures', 'workspace', 'composite')
     octokit = createMockOctokit()
     gitCommitMessage = 'Automatic compilation'
@@ -53,11 +38,18 @@ describe('create-commit (Composite Action)', () => {
 
     await createCommit(octokit, gitCommitMessage, gitAuthorName, gitAuthorEmail, gitCommitterName, gitCommitterEmail, mockGetFilesFromPackage)
 
-    expect(commitParams.message).toBe('Automatic compilation')
-    expect(commitParams.parents).toEqual([context.sha])
+    // Verify commit was created correctly
+    expect(octokit.mocks.createCommit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'Automatic compilation',
+        parents: [context.sha]
+      })
+    )
 
-    expect(treeParams.tree).toHaveLength(3)
-    expect(treeParams.tree.some((obj: any) => obj.path === 'entrypoint.sh' && obj.mode === '100755')).toBeTruthy()
-    expect(treeParams.tree.some((obj: any) => obj.path === 'main.js' && obj.mode === '100644')).toBeTruthy()
+    // Verify tree structure
+    const treeCall = octokit.mocks.createTree.mock.calls[0][0]
+    expect(treeCall.tree).toHaveLength(3)
+    expect(treeCall.tree.some((obj: { path: string; mode: string }) => obj.path === 'entrypoint.sh' && obj.mode === '100755')).toBeTruthy()
+    expect(treeCall.tree.some((obj: { path: string; mode: string }) => obj.path === 'main.js' && obj.mode === '100644')).toBeTruthy()
   })
 })

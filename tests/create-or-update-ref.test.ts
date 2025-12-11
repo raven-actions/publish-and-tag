@@ -1,11 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import nock from 'nock'
 import createOrUpdateRef from '../src/create-or-update-ref.js'
-import { createMockOctokit } from './helpers.js'
+import { createMockOctokit, type MockOctokitMethods } from './helpers.js'
 import { type OctokitClient } from '../src/toolkit.js'
 
 describe('create-or-update-ref', () => {
-  let octokit: OctokitClient
+  let octokit: OctokitClient & { mocks: MockOctokitMethods }
 
   beforeEach(() => {
     octokit = createMockOctokit()
@@ -16,48 +15,59 @@ describe('create-or-update-ref', () => {
   })
 
   it('updates the major ref if it already exists', async () => {
-    nock('https://api.github.com')
-      .patch('/repos/raven-actions/test/git/refs/tags%2Fv1')
-      .reply(200)
-      .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv1')
-      .reply(200, [{ ref: 'tags/v1' }])
+    octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [{ ref: 'tags/v1' }] })
 
     await createOrUpdateRef(octokit, '123abc', '1')
 
-    expect(nock.isDone()).toBeTruthy()
+    expect(octokit.mocks.listMatchingRefs).toHaveBeenCalledWith({
+      owner: 'raven-actions',
+      repo: 'test',
+      ref: 'tags/v1'
+    })
+    expect(octokit.mocks.updateRef).toHaveBeenCalledWith({
+      owner: 'raven-actions',
+      repo: 'test',
+      force: true,
+      ref: 'tags/v1',
+      sha: '123abc'
+    })
+    expect(octokit.mocks.createRef).not.toHaveBeenCalled()
   })
 
   it('creates a new major ref if it does not already exist', async () => {
-    let params: any
-
-    nock('https://api.github.com')
-      .post('/repos/raven-actions/test/git/refs')
-      .reply(200, (_, body) => {
-        params = body
-      })
-      .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv1')
-      .reply(200, [])
+    octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [] })
 
     await createOrUpdateRef(octokit, '123abc', '1')
 
-    expect(nock.isDone()).toBeTruthy()
-    expect(params.ref).toBe('refs/tags/v1')
+    expect(octokit.mocks.listMatchingRefs).toHaveBeenCalledWith({
+      owner: 'raven-actions',
+      repo: 'test',
+      ref: 'tags/v1'
+    })
+    expect(octokit.mocks.createRef).toHaveBeenCalledWith({
+      owner: 'raven-actions',
+      repo: 'test',
+      ref: 'refs/tags/v1',
+      sha: '123abc'
+    })
+    expect(octokit.mocks.updateRef).not.toHaveBeenCalled()
   })
 
   it('creates a new minor ref if it does not already exist', async () => {
-    let params: any
-
-    nock('https://api.github.com')
-      .post('/repos/raven-actions/test/git/refs')
-      .reply(200, (_, body) => {
-        params = body
-      })
-      .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv1.0')
-      .reply(200, [])
+    octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [] })
 
     await createOrUpdateRef(octokit, '123abc', '1.0')
 
-    expect(nock.isDone()).toBeTruthy()
-    expect(params.ref).toBe('refs/tags/v1.0')
+    expect(octokit.mocks.listMatchingRefs).toHaveBeenCalledWith({
+      owner: 'raven-actions',
+      repo: 'test',
+      ref: 'tags/v1.0'
+    })
+    expect(octokit.mocks.createRef).toHaveBeenCalledWith({
+      owner: 'raven-actions',
+      repo: 'test',
+      ref: 'refs/tags/v1.0',
+      sha: '123abc'
+    })
   })
 })

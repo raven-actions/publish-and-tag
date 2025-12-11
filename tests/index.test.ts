@@ -1,13 +1,12 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
-import nock from 'nock'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { action } from '../src/main.js'
-import { createMockOctokit, type OctokitClient } from './helpers.js'
+import { createMockOctokit, type MockOctokitMethods } from './helpers.js'
+import { type OctokitClient } from '../src/toolkit.js'
 
 describe('publish-and-tag', () => {
-  let octokit: OctokitClient
+  let octokit: OctokitClient & { mocks: MockOctokitMethods }
 
   beforeEach(() => {
-    nock.cleanAll()
     octokit = createMockOctokit()
     delete process.env.INPUT_SETUP
     delete process.env.INPUT_TAG_NAME
@@ -16,106 +15,66 @@ describe('publish-and-tag', () => {
   })
 
   afterEach(() => {
-    nock.cleanAll()
+    vi.resetAllMocks()
   })
 
   it('updates the ref and updates an existing major ref', async () => {
-    nock('https://api.github.com')
-      .patch('/repos/raven-actions/test/git/refs/tags%2Fv1.2.3')
-      .reply(200)
-      .patch('/repos/raven-actions/test/git/refs/tags%2Fv1')
-      .reply(200)
-      .patch('/repos/raven-actions/test/git/refs/tags%2Fv1.2')
-      .reply(200)
-      .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv1')
-      .reply(200, [{ ref: 'tags/v1' }])
-      .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv1.2')
-      .reply(200, [{ ref: 'tags/v1.2' }])
-      .post('/repos/raven-actions/test/git/commits')
-      .reply(200, { sha: '123abc' })
-      .post('/repos/raven-actions/test/git/trees')
-      .reply(200, { sha: '456def' })
+    // Setup mocks: first call for v1.2 (exists), second call for v1 (exists)
+    octokit.mocks.listMatchingRefs
+      .mockResolvedValueOnce({ data: [{ ref: 'tags/v1.2' }] })  // v1.2 exists
+      .mockResolvedValueOnce({ data: [{ ref: 'tags/v1' }] })    // v1 exists
 
     await action(octokit)
 
-    expect(nock.isDone()).toBeTruthy()
+    // updateTag calls updateRef once for v1.2.3
+    // createOrUpdateRef calls updateRef twice for v1.2 and v1 (both exist)
+    expect(octokit.mocks.updateRef).toHaveBeenCalledTimes(3)
+    expect(octokit.mocks.createRef).not.toHaveBeenCalled()
+    expect(octokit.mocks.createTree).toHaveBeenCalledTimes(1)
+    expect(octokit.mocks.createCommit).toHaveBeenCalledTimes(1)
   })
 
   it('updates the ref and creates a new major & minor ref', async () => {
-    nock('https://api.github.com')
-      .patch('/repos/raven-actions/test/git/refs/tags%2Fv1.2.3')
-      .reply(200)
-      .post('/repos/raven-actions/test/git/refs')
-      .times(2)
-      .reply(200)
-      .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv1')
-      .reply(200, [])
-      .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv1.2')
-      .reply(200, [])
-      .post('/repos/raven-actions/test/git/commits')
-      .reply(200, { sha: '123abc' })
-      .post('/repos/raven-actions/test/git/trees')
-      .reply(200, { sha: '456def' })
+    // Setup mocks for non-existing refs
+    octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [] })
 
     await action(octokit)
 
-    expect(nock.isDone()).toBeTruthy()
+    // v1.2.3 is updated, v1 and v1.2 are created
+    expect(octokit.mocks.updateRef).toHaveBeenCalledTimes(1) // v1.2.3
+    expect(octokit.mocks.createRef).toHaveBeenCalledTimes(2) // v1, v1.2
   })
 
-  // Note: Tests that manipulate context.payload at runtime are skipped
-  // because @actions/github.context reads the payload from GITHUB_EVENT_PATH at import time.
-  // To test these scenarios, create separate fixture files and update GITHUB_EVENT_PATH.
-
   it('updates the ref with custom tag_name input', async () => {
-    nock('https://api.github.com')
-      .patch('/repos/raven-actions/test/git/refs/tags%2Fv2.0.0')
-      .reply(200)
-      .post('/repos/raven-actions/test/git/refs')
-      .times(2)
-      .reply(200)
-      .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv2')
-      .reply(200, [])
-      .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv2.0')
-      .reply(200, [])
-      .post('/repos/raven-actions/test/git/commits')
-      .reply(200, { sha: '123abc' })
-      .post('/repos/raven-actions/test/git/trees')
-      .reply(200, { sha: '456def' })
-
+    octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [] })
     process.env.INPUT_TAG_NAME = 'v2.0.0'
 
     await action(octokit)
 
-    expect(nock.isDone()).toBeTruthy()
+    // Verify the custom tag was used
+    expect(octokit.mocks.updateRef).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ref: 'tags/v2.0.0'
+      })
+    )
+    expect(octokit.mocks.createRef).toHaveBeenCalledTimes(2) // v2, v2.0
   })
 
   it('updates an existing major ref and makes release latest', async () => {
-    let params: unknown
-
-    nock('https://api.github.com')
-      .patch('/repos/raven-actions/test/releases/123')
-      .reply(200, (_, body) => {
-        params = body
-      })
-      .patch('/repos/raven-actions/test/git/refs/tags%2Fv1.2.3')
-      .reply(200)
-      .patch('/repos/raven-actions/test/git/refs/tags%2Fv1')
-      .reply(200)
-      .patch('/repos/raven-actions/test/git/refs/tags%2Fv1.2')
-      .reply(200)
-      .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv1')
-      .reply(200, [{ ref: 'tags/v1' }])
-      .get('/repos/raven-actions/test/git/matching-refs/tags%2Fv1.2')
-      .reply(200, [{ ref: 'tags/v1.2' }])
-      .post('/repos/raven-actions/test/git/commits')
-      .reply(200, { sha: '123abc' })
-      .post('/repos/raven-actions/test/git/trees')
-      .reply(200, { sha: '456def' })
+    octokit.mocks.listMatchingRefs
+      .mockResolvedValueOnce({ data: [{ ref: 'tags/v1' }] })
+      .mockResolvedValueOnce({ data: [{ ref: 'tags/v1.2' }] })
 
     process.env.INPUT_LATEST = 'true'
 
     await action(octokit)
-    expect((params as { make_latest: unknown }).make_latest).toBeTruthy()
-    expect(nock.isDone()).toBeTruthy()
+
+    // Verify release was made latest
+    expect(octokit.mocks.updateRelease).toHaveBeenCalledWith(
+      expect.objectContaining({
+        release_id: 123,
+        make_latest: 'true'
+      })
+    )
   })
 })
