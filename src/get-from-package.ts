@@ -2,6 +2,7 @@ import * as glob from '@actions/glob';
 import * as core from '@actions/core';
 import { getWorkspace, getPackageJSON } from './toolkit.js';
 import { isFile } from './file-helper.js';
+import { isJavaScriptAction } from './utils.js';
 import path from 'path';
 
 export function getMainFromPackage(): string | undefined {
@@ -22,8 +23,8 @@ export async function getFilesFromPackage(): Promise<{ files: string[] }> {
   const result: string[] = [];
 
   // Add main file if it's a JavaScript action (not composite or docker)
-  if (main && main !== 'composite' && main !== 'docker') {
-    result.push(main);
+  if (isJavaScriptAction(main)) {
+    result.push(main!);
   }
 
   if (files?.length) {

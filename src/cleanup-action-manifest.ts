@@ -3,6 +3,7 @@ import jsYaml from 'js-yaml';
 import { getWorkspace } from './toolkit.js';
 import { readFile as defaultReadFile, writeFile as defaultWriteFile, checkActionManifestFile } from './file-helper.js';
 import { getMainFromPackage } from './get-from-package.js';
+import { isJavaScriptAction } from './utils.js';
 
 export default function cleanupActionManifest(
   // Optional dependency injection for testing
@@ -23,7 +24,7 @@ export default function cleanupActionManifest(
     const configRecord = config as Record<string, unknown>;
 
     // Only update runs for JavaScript actions (not composite or docker)
-    if (mainFromPackage && mainFromPackage !== 'composite' && mainFromPackage !== 'docker') {
+    if (isJavaScriptAction(mainFromPackage)) {
       configRecord['runs'] = {
         using: 'node24',
         main: mainFromPackage

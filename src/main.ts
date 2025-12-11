@@ -1,9 +1,7 @@
 import * as core from '@actions/core';
 import semver from 'semver';
-import createOrUpdateRef from './create-or-update-ref.js';
+import { createOrUpdateRef, updateTag, makeReleaseLatest } from './git-operations.js';
 import createCommit from './create-commit.js';
-import updateTag from './update-tag.js';
-import makeReleaseLatest from './make-release-latest.js';
 import {
   getTagName,
   getRewriteTags,
@@ -76,7 +74,7 @@ export async function action(octokit: OctokitClient): Promise<void> {
     const { id, draft, prerelease, html_url: htmlUrl } = payload.release;
     releaseId = id;
 
-    if ((draft || prerelease) && !makeLatest) {
+    if (draft || (prerelease && !makeLatest)) {
       shouldRewriteMajorAndMinorRef = false;
     }
 

@@ -1,8 +1,33 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi, type Mock } from 'vitest';
 import { action, run } from '../src/main.js';
 import { createMockOctokit, type MockOctokitMethods } from './helpers.js';
-import { type OctokitClient } from '../src/toolkit.js';
+import { context, getOctokit, type OctokitClient } from '../src/toolkit.js';
 import * as core from '@actions/core';
+
+vi.mock('../src/toolkit.js', async (importOriginal) => {
+  const original = await importOriginal<typeof import('../src/toolkit.js')>();
+  return {
+    ...original,
+    getOctokit: vi.fn(),
+    context: {
+      repo: {
+        owner: 'raven-actions',
+        repo: 'test'
+      },
+      eventName: 'release',
+      payload: {
+        release: {
+          id: 123,
+          tag_name: 'v1.2.3',
+          draft: false,
+          prerelease: false,
+          html_url: 'https://github.com/raven-actions/test/releases/v1.2.3',
+          make_latest: 'false'
+        }
+      }
+    }
+  };
+});
 
 describe('publish-and-tag', () => {
   let octokit: OctokitClient & { mocks: MockOctokitMethods };
@@ -13,6 +38,8 @@ describe('publish-and-tag', () => {
     delete process.env['INPUT_TAG_NAME'];
     delete process.env['INPUT_COMMIT_MESSAGE'];
     delete process.env['INPUT_LATEST'];
+    delete process.env['INPUT_REWRITE_TAGS'];
+    delete process.env['INPUT_CLEANUP_MANIFEST'];
   });
 
   afterEach(() => {
@@ -80,14 +107,51 @@ describe('publish-and-tag', () => {
   });
 
   it('skips rewriting major/minor refs for draft releases', async () => {
-    // The default fixture has draft=false and prerelease=false
+    // Mock context payload to be a draft
+    const originalPayload = context.payload;
+    context.payload = {
+      ...originalPayload,
+      release: {
+        ...(originalPayload['release'] as object),
+        draft: true,
+        prerelease: false
+      }
+    } as any;
+
     octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [] });
     process.env['INPUT_LATEST'] = '';
 
     await action(octokit);
 
-    // With draft=false, prerelease=false, rewrite is enabled by default
-    expect(octokit.mocks.createRef).toHaveBeenCalled();
+    // Should NOT create/update major and minor refs
+    expect(octokit.mocks.createRef).not.toHaveBeenCalled();
+
+    // Restore payload
+    context.payload = originalPayload;
+  });
+
+  it('skips rewriting major/minor refs for prereleases', async () => {
+    // Mock context payload to be a prerelease
+    const originalPayload = context.payload;
+    context.payload = {
+      ...originalPayload,
+      release: {
+        ...(originalPayload['release'] as object),
+        draft: false,
+        prerelease: true
+      }
+    } as any;
+
+    octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [] });
+    process.env['INPUT_LATEST'] = '';
+
+    await action(octokit);
+
+    // Should NOT create/update major and minor refs
+    expect(octokit.mocks.createRef).not.toHaveBeenCalled();
+
+    // Restore payload
+    context.payload = originalPayload;
   });
 
   it('skips rewriting major/minor refs when rewrite_tags is false', async () => {
@@ -115,26 +179,52 @@ describe('publish-and-tag', () => {
 
   it('handles run() error gracefully', async () => {
     const setFailedSpy = vi.spyOn(core, 'setFailed');
+    const error = new Error('No GitHub token provided');
 
-    // Mock getOctokit to throw (no token)
-    vi.mock('../src/toolkit.js', async (importOriginal) => {
-      const original = await importOriginal<typeof import('../src/toolkit.js')>();
-      return {
-        ...original,
-        getOctokit: () => {
-          throw new Error('No GitHub token provided');
-        }
-      };
+    vi.mocked(getOctokit).mockImplementationOnce(() => {
+      throw error;
     });
 
-    // Re-import to get mocked version
-    vi.resetModules();
-    const { run: runFresh } = await import('../src/main.js');
-
-    await runFresh();
+    await run();
 
     expect(setFailedSpy).toHaveBeenCalledWith('No GitHub token provided');
 
     vi.restoreAllMocks();
+  });
+
+  it('skips rewriting major/minor refs for draft releases even when make_latest is true', async () => {
+    const originalPayload = context.payload;
+    context.payload = {
+      ...originalPayload,
+      release: {
+        ...(originalPayload['release'] as object),
+        draft: true,
+        prerelease: false
+      }
+    } as any;
+
+    octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [] });
+    process.env['INPUT_LATEST'] = 'true';
+
+    await action(octokit);
+
+    // Should NOT create/update major and minor refs because it is a draft
+    expect(octokit.mocks.createRef).not.toHaveBeenCalled();
+
+    // Should NOT make release latest because it is a draft
+    expect(octokit.mocks.updateRelease).not.toHaveBeenCalled();
+
+    context.payload = originalPayload;
+  });
+
+  it('run() executes action successfully', async () => {
+    const setFailedSpy = vi.spyOn(core, 'setFailed');
+    vi.mocked(getOctokit).mockReturnValue(octokit);
+    octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [] });
+
+    await run();
+
+    expect(setFailedSpy).not.toHaveBeenCalled();
+    expect(octokit.mocks.updateRef).toHaveBeenCalled();
   });
 });
