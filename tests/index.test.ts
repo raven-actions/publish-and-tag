@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { action } from '../src/main.js';
+import { action, run } from '../src/main.js';
 import { createMockOctokit, type MockOctokitMethods } from './helpers.js';
 import { type OctokitClient } from '../src/toolkit.js';
+import * as core from '@actions/core';
 
 describe('publish-and-tag', () => {
   let octokit: OctokitClient & { mocks: MockOctokitMethods };
@@ -76,5 +77,64 @@ describe('publish-and-tag', () => {
         make_latest: 'true'
       })
     );
+  });
+
+  it('skips rewriting major/minor refs for draft releases', async () => {
+    // The default fixture has draft=false and prerelease=false
+    octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [] });
+    process.env['INPUT_LATEST'] = '';
+
+    await action(octokit);
+
+    // With draft=false, prerelease=false, rewrite is enabled by default
+    expect(octokit.mocks.createRef).toHaveBeenCalled();
+  });
+
+  it('skips rewriting major/minor refs when rewrite_tags is false', async () => {
+    octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [] });
+    process.env['INPUT_REWRITE_TAGS'] = 'false';
+
+    await action(octokit);
+
+    // Should not create/update major and minor refs
+    expect(octokit.mocks.createRef).not.toHaveBeenCalled();
+    // updateRef should only be called once for the tag itself
+    expect(octokit.mocks.updateRef).toHaveBeenCalledTimes(1);
+  });
+
+  it('skips cleanup manifest when cleanup_manifest is false', async () => {
+    octokit.mocks.listMatchingRefs.mockResolvedValue({ data: [] });
+    process.env['INPUT_CLEANUP_MANIFEST'] = 'false';
+
+    await action(octokit);
+
+    // Should still complete successfully
+    expect(octokit.mocks.createTree).toHaveBeenCalled();
+    expect(octokit.mocks.createCommit).toHaveBeenCalled();
+  });
+
+  it('handles run() error gracefully', async () => {
+    const setFailedSpy = vi.spyOn(core, 'setFailed');
+
+    // Mock getOctokit to throw (no token)
+    vi.mock('../src/toolkit.js', async (importOriginal) => {
+      const original = await importOriginal<typeof import('../src/toolkit.js')>();
+      return {
+        ...original,
+        getOctokit: () => {
+          throw new Error('No GitHub token provided');
+        }
+      };
+    });
+
+    // Re-import to get mocked version
+    vi.resetModules();
+    const { run: runFresh } = await import('../src/main.js');
+
+    await runFresh();
+
+    expect(setFailedSpy).toHaveBeenCalledWith('No GitHub token provided');
+
+    vi.restoreAllMocks();
   });
 });

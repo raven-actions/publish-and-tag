@@ -67,7 +67,7 @@
     "run:local": "pnpm dlx @github/local-action . src/main.ts .env",
     "test": "vitest run",
     "test:ci": "vitest run --reporter=junit --outputFile=reports/junit.xml",
-    "test:ci:cov": "vitest run --coverage --reporter=junit --outputFile=reports/junit.xml",
+    "test:ci:cov": "vitest run --reporter=junit --outputFile=reports/junit.xml --coverage",
     "test:cov": "vitest run --coverage",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"

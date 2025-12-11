@@ -1,9 +1,28 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+
+// Mock the toolkit module before importing get-tag-name
+vi.mock('../src/toolkit.js', async (importOriginal) => {
+  const original = await importOriginal<typeof import('../src/toolkit.js')>();
+  return {
+    ...original,
+    context: {
+      ...original.context,
+      eventName: 'release',
+      payload: {
+        release: {
+          tag_name: 'v1.2.3'
+        }
+      }
+    }
+  };
+});
+
 import getTagName from '../src/get-tag-name.js';
 
 describe('get-tag-name', () => {
   beforeEach(() => {
     delete process.env['INPUT_TAG_NAME'];
+    vi.resetModules();
   });
 
   afterEach(() => {
@@ -11,7 +30,6 @@ describe('get-tag-name', () => {
   });
 
   it('gets the tag from the release payload', () => {
-    // The context.eventName is 'release' by default from setup.ts
     const result = getTagName();
     expect(result).toBe('v1.2.3');
   });
@@ -22,12 +40,22 @@ describe('get-tag-name', () => {
     expect(result).toBe('v2.1.1');
   });
 
-  // Note: This test is skipped because @actions/github.context reads
-  // GITHUB_EVENT_NAME at module load time, not at runtime.
-  // Changing process.env.GITHUB_EVENT_NAME after import has no effect.
-  it.skip('throws when no tag_name found', () => {
-    // This would require jest.unstable_mockModule to mock the toolkit before import
-    process.env['GITHUB_EVENT_NAME'] = 'pizza';
-    expect(() => getTagName()).toThrow('No tag_name was found or provided!');
+  it('throws when eventName is not release and no input provided', async () => {
+    // Reset modules and re-mock with non-release event
+    vi.resetModules();
+    vi.doMock('../src/toolkit.js', async (importOriginal) => {
+      const original = await importOriginal<typeof import('../src/toolkit.js')>();
+      return {
+        ...original,
+        context: {
+          ...original.context,
+          eventName: 'push',
+          payload: {}
+        }
+      };
+    });
+
+    const { default: getTagNameFresh } = await import('../src/get-tag-name.js');
+    expect(() => getTagNameFresh()).toThrow('No tag_name was found or provided!');
   });
 });
