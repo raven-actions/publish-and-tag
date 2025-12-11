@@ -4,14 +4,14 @@ arrowParens: always
 bracketSpacing: true
 endOfLine: lf
 htmlWhitespaceSensitivity: css
-insertPragma: false # consider true
+insertPragma: true
 singleAttributePerLine: false
 bracketSameLine: false
 jsxSingleQuote: true
 printWidth: 120
 proseWrap: preserve
 quoteProps: as-needed
-requirePragma: false # consider true
+requirePragma: true
 semi: true
 singleQuote: true
 tabWidth: 2
