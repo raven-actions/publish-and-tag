@@ -140,10 +140,10 @@ describe('inputs', () => {
           }
         };
       });
-      
+
       // Re-import inputs to pick up the new mock
       const inputsReimported = await import('../src/inputs.js');
-      
+
       expect(() => inputsReimported.getTagName()).toThrow('No tag_name was found or provided!');
     });
   });
@@ -190,7 +190,7 @@ describe('inputs', () => {
       process.env['INPUT_GIT_AUTHOR_EMAIL'] = 'custom@example.com';
       expect(inputs.getGitAuthorEmail()).toBe('custom@example.com');
     });
-    
+
     it('git-committer-name - default', () => {
       expect(inputs.getGitCommitterName()).toBe('github-actions[bot]');
     });
