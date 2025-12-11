@@ -1,24 +1,24 @@
-import fs from 'node:fs'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import jsYaml from 'js-yaml'
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import jsYaml from 'js-yaml';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Helper that reads the `action.yml` and includes the default values
  * for each input as an environment variable, like the Actions runtime does.
  */
 function getDefaultValues(): Record<string, string> {
-  const actionManifest = fs.readFileSync(path.resolve(__dirname, '../action.yml'), 'utf8')
-  const { inputs } = jsYaml.load(actionManifest) as { inputs: Record<string, { default?: string }> }
+  const actionManifest = fs.readFileSync(path.resolve(__dirname, '../action.yml'), 'utf8');
+  const { inputs } = jsYaml.load(actionManifest) as { inputs: Record<string, { default?: string }> };
   return Object.keys(inputs).reduce<Record<string, string>>(
     (sum, key) => ({
       ...sum,
       [key]: inputs[key].default ?? ''
     }),
     {}
-  )
+  );
 }
 
 // Set up environment variables for GitHub Actions context
@@ -38,4 +38,4 @@ Object.assign(
     HOME: '?'
   },
   getDefaultValues()
-)
+);

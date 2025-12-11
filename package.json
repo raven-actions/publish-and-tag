@@ -30,6 +30,7 @@
     "js-yaml": "^4.1.1",
     "prettier": "^3.7.4",
     "rollup": "^4.53.3",
+    "syncpack": "^13.0.4",
     "typescript": "^5.9.3",
     "typescript-eslint": "8.49.0",
     "vitest": "^4.0.15"
@@ -60,7 +61,7 @@
     "deps:ci": "pnpm install --frozen-lockfile",
     "deps:ck": "pnpm outdated --long",
     "deps:up": "pnpm update --latest",
-    "format": "prettier --config \".github/linters/.prettierrc.yml\" --write \"**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx}\" && pnpm dlx syncpack format",
+    "format": "syncpack format && prettier --config \".github/linters/.prettierrc.yml\" --write \"**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx}\"",
     "format:ck": "prettier --config \".github/linters/.prettierrc.yml\" --check \"**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx}\"",
     "lint": "eslint .",
     "package": "pnpm dlx @vercel/ncc build ./src/index.ts --source-map --license licenses.txt",
