@@ -8,30 +8,30 @@
     "Jason Etcovitch"
   ],
   "dependencies": {
-    "@actions/core": "^2.0.2",
-    "@actions/github": "^7.0.0",
-    "@actions/glob": "^0.5.0",
+    "@actions/core": "^3.0.0",
+    "@actions/github": "^9.0.0",
+    "@actions/glob": "^0.6.1",
     "@octokit/rest": "^22.0.1",
-    "semver": "^7.7.3"
+    "semver": "^7.7.4"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "@tsconfig/node24": "^24.0.3",
+    "@eslint/js": "^10.0.1",
+    "@tsconfig/node24": "^24.0.4",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "^24.10.8",
+    "@types/node": "^24.10.15",
     "@types/semver": "^7.7.1",
     "@types/signale": "^1.4.7",
-    "@vitest/coverage-v8": "^4.0.17",
-    "esbuild": "^0.27.2",
-    "eslint": "^9.39.2",
+    "@vitest/coverage-v8": "^4.0.18",
+    "esbuild": "^0.27.3",
+    "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",
-    "globals": "^17.0.0",
+    "globals": "^17.3.0",
     "js-yaml": "^4.1.1",
-    "prettier": "^3.7.4",
-    "syncpack": "^13.0.4",
+    "prettier": "^3.8.1",
+    "syncpack": "^14.0.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "8.53.0",
-    "vitest": "^4.0.17"
+    "typescript-eslint": "8.56.1",
+    "vitest": "^4.0.18"
   },
   "files": [
     "dist/*",
