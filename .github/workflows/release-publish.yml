@@ -37,7 +37,7 @@ jobs:
           inputs-context: ${{ toJson(inputs) }}
 
       - name: 🔑 Get Token
-        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         id: get-token
         with:
           app-id: ${{ secrets.ORG_BOT_APP_ID }}
@@ -49,12 +49,12 @@ jobs:
           token: ${{ steps.get-token.outputs.token }}
 
       - name: 🚧 Setup pnpm
-        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+        uses: pnpm/action-setup@078e9d416474b29c0c387560859308974f7e9c53 # v6.0.1
         with:
           version: 10
 
       - name: 🚧 Setup Node
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
           node-version-file: .node-version
           cache: pnpm
