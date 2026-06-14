@@ -22,7 +22,7 @@
     "@types/semver": "^7.7.1",
     "@types/signale": "^1.4.7",
     "@vitest/coverage-v8": "^4.0.17",
-    "esbuild": "^0.27.2",
+    "esbuild": "^0.28.1",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.0.0",
