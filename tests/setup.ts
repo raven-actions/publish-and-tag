@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import jsYaml from 'js-yaml';
+import { load } from 'js-yaml';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -11,7 +11,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
  */
 function getDefaultValues(): Record<string, string> {
   const actionManifest = fs.readFileSync(path.resolve(__dirname, '../action.yml'), 'utf8');
-  const { inputs } = jsYaml.load(actionManifest) as { inputs: Record<string, { default?: string }> };
+  const { inputs } = load(actionManifest) as { inputs: Record<string, { default?: string }> };
   return Object.keys(inputs).reduce<Record<string, string>>(
     (sum, key) => ({
       ...sum,

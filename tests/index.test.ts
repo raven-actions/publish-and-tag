@@ -1,8 +1,16 @@
-import { describe, it, expect, beforeEach, afterEach, vi, type Mock } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { action, run } from '../src/main.js';
 import { createMockOctokit, type MockOctokitMethods } from './helpers.js';
 import { context, getOctokit, type OctokitClient } from '../src/toolkit.js';
 import * as core from '@actions/core';
+
+// @actions/core v3 ships as native ESM with a non-configurable namespace, which
+// blocks vi.spyOn. Re-exporting the real module through a mock factory makes its
+// exports spy-able while preserving the actual implementations.
+vi.mock('@actions/core', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@actions/core')>();
+  return { ...actual };
+});
 
 vi.mock('../src/toolkit.js', async (importOriginal) => {
   const original = await importOriginal<typeof import('../src/toolkit.js')>();
