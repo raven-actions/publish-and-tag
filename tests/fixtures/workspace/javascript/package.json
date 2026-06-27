@@ -1,8 +1,0 @@
-{
-  "main": "dist/index.js",
-  "files": [
-    "README.md",
-    "dist/index.js",
-    "dist/*"
-  ]
-}

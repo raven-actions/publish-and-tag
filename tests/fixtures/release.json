@@ -1,9 +1,0 @@
-{
-  "release": {
-    "id": 123,
-    "draft": false,
-    "prerelease": false,
-    "tag_name": "v1.2.3",
-    "html_url": "https://github.com/raven-actions/test/releases/v1.2.3"
-  }
-}
