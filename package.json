@@ -47,8 +47,8 @@
     "tag"
   ],
   "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
+  "main": "dist/index.mjs",
+  "module": "dist/index.mjs",
   "private": true,
   "repository": "raven-actions/publish-and-tag.git",
   "scripts": {
@@ -62,7 +62,7 @@
     "format": "syncpack format && prettier --config ./.github/linters/.prettierrc.yml --write \"**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,jsonc}\"",
     "lint": "eslint . --config ./.github/linters/eslint.config.mjs",
     "package": "node esbuild.config.mjs",
-    "run": "node dist/index.js",
+    "run": "node dist/index.mjs",
     "run:dev": "node --import tsx ./src/index.ts",
     "run:local": "pnpm dlx @github/local-action . src/main.ts .env",
     "test": "vitest run",
