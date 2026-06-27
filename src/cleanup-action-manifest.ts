@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import jsYaml from 'js-yaml';
+import { load, dump, YAMLException } from 'js-yaml';
 import { getWorkspace } from './toolkit.js';
 import { readFile as defaultReadFile, writeFile as defaultWriteFile, checkActionManifestFile } from './file-helper.js';
 import { getMainFromPackage } from './get-from-package.js';
@@ -16,7 +16,7 @@ export default function cleanupActionManifest(
   const mainFromPackage = getMainFromPackage();
 
   try {
-    const config = jsYaml.load(actionManifestContent);
+    const config = load(actionManifestContent);
     if (config === null || typeof config !== 'object') {
       throw new Error(`Action Manifest file [${actionManifestFile}] does not contain valid YAML object`);
     }
@@ -32,10 +32,10 @@ export default function cleanupActionManifest(
     }
 
     core.info('Cleaning up Action Manifest file');
-    writeFile(workspace, actionManifestFile, jsYaml.dump(configRecord));
+    writeFile(workspace, actionManifestFile, dump(configRecord));
   } catch (error) {
-    if (error instanceof jsYaml.YAMLException) {
-      throw new Error(`Unable to parse Action Manifest file [${actionManifestFile}]: ${error.reason}`);
+    if (error instanceof YAMLException) {
+      throw new Error(`Unable to parse Action Manifest file [${actionManifestFile}]: ${error.reason}`, { cause: error });
     }
     throw error;
   }
