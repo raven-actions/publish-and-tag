@@ -25,7 +25,7 @@
     "esbuild": "^0.28.1",
     "eslint": "^10.8.0",
     "eslint-config-prettier": "^10.1.8",
-    "globals": "^17.8.0",
+    "globals": "^17.9.0",
     "js-yaml": "^5.2.3",
     "prettier": "^3.9.6",
     "syncpack": "^15.3.2",
