@@ -25,12 +25,12 @@
     "esbuild": "^0.28.1",
     "eslint": "^10.8.0",
     "eslint-config-prettier": "^10.1.8",
-    "globals": "^17.8.0",
+    "globals": "^17.9.0",
     "js-yaml": "^5.2.3",
     "prettier": "^3.9.6",
     "syncpack": "^15.3.2",
     "typescript": "^7.0.2",
-    "typescript-eslint": "8.65.0",
+    "typescript-eslint": "8.66.0",
     "vitest": "^4.1.10"
   },
   "files": [
